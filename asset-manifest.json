@@ -1,16 +1,15 @@
 {
   "files": {
-    "main.css": "/reddit-compare/static/css/main.f855e6bc.css",
-    "main.js": "/reddit-compare/static/js/main.9d9cb266.js",
+    "main.css": "/reddit-compare/static/css/main.e6c13ad2.css",
+    "main.js": "/reddit-compare/static/js/main.93ba6b10.js",
     "static/js/453.20288aac.chunk.js": "/reddit-compare/static/js/453.20288aac.chunk.js",
-    "static/media/logo.svg": "/reddit-compare/static/media/logo.6ce24c58023cc2f8fd88fe9d219db6c6.svg",
     "index.html": "/reddit-compare/index.html",
-    "main.f855e6bc.css.map": "/reddit-compare/static/css/main.f855e6bc.css.map",
-    "main.9d9cb266.js.map": "/reddit-compare/static/js/main.9d9cb266.js.map",
+    "main.e6c13ad2.css.map": "/reddit-compare/static/css/main.e6c13ad2.css.map",
+    "main.93ba6b10.js.map": "/reddit-compare/static/js/main.93ba6b10.js.map",
     "453.20288aac.chunk.js.map": "/reddit-compare/static/js/453.20288aac.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f855e6bc.css",
-    "static/js/main.9d9cb266.js"
+    "static/css/main.e6c13ad2.css",
+    "static/js/main.93ba6b10.js"
   ]
 }
