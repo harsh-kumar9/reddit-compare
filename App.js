@@ -8,6 +8,7 @@ import ResponseRating from './ResponseRating';
 import CompareResponses from './CompareResponses';
 import EndOfScenario from './EndOfScenario';
 import ThankYou from './ThankYou';
+import End from './End';
 
 function App() {
   const [currentStage, setCurrentStage] = useState('instructions');
@@ -65,12 +66,16 @@ function App() {
         } else {
           setCurrentStage('thankYou');
         }
+        break; // Added break here to prevent falling into the next case
+      case 'thankYou':
+        setCurrentStage('end');
         break;
       default:
         console.error(`Unknown stage: ${currentStage}`);
         break; // Keep the current stage unchanged
     }
   };
+  
 
   return (
     <div>
@@ -87,7 +92,8 @@ function App() {
       )}
       {currentStage === 'compareResponses' && <CompareResponses responses={scenarios[currentScenarioIndex].responses} onNext={handleNextStage} />}
       {currentStage === 'endOfScenario' && <EndOfScenario onNext={handleNextStage} />}
-      {currentStage === 'thankYou' && <ThankYou />}
+      {currentStage === 'thankYou' && <ThankYou onNext={handleNextStage}/>}
+      {currentStage == 'end' && <End />}
     </div>
   );
 }
