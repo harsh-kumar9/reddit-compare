@@ -13,8 +13,34 @@ import inputData from './data/input.json';
 function App() {
 
   const getRandomScenarios = (data, count) => {
-    const shuffled = [...data.posts].sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, count).map(post => ({
+    // Filter out posts that have been selected 3 times
+    const availablePosts = data.posts.filter(post => post.selectedCount < 3);
+    
+    if (availablePosts.length < count) {
+      console.warn("Not enough posts left to select the required scenarios.");
+      return availablePosts.map(post => ({
+        text: post.body,
+        responses: [
+          post.comments.best_comment,
+          post.comments.percentile_10_comment,
+          post.comments.gpt_comment,
+          post.comments.claude_comment
+        ]
+      }));
+    }
+    
+    // Randomly shuffle and select the desired count
+    const shuffled = [...availablePosts].sort(() => 0.5 - Math.random());
+    const selectedScenarios = shuffled.slice(0, count);
+  
+    // Increment the selectedCount for chosen posts
+    selectedScenarios.forEach(post => {
+      const originalPost = data.posts.find(p => p.id === post.id);
+      originalPost.selectedCount += 1;
+    });
+  
+    // Return the formatted scenarios
+    return selectedScenarios.map(post => ({
       text: post.body,
       responses: [
         post.comments.best_comment,

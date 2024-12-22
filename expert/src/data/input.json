@@ -4,6 +4,7 @@
         "id": "post_1",
         "title": "What's the best way to stay productive while working from home?",
         "body": "I've been struggling with focus and productivity while working remotely. Any tips?",
+        "selectedCount": 0,
         "comments": {
           "best_comment": "Create a dedicated workspace and stick to regular hours. It works wonders.",
           "percentile_10_comment": "Maybe try using noise-canceling headphones?",
@@ -15,6 +16,7 @@
         "id": "post_2",
         "title": "Best beginner books for learning data science?",
         "body": "I'm interested in data science but don't know where to start. Any book recommendations?",
+        "selectedCount": 0,
         "comments": {
           "best_comment": "'Python for Data Analysis' by Wes McKinney is a great place to begin.",
           "percentile_10_comment": "Look into 'Data Science for Dummies'.",
@@ -26,6 +28,7 @@
         "id": "post_3",
         "title": "How do I improve my sleep schedule?",
         "body": "I've been having trouble falling asleep at a regular time. Any advice?",
+        "selectedCount": 0,
         "comments": {
           "best_comment": "Consistent bedtime and limiting screen time before bed really helps.",
           "percentile_10_comment": "Maybe try some melatonin supplements?",
@@ -37,6 +40,7 @@
         "id": "post_4",
         "title": "Tips for staying motivated while learning to code?",
         "body": "Sometimes I hit a wall and lose motivation. How do you stay on track?",
+        "selectedCount": 0,
         "comments": {
           "best_comment": "Work on projects you're passionate about. It keeps things exciting.",
           "percentile_10_comment": "Take breaks and avoid burnout.",
@@ -48,6 +52,7 @@
         "id": "post_5",
         "title": "What are your favorite productivity apps?",
         "body": "I'm looking for apps that can help me manage my time better. Any recommendations?",
+        "selectedCount": 0,
         "comments": {
           "best_comment": "Notion and Todoist are absolute lifesavers for organization.",
           "percentile_10_comment": "Try Google Keep, it's simple and free.",
@@ -59,6 +64,7 @@
         "id": "post_6",
         "title": "Best practices for managing personal finances?",
         "body": "I'd like to get better at saving and budgeting. Any tools or strategies that work for you?",
+        "selectedCount": 0,
         "comments": {
           "best_comment": "YNAB (You Need A Budget) changed my life. Worth every penny.",
           "percentile_10_comment": "Try Mint for simple tracking.",
