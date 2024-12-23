@@ -1,0 +1,70 @@
+{
+    "posts": [
+      {
+        "id": "post_1",
+        "title": "What's the best way to stay productive while working from home?",
+        "body": "I've been struggling with focus and productivity while working remotely. Any tips?",
+        "comments": {
+          "best_comment": "Create a dedicated workspace and stick to regular hours. It works wonders.",
+          "percentile_10_comment": "Maybe try using noise-canceling headphones?",
+          "gpt_comment": "Try the Pomodoro technique—25 minutes of work, 5-minute breaks.",
+          "claude_comment": "Maintain a morning routine and limit distractions by setting boundaries."
+        }
+      },
+      {
+        "id": "post_2",
+        "title": "Best beginner books for learning data science?",
+        "body": "I'm interested in data science but don't know where to start. Any book recommendations?",
+        "comments": {
+          "best_comment": "'Python for Data Analysis' by Wes McKinney is a great place to begin.",
+          "percentile_10_comment": "Look into 'Data Science for Dummies'.",
+          "gpt_comment": "'Hands-On Machine Learning with Scikit-Learn and TensorFlow' is an excellent resource.",
+          "claude_comment": "Start with 'The Art of Data Science'—short but insightful."
+        }
+      },
+      {
+        "id": "post_3",
+        "title": "How do I improve my sleep schedule?",
+        "body": "I've been having trouble falling asleep at a regular time. Any advice?",
+        "comments": {
+          "best_comment": "Consistent bedtime and limiting screen time before bed really helps.",
+          "percentile_10_comment": "Maybe try some melatonin supplements?",
+          "gpt_comment": "Avoid caffeine after 2 PM and stick to a wind-down routine.",
+          "claude_comment": "Exercise during the day and dim lights in the evening to signal your body it's time to rest."
+        }
+      },
+      {
+        "id": "post_4",
+        "title": "Tips for staying motivated while learning to code?",
+        "body": "Sometimes I hit a wall and lose motivation. How do you stay on track?",
+        "comments": {
+          "best_comment": "Work on projects you're passionate about. It keeps things exciting.",
+          "percentile_10_comment": "Take breaks and avoid burnout.",
+          "gpt_comment": "Join online coding communities for support and inspiration.",
+          "claude_comment": "Celebrate small wins and track your progress consistently."
+        }
+      },
+      {
+        "id": "post_5",
+        "title": "What are your favorite productivity apps?",
+        "body": "I'm looking for apps that can help me manage my time better. Any recommendations?",
+        "comments": {
+          "best_comment": "Notion and Todoist are absolute lifesavers for organization.",
+          "percentile_10_comment": "Try Google Keep, it's simple and free.",
+          "gpt_comment": "Trello is fantastic for managing tasks with visual boards.",
+          "claude_comment": "Forest app helps you stay off your phone by growing virtual trees!"
+        }
+      },
+      {
+        "id": "post_6",
+        "title": "Best practices for managing personal finances?",
+        "body": "I'd like to get better at saving and budgeting. Any tools or strategies that work for you?",
+        "comments": {
+          "best_comment": "YNAB (You Need A Budget) changed my life. Worth every penny.",
+          "percentile_10_comment": "Try Mint for simple tracking.",
+          "gpt_comment": "Use the 50/30/20 rule—50% needs, 30% wants, 20% savings.",
+          "claude_comment": "Automate savings and track expenses to build consistent habits."
+        }
+      }
+    ]
+  }
