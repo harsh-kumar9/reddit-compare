@@ -85,7 +85,17 @@ function ProfessionalExperience({ onNext }) {
             ></textarea>
           </div>
 
-          <button type="submit">Next</button>
+          <button
+            type="submit"
+            disabled={
+              !formData.age.trim() || 
+              !formData.gender.trim() || 
+              (formData.professionalExperience && !formData.title.trim())
+            }
+          >
+            Next
+          </button>
+
         </form>
       </div>
     </div>

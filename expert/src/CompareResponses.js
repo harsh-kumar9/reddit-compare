@@ -24,7 +24,17 @@ function CompareResponses({ responses, onNext }) {
     <div className="App">
       <div className="App-header">
         <h2>Compare Responses</h2>
-        
+      <br></br>
+      <div className="responses-container">
+        {responses.map((response, index) => (
+          <div key={index} className="response-box">
+            <p>{response}</p>
+            {index < responses.length - 1 && <div className="vertical-divider"></div>} {/* Add a vertical line between responses */}
+          </div>
+        ))}
+      </div>
+      <br></br>
+
         <p>Please select the response that you think is the <b>most helpful.</b></p>
         {responses.map((response, index) => (
           <div key={index} style={{ marginBottom: '20px' }}>
@@ -41,15 +51,20 @@ function CompareResponses({ responses, onNext }) {
           </div>
         ))}
 
+
         <p>Please write a short (1-2 sentence) response describing your choice of the most helpful response.</p>
         <textarea
           value={mostHelpfulReason}
           onChange={(e) => setMostHelpfulReason(e.target.value)}
-          placeholder="Explain why you chose this response as the most helpful."
-          style={{ width: '100%', marginBottom: '20px' }}
+          placeholder="Type your response here..."
+          className="response-input"
+          rows="1"
         ></textarea>
 
+
+        <br></br>
         <p>Please select the response that you think is the <b>least helpful.</b></p>
+
         {responses.map((response, index) => (
           <div key={index} style={{ marginBottom: '20px' }}>
             <label style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
@@ -69,8 +84,9 @@ function CompareResponses({ responses, onNext }) {
         <textarea
           value={leastHelpfulReason}
           onChange={(e) => setLeastHelpfulReason(e.target.value)}
-          placeholder="Explain why you chose this response as the least helpful."
-          style={{ width: '100%', marginBottom: '20px' }}
+          placeholder="Type your response here..."
+          className="response-input"
+          rows="1"
         ></textarea>
 
         <button

@@ -116,3 +116,26 @@ ul {
     transform: rotate(360deg);
   }
 }
+
+.responses-container {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.response-box {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin: 0 5px; /* Add spacing between boxes */
+}
+
+.vertical-divider {
+  width: 1px;
+  background-color: #ccc;
+  height: 100%;
+  margin: 0 10px;
+}
