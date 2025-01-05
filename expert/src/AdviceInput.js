@@ -1,3 +1,4 @@
+//NO LONGER USED, INTEGRATED INTO SCENARIOTEXT FILE
 import React, { useState } from 'react';
 
 function AdviceInput({ onSubmit }) {

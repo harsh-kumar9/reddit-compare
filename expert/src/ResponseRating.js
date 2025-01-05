@@ -49,32 +49,37 @@ function ResponseRating({ response, onRating }) {
   const allRated = Object.values(ratings).every(value => value > 0);
 
   return (
-    <div>
-      <p>{response}</p>
-      <form>
-        {criteria.map(({ label, name }) => (
-          <div key={name}>
-            <h4>{label}</h4>
-            <div>
-              {[1, 2, 3, 4, 5, 6, 7].map(value => (
-                <label key={value}>
-                  {value}
-                  <input
-                    type="radio"
-                    name={name}
-                    value={value}
-                    checked={ratings[name] === value}
-                    onChange={() => handleRatingChange(name, value)}
-                  />
-                </label>
-              ))}
+    <div class="App">
+      <div class="App-header">
+        <p><b>Please read and rate the following response.</b></p>
+        <p>{response}</p>
+        <p>On a scale from 1 to 7, with 1 being “Very Bad” and 7 being “Very Good”, please answer the following:</p>
+        <form className="likert-container">
+          {criteria.map(({ label, name }) => (
+            <div key={name} className="likert-row">
+              <span className="likert-label">{label}</span>
+              <div className="likert-options">
+                {[1, 2, 3, 4, 5, 6, 7].map(value => (
+                  <label key={value} className="likert-option">
+                    <input
+                      type="radio"
+                      name={name}
+                      value={value}
+                      checked={ratings[name] === value}
+                      onChange={() => handleRatingChange(name, value)}
+                    />
+                    {value}
+                  </label>
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </form>
+        <p></p>
         <button type="button" onClick={onRating} disabled={!allRated}>
-          Next
+            Next
         </button>
-      </form>
+      </div>
     </div>
   );
 }
