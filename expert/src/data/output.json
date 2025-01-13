@@ -1,0 +1,186 @@
+{
+  "results": 
+  [
+    {
+      "user_id": "",
+      "consent": "",
+      "age": "",
+      "gender": "",
+      "professional_exp":"",
+      "professional_title":"",
+      "scenarios":
+      {
+        "scenario_1":
+        {
+          "scenario_id": "",
+          "user_comment": "",
+          "response_ratings":
+          {
+            "response_1":
+            {
+              "clarity": "",
+              "tone": "",
+              "relevance": "",
+              "empathy":"",
+              "actionability":"",
+              "creativity":"",
+              "Thoroughness":"",
+              "personalization":""
+            },
+            "response_2":
+            {
+              "clarity": "",
+              "tone": "",
+              "relevance": "",
+              "empathy": "",
+              "actionability": "",
+              "creativity": "",
+              "Thoroughness": "",
+              "personalization": ""
+            },
+            "response_3":
+            {
+              "clarity": "",
+              "tone": "",
+              "relevance": "",
+              "empathy": "",
+              "actionability": "",
+              "creativity": "",
+              "Thoroughness": "",
+              "personalization": ""
+            },
+            "response_4":
+            {
+              "clarity": "",
+              "tone": "",
+              "relevance": "",
+              "empathy": "",
+              "actionability": "",
+              "creativity": "",
+              "Thoroughness": "",
+              "personalization": ""
+            }
+          },
+          "best_response": "",
+          "best_response_explanation": "",
+          "worst_response": "",
+          "worst_response_explanation": ""
+        },
+        "scenario_2":
+        {
+          "scenario_id": "",
+          "user_comment": "",
+          "response_ratings":
+          {
+            "response_1":
+            {
+              "clarity": "",
+              "tone": "",
+              "relevance": "",
+              "empathy":"",
+              "actionability":"",
+              "creativity":"",
+              "Thoroughness":"",
+              "personalization":""
+            },
+            "response_2":
+            {
+              "clarity": "",
+              "tone": "",
+              "relevance": "",
+              "empathy": "",
+              "actionability": "",
+              "creativity": "",
+              "Thoroughness": "",
+              "personalization": ""
+            },
+            "response_3":
+            {
+              "clarity": "",
+              "tone": "",
+              "relevance": "",
+              "empathy": "",
+              "actionability": "",
+              "creativity": "",
+              "Thoroughness": "",
+              "personalization": ""
+            },
+            "response_4":
+            {
+              "clarity": "",
+              "tone": "",
+              "relevance": "",
+              "empathy": "",
+              "actionability": "",
+              "creativity": "",
+              "Thoroughness": "",
+              "personalization": ""
+            }
+          },
+          "best_response": "",
+          "best_response_explanation": "",
+          "worst_response": "",
+          "worst_response_explanation": ""
+        },
+        "scenario_3":
+        {
+          "scenario_id": "",
+          "user_comment": "",
+          "response_ratings":
+          {
+            "response_1":
+            {
+              "clarity": "",
+              "tone": "",
+              "relevance": "",
+              "empathy":"",
+              "actionability":"",
+              "creativity":"",
+              "Thoroughness":"",
+              "personalization":""
+            },
+            "response_2":
+            {
+              "clarity": "",
+              "tone": "",
+              "relevance": "",
+              "empathy": "",
+              "actionability": "",
+              "creativity": "",
+              "Thoroughness": "",
+              "personalization": ""
+            },
+            "response_3":
+            {
+              "clarity": "",
+              "tone": "",
+              "relevance": "",
+              "empathy": "",
+              "actionability": "",
+              "creativity": "",
+              "Thoroughness": "",
+              "personalization": ""
+            },
+            "response_4":
+            {
+              "clarity": "",
+              "tone": "",
+              "relevance": "",
+              "empathy": "",
+              "actionability": "",
+              "creativity": "",
+              "Thoroughness": "",
+              "personalization": ""
+            }
+          },
+          "best_response": "",
+          "best_response_explanation": "",
+          "worst_response": "",
+          "worst_response_explanation": ""
+        }
+      },
+      "ai_usage": "",
+      "ai_usage_explanation": ""
+    }
+  ]
+}
