@@ -30,11 +30,13 @@ body {
   background-color: #ffffff; /* White background for the content box */
   padding: 20px;
   border-radius: 10px;
-  max-width: 600px;
-  width: 90%; /* Makes it responsive */
+  max-width: 600px; /* Constrain width */
+  width: 90%; /* Responsive width */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds a subtle shadow */
   color: #333; /* Text color */
+  overflow: hidden; /* Prevent content overflow */
 }
+
 
 .response-input {
   width: 90%; /* Adjust width to fit the container */
@@ -125,12 +127,16 @@ ul {
 }
 
 .response-box {
-  flex: 1;
-  text-align: center;
+  width: 100%; /* Take full width of parent container */
+  max-width: 100%; /* Prevent exceeding parent width */
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  margin: 0 5px; /* Add spacing between boxes */
+  text-align: left; /* Align text to the left */
+  background-color: #f9f9f9;
+  transition: background-color 0.3s ease;
+  word-wrap: break-word; /* Ensure text wraps */
+  box-sizing: border-box; /* Include padding and border in width */
 }
 
 .vertical-divider {
@@ -139,3 +145,28 @@ ul {
   height: 100%;
   margin: 0 10px;
 }
+
+/* Specific styles for CompareResponses component */
+.compare-responses-container {
+  padding-top: 20px; /* Add space at the top to prevent cut-off */
+  margin: 0 auto; /* Center horizontally */
+  width: 90%; /* Ensure responsiveness */
+  max-width: 600px; /* Constrain width for readability */
+  box-sizing: border-box; /* Include padding in width calculation */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center content inside the box */
+}
+
+.responses-container {
+  display: flex;
+  flex-direction: column; /* Stack boxes vertically */
+  gap: 20px; /* Add space between boxes */
+  width: 100%; /* Match width of the parent */
+  margin: 0 auto; /* Center the container */
+  box-sizing: border-box; /* Include padding in width */
+}
+
+
+
+

@@ -1,65 +1,52 @@
 import React, { useState, useEffect } from 'react';
 
 const criteria = [
-  { label: "Clarity", name: "clarity" },
-  { label: "Tone", name: "tone" },
-  { label: "Relevance", name: "relevance" },
-  { label: "Empathy", name: "empathy" },
-  { label: "Actionability", name: "actionability" },
-  { label: "Creativity", name: "creativity" },
-  { label: "Thoroughness", name: "thoroughness" },
-  { label: "Personalization", name: "personalization" }
+  { label: "Clarity", name: "clarity", subtext: "How clear and easy to understand is the guidance provided?" },
+  { label: "Tone", name: "tone", subtext: "How respectful and encouraging is the tone of the guidance?" },
+  { label: "Relevance", name: "relevance", subtext: "How relevant is the guidance to the specific problem or concern?" },
+  { label: "Empathy", name: "empathy", subtext: "How much does the guidance reflect care and understanding for the recipient's situation?" },
+  { label: "Feasibility", name: "feasibility", subtext: "How realistic and achievable are the suggested actions?" },
+  { label: "Thoroughness", name: "thoroughness", subtext: "How well does the guidance comprehensively address the problem?" },
+  { label: "Personalization", name: "personalization", subtext: "How well is the guidance tailored to the recipient's unique situation?" },
+  { label: "Efficacy", name: "efficacy", subtext: "How likely is the guidance to effectively solve the problem?" },
+  { label: "Absence of Limitations", name: "absence_of_limitations", subtext: "How free of significant drawbacks or limitations is the guidance?" },
 ];
 
 function ResponseRating({ response, onRating }) {
-  const [ratings, setRatings] = useState({
-    clarity: 0,
-    tone: 0,
-    relevance: 0,
-    empathy: 0,
-    actionability: 0,
-    creativity: 0,
-    thoroughness: 0,
-    personalization: 0
-  });
+  const [ratings, setRatings] = useState(
+    Object.fromEntries(criteria.map(({ name }) => [name, 0]))
+  );
 
-  // Reset ratings when response changes
   useEffect(() => {
-    setRatings({
-      clarity: 0,
-      tone: 0,
-      relevance: 0,
-      empathy: 0,
-      actionability: 0,
-      creativity: 0,
-      thoroughness: 0,
-      personalization: 0
-    });
-  }, [response]); // Dependency on response ensures it resets every time the response changes
+    setRatings(Object.fromEntries(criteria.map(({ name }) => [name, 0])));
+  }, [response]);
 
-  // Function to handle rating change
   const handleRatingChange = (name, value) => {
-    setRatings(prevRatings => ({
+    setRatings((prevRatings) => ({
       ...prevRatings,
-      [name]: value
+      [name]: value,
     }));
   };
 
-  // Check if all criteria have been rated (none should be 0)
-  const allRated = Object.values(ratings).every(value => value > 0);
+  const allRated = Object.values(ratings).every((value) => value > 0);
 
   return (
-    <div class="App">
-      <div class="App-header">
+    <div className="App">
+      <div className="App-header">
         <p><b>Please read and rate the following response.</b></p>
         <p>{response}</p>
-        <p>On a scale from 1 to 7, with 1 being “Very Bad” and 7 being “Very Good”, please answer the following:</p>
+        <p>On a scale from 1 to 7, with 1 being “Very Bad” and 7 being “Very Good,” please answer the following:</p>
         <form className="likert-container">
-          {criteria.map(({ label, name }) => (
+          {criteria.map(({ label, name, subtext }) => (
             <div key={name} className="likert-row">
-              <span className="likert-label">{label}</span>
+              <span className="likert-label">
+                {label}
+                <span className="likert-subtext" style={{ fontWeight: "normal", fontSize: "0.9em", display: "block" }}>
+                  ({subtext})
+                </span>
+              </span>
               <div className="likert-options">
-                {[1, 2, 3, 4, 5, 6, 7].map(value => (
+                {[1, 2, 3, 4, 5, 6, 7].map((value) => (
                   <label key={value} className="likert-option">
                     <input
                       type="radio"
@@ -75,9 +62,9 @@ function ResponseRating({ response, onRating }) {
             </div>
           ))}
         </form>
-        <p></p>
+        <div><br></br></div>
         <button type="button" onClick={onRating} disabled={!allRated}>
-            Next
+          Next
         </button>
       </div>
     </div>

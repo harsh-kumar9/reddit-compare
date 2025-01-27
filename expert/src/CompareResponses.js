@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import './App.css';
 
 function CompareResponses({ responses, onNext }) {
   const [mostHelpfulIndex, setMostHelpfulIndex] = useState(null);
@@ -24,54 +25,100 @@ function CompareResponses({ responses, onNext }) {
     }
   };
 
+  const getPreviewText = (text) => {
+    const truncatedText = text.split('. ')[0]; // Take the first sentence
+    return truncatedText.length > 100 ? `${truncatedText.slice(0, 100)}...` : truncatedText;
+  };
+
   return (
-    <div className="App">
+    <div className="compare-responses-container">
       <div className="App-header">
         <h2>Compare Responses</h2>
-        <br></br>
-        <div className="responses-container" style={{ display: 'flex', flexDirection: 'column', gap: '20px', width: '100%' }}>
+        <br />
+        <div className="responses-container">
           {responses.map((response, index) => (
-            <div 
-              key={index} 
-              className="response-box" 
-              style={{ 
-                border: '1px solid #ccc', 
-                borderRadius: '5px', 
-                padding: '10px', 
-                width: '100%', 
+            <div
+              key={index}
+              className="response-box"
+              style={{
+                border: '1px solid #ccc',
+                borderRadius: '5px',
+                padding: '10px',
                 backgroundColor: '#f9f9f9',
                 transition: 'background-color 0.3s ease',
+                width: '100%', // Ensure all boxes are the same width
+                maxWidth: '600px',
+                margin: '0 auto', // Center the boxes
               }}
             >
               <div
                 className="response-header"
-                style={{ 
-                  cursor: 'pointer', 
-                  fontWeight: 'bold', 
-                  marginBottom: '10px', 
-                  display: 'flex', 
-                  justifyContent: 'space-between', 
-                  alignItems: 'center' 
+                style={{
+                  cursor: 'pointer',
+                  fontWeight: 'bold',
+                  marginBottom: '10px',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  alignItems: 'center',
                 }}
                 onClick={() => toggleExpand(index)}
               >
-                <span>Response {index + 1}</span>
-                <span style={{ fontSize: '1.5rem' }}>
+                <span
+                  style={{
+                    textAlign: 'left', // Align Response # to the left
+                    width: '100%',
+                  }}
+                >
+                  Response {index + 1}
+                  {expandedIndex !== index && (
+                    <div
+                      style={{
+                        fontWeight: 'normal',
+                        fontSize: '0.9rem',
+                        color: '#666',
+                        marginTop: '5px',
+                        whiteSpace: 'nowrap', // Prevent overflow
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                      }}
+                    >
+                      {getPreviewText(response)}
+                    </div>
+                  )}
+                </span>
+                <span style={{ fontSize: '1.5rem', marginLeft: '10px' }}>
                   {expandedIndex === index ? '−' : '+'}
                 </span>
               </div>
               {expandedIndex === index && (
-                <p style={{ marginLeft: '20px', transition: 'all 0.3s ease-in-out', textAlign: 'left' }}>{response}</p>
+                <p
+                  style={{
+                    marginTop: '10px',
+                    transition: 'all 0.3s ease-in-out',
+                    textAlign: 'left',
+                    whiteSpace: 'normal', // Prevent long text from breaking the boundary
+                    wordWrap: 'break-word', // Ensure text wraps within the box
+                  }}
+                >
+                  {response}
+                </p>
               )}
             </div>
           ))}
         </div>
-        <br></br>
+        <br />
 
         <p>Please select the response that you think is the <b>most helpful.</b></p>
         {responses.map((response, index) => (
           <div key={index} style={{ marginBottom: '20px', width: '100%' }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '10px', width: '100%' }}>
+            <label
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                width: '100%',
+              }}
+            >
               <input
                 type="radio"
                 name="mostHelpful"
@@ -94,12 +141,19 @@ function CompareResponses({ responses, onNext }) {
           style={{ width: '100%' }}
         ></textarea>
 
-        <br></br>
+        <br />
         <p>Please select the response that you think is the <b>least helpful.</b></p>
 
         {responses.map((response, index) => (
           <div key={index} style={{ marginBottom: '20px', width: '100%' }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '10px', width: '100%' }}>
+            <label
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '10px',
+                width: '100%',
+              }}
+            >
               <input
                 type="radio"
                 name="leastHelpful"
