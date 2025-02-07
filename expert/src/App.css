@@ -84,7 +84,6 @@ ul {
 .likert-label {
   flex: 1; /* Ensures alignment of labels */
   text-align: left;
-  font-weight: bold;
   font-size: 1em;
 }
 
@@ -119,24 +118,24 @@ ul {
   }
 }
 
-.responses-container {
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin-bottom: 20px;
+.responses-container, .rankings-container {
+  width: 100%; /* Ensures both sections take up full width */
+  max-width: 600px; /* Matches the max-width of the response section */
+  margin: 0 auto; /* Centers the content */
+  box-sizing: border-box;
 }
 
 .response-box {
-  width: 100%; /* Take full width of parent container */
-  max-width: 100%; /* Prevent exceeding parent width */
+  width: 100%; /* Ensures all boxes take up full width of parent */
+  max-width: 600px; /*l Constrain to the same max-width */
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  text-align: left; /* Align text to the left */
+  text-align: left;
   background-color: #f9f9f9;
   transition: background-color 0.3s ease;
-  word-wrap: break-word; /* Ensure text wraps */
-  box-sizing: border-box; /* Include padding and border in width */
+  word-wrap: break-word;
+  box-sizing: border-box;
 }
 
 .vertical-divider {
@@ -168,5 +167,127 @@ ul {
 }
 
 
+.rankings-container .response-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 
+.rankings-container .response-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1em; /* Keep consistent font size */
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  text-align: left;
+  transition: background-color 0.3s ease;
+  word-wrap: break-word;
+  box-sizing: border-box;
+}
+
+/* Styling for the placement labels (1st place, 2nd place, etc.) */
+.rankings-container .placement-label {
+  font-weight: bold; /* Keep "1st place" non-italicized */
+}
+
+/* Italicize the response text inside ranking section */
+.rankings-container .response-text {
+  font-style: italic;
+  color: #333; /* Match the styling from response section */
+}
+
+/* Styling for the draggable icon (↕) */
+.rankings-container .drag-icon {
+  font-size: 1.2em;
+  cursor: grab;
+  margin-right: 10px; /* Space between icon and text */
+}
+
+
+
+
+/* Ensure ranking box elements are aligned properly */
+.ranking-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; /* Space items evenly */
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  text-align: left;
+  transition: background-color 0.3s ease;
+  word-wrap: break-word;
+  box-sizing: border-box;
+  width: 100%; /* Ensure it fills the available space */
+}
+
+/* Ensures rank labels are left-aligned and bold */
+.placement-label {
+  font-weight: bold;
+  flex: 0 0 50px; /* Fixed width for consistent alignment */
+}
+
+/* Ensures response text is italicized */
+.response-text {
+  font-style: italic;
+  flex: 1; /* Takes up remaining space */
+}
+
+/* Positions drag icon at the far right */
+.drag-icon {
+  font-size: 1.2em;
+  cursor: grab;
+  margin-left: auto; /* Pushes it to the far right */
+}
+
+/* Add spacing between all response boxes */
+.response-box {
+  margin-bottom: 5px; /* Adds spacing between ranking and view boxes */
+}
+
+/* Black border around the ranking section */
+.rankings-container {
+  border: 2px solid black; /* Clear boundary for drag-and-drop area */
+  padding: 10px;
+  border-radius: 5px;
+}
+
+/* Ensures ranking box elements are aligned properly */
+.ranking-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  text-align: left;
+  transition: background-color 0.3s ease;
+  word-wrap: break-word;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+/* Ensures rank labels are left-aligned and bold */
+.placement-label {
+  font-weight: bold;
+  flex: 0 0 50px;
+}
+
+/* Ensures response text is italicized */
+.response-text {
+  font-style: italic;
+  flex: 1; /* Takes up remaining space */
+}
+
+/* Positions drag icon at the far right */
+.drag-icon {
+  font-size: 1.2em;
+  cursor: grab;
+  margin-left: auto;
+}
 

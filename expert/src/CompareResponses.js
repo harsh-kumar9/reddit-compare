@@ -44,7 +44,8 @@ function RankResponses({ responses, onNext }) {
       <div className="App-header">
         <h2>Compare Responses</h2>
         <div className="responses-container">
-          {responses.map((response, index) => (
+          <div><b> “Here are the responses to the same user post. Please read them carefully and rank them from best to worst overall. In other words, which response is the most effective overall, which is the next best, and so on?”</b></div>
+          <i>{responses.map((response, index) => (
             <div
               key={index}
               className="response-box"
@@ -75,27 +76,33 @@ function RankResponses({ responses, onNext }) {
                 <p>{response}</p>
               )}
             </div>
-          ))}
+          ))}</i>
         </div>
         <br />
-        <p>Drag and drop the responses to rank them, with 1 being the best.</p>
+        <hr></hr>
+        <p>Drag and drop the responses to rank them, with 1 being the most helpful, and 4 being the least helpful.</p>
         <div className="rankings-container">
-          {rankings.map((responseIndex, displayIndex) => (
-            <div
-              key={responseIndex}
-              className="response-box"
-              draggable
-              onDragStart={() => handleDragStart(displayIndex)}
-              onDrop={() => handleDrop(displayIndex)}
-              onDragOver={handleDragOver}
-              style={{ display: 'flex', alignItems: 'center', padding: '15px', gap: '10px' }}
-            >
-              <i className="fa-solid fa-arrows-up-down" style={{ cursor: 'grab' }}></i>
-              <strong>Rank {displayIndex + 1}</strong>: {responses[responseIndex]}
-            </div>
-          ))}
+          {rankings.map((responseIndex, displayIndex) => {
+            const placeNames = ["1st", "2nd", "3rd", "4th"];
+            return (
+              <div
+                key={responseIndex}
+                className="response-box ranking-box"
+                draggable
+                onDragStart={() => handleDragStart(displayIndex)}
+                onDrop={() => handleDrop(displayIndex)}
+                onDragOver={handleDragOver}
+              >
+                <span className="placement-label">{placeNames[displayIndex]}:</span>
+                <span className="response-text">
+                  {responses[responseIndex].split('. ')[0]} {/* Show only first sentence */}
+                </span>
+                <span className="drag-icon">↕</span> {/* Drag icon */}
+              </div>
+            );
+          })}
         </div>
-        <br /><br />
+        <br></br>
         <p>Please write a short (1-2 sentence) response describing your choice of the most helpful response.</p>
       
         <textarea
@@ -105,7 +112,6 @@ function RankResponses({ responses, onNext }) {
           className="response-input"
           rows="1"
         ></textarea>
-        <br />
         <p>Please write a short (1-2 sentence) response describing your choice of the least helpful response.</p>
         <textarea
           value={leastHelpfulReason}

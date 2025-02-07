@@ -34,14 +34,13 @@ function DemographicQuestions({ onNext }) {
           {/* Year of Birth */}
           <div className="question">
             <p>Q1. What is your year of birth?</p>
-            <textarea
+            <input
+              type="date"
               name="yearOfBirth"
               value={formData.yearOfBirth}
               onChange={handleChange}
-              placeholder="Type your response here..."
               className="response-input"
-              rows="1"
-            ></textarea>
+            />
           </div>
 
           {/* Education Level */}
@@ -95,6 +94,12 @@ function DemographicQuestions({ onNext }) {
               <option value="Education">Education</option>
               <option value="Social Services">Social Services</option>
               <option value="Business">Business</option>
+              <option value="Retail">Retail</option>
+              <option value="Consulting">Consulting</option>
+              <option value="Technology">Technology</option>
+              <option value="Finance">Finance</option>
+              <option value="Government">Government</option>
+              <option value="Marketing">Marketing</option>
               <option value="Other">Other</option>
             </select>
           </div>
@@ -130,11 +135,14 @@ function DemographicQuestions({ onNext }) {
                 className="response-input"
               >
                 <option value="">Select an option</option>
+                <option value="Therapist">Therapist</option>
+                <option value="Social Worker">Social Worker</option>
+                <option value="Personal Coach">Personal Coach</option>
                 <option value="Physician">Physician</option>
                 <option value="Nurse">Nurse</option>
-                <option value="Social Worker">Social Worker</option>
-                <option value="Therapist">Therapist</option>
-                <option value="Personal Coach">Personal Coach</option>
+                <option value="Psychologist">Psychologist</option>
+                <option value="Consultant">Consultant</option>
+                <option value="Advisor">Advisor</option>
                 <option value="Other">Other</option>
               </select>
               {formData.jobTitle === 'Other' && (

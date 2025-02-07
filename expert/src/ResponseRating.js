@@ -1,24 +1,33 @@
 import React, { useState, useEffect } from 'react';
 
-const criteria = [
-  { label: "Clarity", name: "clarity", subtext: "How clear and easy to understand is the guidance provided?" },
-  { label: "Tone", name: "tone", subtext: "How respectful and encouraging is the tone of the guidance?" },
-  { label: "Relevance", name: "relevance", subtext: "How relevant is the guidance to the specific problem or concern?" },
-  { label: "Empathy", name: "empathy", subtext: "How much does the guidance reflect care and understanding for the recipient's situation?" },
-  { label: "Feasibility", name: "feasibility", subtext: "How realistic and achievable are the suggested actions?" },
-  { label: "Thoroughness", name: "thoroughness", subtext: "How well does the guidance comprehensively address the problem?" },
-  { label: "Personalization", name: "personalization", subtext: "How well is the guidance tailored to the recipient's unique situation?" },
-  { label: "Efficacy", name: "efficacy", subtext: "How likely is the guidance to effectively solve the problem?" },
-  { label: "Absence of Limitations", name: "absence_of_limitations", subtext: "How free of significant drawbacks or limitations is the guidance?" },
+// Function to shuffle an array (Fisher-Yates Shuffle)
+const shuffleArray = (array) => {
+  const shuffled = [...array];
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+  }
+  return shuffled;
+};
+
+const criteriaList = [
+  { name: "clarity", subtext: "Is the response easy to understand and does it thoroughly address the problem?" },
+  { name: "warmth", subtext: "Does the response use a respectful, encouraging tone and show genuine empathy for the recipient’s situation?" },
+  { name: "effectiveness", subtext: "Is the response practical, feasible to implement, likely to be effective, and largely free of significant drawbacks?" },
+  { name: "personalization", subtext: "Is the response clearly tailored to the recipient’s unique situation or needs?" },
 ];
 
 function ResponseRating({ response, onRating }) {
+  // Shuffle criteria once per response change
+  const [criteria, setCriteria] = useState(() => shuffleArray(criteriaList));
+
   const [ratings, setRatings] = useState(
     Object.fromEntries(criteria.map(({ name }) => [name, 0]))
   );
 
   useEffect(() => {
-    setRatings(Object.fromEntries(criteria.map(({ name }) => [name, 0])));
+    setCriteria(shuffleArray(criteriaList)); // Shuffle criteria on response change
+    setRatings(Object.fromEntries(criteriaList.map(({ name }) => [name, 0]))); // Reset ratings
   }, [response]);
 
   const handleRatingChange = (name, value) => {
@@ -34,16 +43,15 @@ function ResponseRating({ response, onRating }) {
     <div className="App">
       <div className="App-header">
         <p><b>Please read and rate the following response.</b></p>
-        <p>{response}</p>
-        <p>On a scale from 1 to 7, with 1 being “Very Bad” and 7 being “Very Good,” please answer the following:</p>
+        <p><i>"{response}"</i></p>
+        <hr></hr>
+        <p><b>On a scale from 1 to 7, with 1 being “Very Bad” and 7 being “Very Good,” please answer the following:</b></p>
+        <br></br>
         <form className="likert-container">
-          {criteria.map(({ label, name, subtext }) => (
+          {criteria.map(({ name, subtext }) => (
             <div key={name} className="likert-row">
               <span className="likert-label">
-                {label}
-                <span className="likert-subtext" style={{ fontWeight: "normal", fontSize: "0.9em", display: "block" }}>
-                  ({subtext})
-                </span>
+                {subtext} {/* Display only the question */}
               </span>
               <div className="likert-options">
                 {[1, 2, 3, 4, 5, 6, 7].map((value) => (
@@ -62,7 +70,7 @@ function ResponseRating({ response, onRating }) {
             </div>
           ))}
         </form>
-        <div><br></br></div>
+        <div><br></br><br></br></div>
         <button type="button" onClick={onRating} disabled={!allRated}>
           Next
         </button>

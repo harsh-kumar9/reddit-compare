@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
+import Captcha from './Captcha';
 import Instructions from './Instructions';
 import ConsentForm from './ConsentForm';
-import ProfessionalExperience from './ProfessionalExperience';
 import ScenarioIntro from './ScenarioIntro';
 import ScenarioText from './ScenarioText';
 import ResponseRating from './ResponseRating';
 import CompareResponses from './CompareResponses';
+import RLHFQuestions from './RLHFQuestions';
 import EndOfScenario from './EndOfScenario';
+import ProfessionalExperience from './ProfessionalExperience';
 import ThankYou from './ThankYou';
 import End from './End';
 
@@ -28,7 +30,7 @@ function App() {
     }));
   };
 
-  const [currentStage, setCurrentStage] = useState('instructions');
+  const [currentStage, setCurrentStage] = useState('captcha');
   const [currentScenarioIndex, setCurrentScenarioIndex] = useState(0);
   const [scenarios, setScenarios] = useState([]);
   const [userInputs, setUserInputs] = useState([]);
@@ -40,13 +42,13 @@ function App() {
 
   const handleNextStage = () => {
     switch (currentStage) {
+      case 'captcha':
+        setCurrentStage('instructions');
+        break;
       case 'instructions':
         setCurrentStage('consent');
         break;
       case 'consent':
-        setCurrentStage('professionalExperience');
-        break;
-      case 'professionalExperience':
         setCurrentStage('scenarioIntro');
         break;
       case 'scenarioIntro':
@@ -72,15 +74,24 @@ function App() {
         break;
       case 'endOfScenario':
         if (currentScenarioIndex < scenarios.length - 1) {
-          setCurrentScenarioIndex(currentScenarioIndex + 1);
-          setCurrentStage('scenarioIntro');
-        } else {
-          setCurrentStage('thankYou');
+            console.log(`1 Transitioning from: ${currentStage}`);
+            setCurrentScenarioIndex(currentScenarioIndex + 1);
+            setCurrentStage('scenarioIntro');
+        } 
+        else {
+          console.log(`2 Transitioning from: ${currentStage}`);
+          setCurrentStage('professionalExperience'); // Match the case in the return statement
         }
-        break; // Added break here to prevent falling into the next case
-      case 'thankYou':
-        setCurrentStage('end');
         break;
+      case 'professionalExperience':
+        setCurrentStage('RLHFQuestions');
+        break;
+      case 'RLHFQuestions':
+        setCurrentStage('thankYou');
+        break;
+      case 'thankYou':
+          setCurrentStage('end');
+          break;
       default:
         console.error(`Unknown stage: ${currentStage}`);
         break; // Keep the current stage unchanged
@@ -88,11 +99,12 @@ function App() {
   };
   
 
+  
   return (
     <div>
+      {currentStage === 'captcha' && <Captcha onNext={handleNextStage} />}
       {currentStage === 'instructions' && <Instructions onNext={handleNextStage} />}
       {currentStage === 'consent' && <ConsentForm onConsent={handleNextStage} />}
-      {currentStage === 'professionalExperience' && <ProfessionalExperience onNext={handleNextStage} />}
       {currentStage === 'scenarioIntro' && <ScenarioIntro onNext={handleNextStage} scenarioNumber={currentScenarioIndex + 1} />}
       {currentStage === 'scenarioText' && <ScenarioText title={scenarios[currentScenarioIndex].title} text={scenarios[currentScenarioIndex].text} onNext={handleNextStage} />}
       {['responseRating1', 'responseRating2', 'responseRating3', 'responseRating4'].includes(currentStage) && scenarios.length > 0 && (
@@ -103,6 +115,10 @@ function App() {
       )}
       {currentStage === 'compareResponses' && <CompareResponses responses={scenarios[currentScenarioIndex].responses} onNext={handleNextStage} />}
       {currentStage === 'endOfScenario' && <EndOfScenario onNext={handleNextStage} />}
+      {currentStage === 'professionalExperience' && <ProfessionalExperience onNext={handleNextStage} />}
+      {currentStage === 'RLHFQuestions' && scenarios.length > 0 && (
+        <RLHFQuestions responses={scenarios[currentScenarioIndex].responses} onNext={handleNextStage} />
+      )}
       {currentStage === 'thankYou' && <ThankYou onNext={handleNextStage}/>}
       {currentStage == 'end' && <End />}
     </div>
