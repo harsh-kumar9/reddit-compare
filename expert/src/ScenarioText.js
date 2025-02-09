@@ -14,10 +14,11 @@ function ScenarioText({title, text, onNext}) {
     return (
       <div class="App">
         <div class="App-header">
-          <h2>Please read the following post.</h2>
-          <p>Title: {title}</p>
-          <p>{text}</p>
-          <p><b>What advice would you offer to this person? Imagine you came across this post on a social media forum and were writing a thoughtful comment in response.</b></p>
+          <h2>Please read the following scenario.</h2>
+          <p><b>Title: {title}</b></p>
+          <p>"<i>{text}"</i></p>
+  
+          {/* <p><b>What advice would you offer to this person? Imagine you came across this post on a social media forum and were writing a thoughtful comment in response.</b></p>
           <p>(Note: Please avoid using ChatGPT or other AI tools to draft your response, as doing so could significantly affect the accuracy of our research results.)</p>
           <form onSubmit={handleSubmit}>
             <textarea
@@ -26,10 +27,11 @@ function ScenarioText({title, text, onNext}) {
               placeholder="Type your response here..."
               className="response-input"
               rows="6" >
-            </textarea>
+            </textarea> */}
+            
             <p></p>
-            <button type="submit">Submit</button>
-          </form>
+            <button onClick={onNext}>Next</button>
+          {/* </form> */}
         </div>
       </div>
     );

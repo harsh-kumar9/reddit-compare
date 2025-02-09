@@ -1,117 +1,117 @@
 import React, { useState } from 'react';
+import './App.css';
 
-function CompareResponses({ responses, onNext }) {
-  const [mostHelpfulIndex, setMostHelpfulIndex] = useState(null);
-  const [leastHelpfulIndex, setLeastHelpfulIndex] = useState(null);
+function RankResponses({ responses, onNext }) {
+  const [rankings, setRankings] = useState(responses.map((_, index) => index));
   const [mostHelpfulReason, setMostHelpfulReason] = useState('');
   const [leastHelpfulReason, setLeastHelpfulReason] = useState('');
   const [expandedIndex, setExpandedIndex] = useState(null);
+  const [draggedItem, setDraggedItem] = useState(null);
 
   const toggleExpand = (index) => {
     setExpandedIndex(expandedIndex === index ? null : index);
   };
 
+  const handleDragStart = (index) => {
+    setDraggedItem(index);
+  };
+
+  const handleDrop = (targetIndex) => {
+    if (draggedItem === null) return;
+    const newRankings = [...rankings];
+    const draggedItemValue = newRankings[draggedItem];
+    newRankings.splice(draggedItem, 1);
+    newRankings.splice(targetIndex, 0, draggedItemValue);
+    setRankings(newRankings);
+    setDraggedItem(null);
+  };
+
+  const handleDragOver = (e) => {
+    e.preventDefault();
+  };
+
   const handleNext = () => {
     if (typeof onNext === 'function') {
-      onNext({
-        mostHelpfulIndex,
-        leastHelpfulIndex,
-        mostHelpfulReason,
-        leastHelpfulReason,
-      });
+      onNext({ rankings, mostHelpfulReason, leastHelpfulReason });
     } else {
       console.error('onNext is not a function');
     }
   };
 
   return (
-    <div className="App">
+    <div className="compare-responses-container">
+      
       <div className="App-header">
         <h2>Compare Responses</h2>
-        <br></br>
-        <div className="responses-container" style={{ display: 'flex', flexDirection: 'column', gap: '20px', width: '100%' }}>
-          {responses.map((response, index) => (
-            <div 
-              key={index} 
-              className="response-box" 
-              style={{ 
-                border: '1px solid #ccc', 
-                borderRadius: '5px', 
-                padding: '10px', 
-                width: '100%', 
-                backgroundColor: '#f9f9f9',
-                transition: 'background-color 0.3s ease',
-              }}
+        <div className="responses-container">
+          <div><b> “Here are the responses to the same user post. Please read them carefully and rank them from best to worst overall. In other words, which response is the most effective overall, which is the next best, and so on?”</b></div>
+          <i>{responses.map((response, index) => (
+            <div
+              key={index}
+              className="response-box"
             >
               <div
                 className="response-header"
-                style={{ 
-                  cursor: 'pointer', 
-                  fontWeight: 'bold', 
-                  marginBottom: '10px', 
-                  display: 'flex', 
-                  justifyContent: 'space-between', 
-                  alignItems: 'center' 
-                }}
                 onClick={() => toggleExpand(index)}
+                style={{ cursor: 'pointer', fontWeight: 'bold' }}
               >
-                <span>Response {index + 1}</span>
-                <span style={{ fontSize: '1.5rem' }}>
-                  {expandedIndex === index ? '−' : '+'}
-                </span>
+                Response {index + 1} {expandedIndex === index ? '−' : '+'}
               </div>
+              {expandedIndex !== index && (
+                <div
+                  style={{
+                    fontWeight: 'normal',
+                    fontSize: '0.9rem',
+                    color: '#666',
+                    marginTop: '5px',
+                    whiteSpace: 'nowrap',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis',
+                  }}
+                >
+                  {response.split('. ')[0]}
+                </div>
+              )}
               {expandedIndex === index && (
-                <p style={{ marginLeft: '20px', transition: 'all 0.3s ease-in-out', textAlign: 'left' }}>{response}</p>
+                <p>{response}</p>
               )}
             </div>
-          ))}
+          ))}</i>
+        </div>
+        <br />
+        <hr></hr>
+        <p>Drag and drop the responses to rank them, with 1 being the most helpful, and 4 being the least helpful.</p>
+        <div className="rankings-container">
+          {rankings.map((responseIndex, displayIndex) => {
+            const placeNames = ["1st", "2nd", "3rd", "4th"];
+            return (
+              <div
+                key={responseIndex}
+                className="response-box ranking-box"
+                draggable
+                onDragStart={() => handleDragStart(displayIndex)}
+                onDrop={() => handleDrop(displayIndex)}
+                onDragOver={handleDragOver}
+              >
+                <span className="placement-label">{placeNames[displayIndex]}:</span>
+                <span className="response-text">
+                  {responses[responseIndex].split('. ')[0]} {/* Show only first sentence */}
+                </span>
+                <span className="drag-icon">↕</span> {/* Drag icon */}
+              </div>
+            );
+          })}
         </div>
         <br></br>
-
-        <p>Please select the response that you think is the <b>most helpful.</b></p>
-        {responses.map((response, index) => (
-          <div key={index} style={{ marginBottom: '20px', width: '100%' }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '10px', width: '100%' }}>
-              <input
-                type="radio"
-                name="mostHelpful"
-                value={index}
-                checked={mostHelpfulIndex === index}
-                onChange={() => setMostHelpfulIndex(index)}
-              />
-              Response {index + 1}
-            </label>
-          </div>
-        ))}
-
         <p>Please write a short (1-2 sentence) response describing your choice of the most helpful response.</p>
+      
         <textarea
           value={mostHelpfulReason}
           onChange={(e) => setMostHelpfulReason(e.target.value)}
           placeholder="Type your response here..."
           className="response-input"
           rows="1"
-          style={{ width: '100%' }}
         ></textarea>
-
-        <br></br>
-        <p>Please select the response that you think is the <b>least helpful.</b></p>
-
-        {responses.map((response, index) => (
-          <div key={index} style={{ marginBottom: '20px', width: '100%' }}>
-            <label style={{ display: 'flex', alignItems: 'center', gap: '10px', width: '100%' }}>
-              <input
-                type="radio"
-                name="leastHelpful"
-                value={index}
-                checked={leastHelpfulIndex === index}
-                onChange={() => setLeastHelpfulIndex(index)}
-              />
-              Response {index + 1}
-            </label>
-          </div>
-        ))}
-
         <p>Please write a short (1-2 sentence) response describing your choice of the least helpful response.</p>
         <textarea
           value={leastHelpfulReason}
@@ -119,18 +119,10 @@ function CompareResponses({ responses, onNext }) {
           placeholder="Type your response here..."
           className="response-input"
           rows="1"
-          style={{ width: '100%' }}
         ></textarea>
-
         <button
           type="button"
           onClick={handleNext}
-          disabled={
-            mostHelpfulIndex === null ||
-            leastHelpfulIndex === null ||
-            mostHelpfulReason.trim() === '' ||
-            leastHelpfulReason.trim() === ''
-          }
           style={{ marginTop: '20px', width: '100%' }}
         >
           Next
@@ -140,4 +132,4 @@ function CompareResponses({ responses, onNext }) {
   );
 }
 
-export default CompareResponses;
+export default RankResponses;
