@@ -11,23 +11,24 @@ const shuffleArray = (array) => {
 };
 
 const criteriaList = [
-  { name: "clarity", subtext: "Is the response easy to understand and does it thoroughly address the problem?" },
-  { name: "warmth", subtext: "Does the response use a respectful, encouraging tone and show genuine empathy for the recipient’s situation?" },
-  { name: "effectiveness", subtext: "Is the response practical, feasible to implement, likely to be effective, and largely free of significant drawbacks?" },
-  { name: "personalization", subtext: "Is the response clearly tailored to the recipient’s unique situation or needs?" },
+  { name: "clarity", subtext: "The response is clear and thoroughly addresses the problem." },
+  { name: "warmth", subtext: "The response is supportive of the recipient." },
+  { name: "effectiveness", subtext: "The response is likely to be effective." },
+  { name: "personalization", subtext: "The response is tailored to the recipient’s unique situation or needs." },
 ];
 
 function ResponseRating({ response, onRating }) {
   // Shuffle criteria once per response change
   const [criteria, setCriteria] = useState(() => shuffleArray(criteriaList));
-
   const [ratings, setRatings] = useState(
     Object.fromEntries(criteria.map(({ name }) => [name, 0]))
   );
+  const [feedback, setFeedback] = useState(""); // Open-ended feedback input
 
   useEffect(() => {
     setCriteria(shuffleArray(criteriaList)); // Shuffle criteria on response change
     setRatings(Object.fromEntries(criteriaList.map(({ name }) => [name, 0]))); // Reset ratings
+    setFeedback(""); // Reset feedback
   }, [response]);
 
   const handleRatingChange = (name, value) => {
@@ -38,21 +39,22 @@ function ResponseRating({ response, onRating }) {
   };
 
   const allRated = Object.values(ratings).every((value) => value > 0);
+  const feedbackProvided = feedback.trim().length > 0;
 
   return (
     <div className="App">
       <div className="App-header">
-        <p><b>Please read and rate the following response.</b></p>
-        <p><i>"{response}"</i></p>
-        <hr></hr>
-        <p><b>On a scale from 1 to 7, with 1 being “Very Bad” and 7 being “Very Good,” please answer the following:</b></p>
-        <br></br>
+        <div className="response-box">
+          <div><span className="fa fa-user-circle"></span> AnonymousUser</div>
+          <p>{response}</p>
+        </div>
+        <hr />
+        <p><b>Please rate the following aspects of the response on a scale from 1 (Strongly Disagree) to 7 (Strongly Agree).</b></p>
+        <br />
         <form className="likert-container">
           {criteria.map(({ name, subtext }) => (
             <div key={name} className="likert-row">
-              <span className="likert-label">
-                {subtext} {/* Display only the question */}
-              </span>
+              <span className="likert-label">{subtext}</span>
               <div className="likert-options">
                 {[1, 2, 3, 4, 5, 6, 7].map((value) => (
                   <label key={value} className="likert-option">
@@ -70,8 +72,20 @@ function ResponseRating({ response, onRating }) {
             </div>
           ))}
         </form>
-        <div><br></br><br></br></div>
-        <button type="button" onClick={onRating} disabled={!allRated}>
+        <br />
+
+        {/* Open-ended feedback question */}
+        <p><b>If you could ask the advice-giver to add or change just one thing in this response, what would it be?</b></p>
+        <textarea
+          value={feedback}
+          onChange={(e) => setFeedback(e.target.value)}
+          placeholder="Type your response here..."
+          className="response-input"
+          rows="3"
+        ></textarea>
+
+        <br /><br />
+        <button type="button" onClick={onRating} disabled={!allRated || !feedbackProvided}>
           Next
         </button>
       </div>

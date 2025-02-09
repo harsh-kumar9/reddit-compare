@@ -291,3 +291,92 @@ ul {
   margin-left: auto;
 }
 
+.outline {
+  outline: 1px black;
+}
+
+.likert-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.likert-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.likert-label {
+  flex: 0 0 30%;  /* Occupies ~30% of the width */
+  font-size: 1em;
+  text-align: left;
+}
+
+.likert-options {
+  display: flex;
+  flex: 1;
+  justify-content: space-around; /* Distributes radio buttons evenly */
+  gap: 15px;
+}
+
+.likert-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.likert-option input[type="radio"] {
+  margin: 5px 0;
+  cursor: pointer;
+}
+
+
+
+/* Style the AI selection options to match ranking */
+.ai-option {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+/* Add left padding to checkbox labels */
+.ai-label {
+  padding-left: 10px;
+}
+
+/* AI-Generated Question Styling */
+.ai-question-title {
+  color: #666;
+  font-size: 1em;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.ai-question-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.response-box.ai-option {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.ai-checkbox {
+  margin-right: 10px;
+  transform: scale(1.2); /* Slightly larger checkbox */
+}
+
+.ai-response-text {
+  font-size: 1em;
+  font-style: italic;
+  flex: 1;
+}
