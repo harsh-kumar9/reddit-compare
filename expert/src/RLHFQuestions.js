@@ -61,7 +61,7 @@ function RankResponses({ responses, onNext }) {
     <div className="compare-responses-container">
       <div className="App-header">
         <div className="responses-container">
-          <div><b> Here are the responses to the same user post that you just rated. Please review them carefully and rank them from best to worst overall. In other words, which response is the most effective overall, which is the next best, and so on?</b></div>
+          <div><b> Now, please think carefully about each response in terms of its longer-term impact on the person seeking help. Imagine that the person follows this advice consistently over the next few months. Considering factors such as feasibility, motivation, and sustained benefits to well-being or discipline, how would you rank these responses from most beneficial in the long run to least beneficial in the long run?</b></div>
         </div>
         <br />
         <hr />
@@ -90,38 +90,7 @@ function RankResponses({ responses, onNext }) {
         </div>
         <br />
 
-        {/* AI-Generated Question (Multiple Selection) */}
-        <hr />
-        <p className="ai-question-title">Which response(s) do you think is most likely to be generated with an AI chatbot? (Select all that apply)</p>
-        <div className="ai-question-container">
-          {responses.map((response, index) => (
-            <div key={index} className="response-box ai-option">
-              <input
-                type="checkbox"
-                id={`ai-response-${index}`}
-                value={index}
-                checked={selectedAIResponses.includes(index)}
-                onChange={() => handleAISelection(index)}
-                disabled={selectedAIResponses.includes("none")}
-                className="ai-checkbox"
-              />
-              <label htmlFor={`ai-response-${index}`} className="ai-response-text">{response.split('. ')[0]}...</label>
-            </div>
-          ))}
-          {/* None of the Above */}
-          <div className="response-box ai-option">
-            <input
-              type="checkbox"
-              id="ai-none"
-              value="none"
-              checked={selectedAIResponses.includes("none")}
-              onChange={handleNoneSelection}
-              className="ai-checkbox"
-            />
-            <label htmlFor="ai-none" className="ai-response-text">None of the above</label>
-          </div>
-        </div>
-        <br />
+
 
         <button
           type="button"

@@ -6,8 +6,9 @@ import ScenarioIntro from './ScenarioIntro';
 import ScenarioText from './ScenarioText';
 import ResponseIntro from './ResponseIntro';
 import ResponseRating from './ResponseRating';
-import CompareResponses from './CompareResponses';
+import AIQuestion from './AIQuestion';
 import RLHFQuestions from './RLHFQuestions';
+import CompareResponses from './CompareResponses';
 import EndOfScenario from './EndOfScenario';
 import ProfessionalExperience from './ProfessionalExperience';
 import ThankYou from './ThankYou';
@@ -77,7 +78,10 @@ function App() {
         setCurrentStage('RLHFQuestions'); // ✅ Move RLHFQuestions right after CompareResponses
         break;
       case 'RLHFQuestions':
-        setCurrentStage('endOfScenario'); // ✅ Now RLHF goes before EndOfScenario
+        setCurrentStage('AIQuestion'); // ✅ Now RLHF goes before EndOfScenario
+        break;
+      case 'AIQuestion':
+        setCurrentStage('endOfScenario'); 
         break;
       case 'endOfScenario':
         if (currentScenarioIndex < scenarios.length - 1) {
@@ -117,6 +121,7 @@ function App() {
       )}
       {currentStage === 'compareResponses' && <CompareResponses responses={scenarios[currentScenarioIndex].responses} onNext={handleNextStage} />}
       {currentStage === 'RLHFQuestions' && <RLHFQuestions responses={scenarios[currentScenarioIndex].responses} onNext={handleNextStage} />}
+      {currentStage === 'AIQuestion' && <AIQuestion responses={scenarios[currentScenarioIndex].responses} onNext={handleNextStage} />}
       {currentStage === 'endOfScenario' && <EndOfScenario onNext={handleNextStage} />}
       {currentStage === 'professionalExperience' && <ProfessionalExperience onNext={handleNextStage} />}
       {currentStage === 'thankYou' && <ThankYou onNext={handleNextStage}/>}
