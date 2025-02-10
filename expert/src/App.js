@@ -57,7 +57,7 @@ function App() {
         setCurrentStage('scenarioText');
         break;
       case 'scenarioText':
-        setCurrentStage('responseRating1');
+        setCurrentStage('responseIntro');
         break;
       case 'responseIntro':
         setCurrentStage('responseRating1');

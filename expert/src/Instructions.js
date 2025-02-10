@@ -13,7 +13,6 @@ function Instructions({ onNext }) {
         <p>You are invited to participate in this study if you are at least 18 years of age. As a participant, you will:</p>
         <ol>
           <li>Read posts where individuals share their goals or challenges.</li>
-          <li>Draft your own response to help or support the person who wrote the post.</li>
           <li>Evaluate a series of comments provided in response to the same post, based on specific dimensions such as helpfulness, relevance, and tone.</li>
           <li>Choose the comment you believe is the most effective overall.</li>
         </ol>

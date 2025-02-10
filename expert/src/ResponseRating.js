@@ -18,18 +18,26 @@ const criteriaList = [
 ];
 
 function ResponseRating({ response, onRating }) {
-  // Shuffle criteria once per response change
   const [criteria, setCriteria] = useState(() => shuffleArray(criteriaList));
   const [ratings, setRatings] = useState(
     Object.fromEntries(criteria.map(({ name }) => [name, 0]))
   );
-  const [feedback, setFeedback] = useState(""); // Open-ended feedback input
+  const [feedback, setFeedback] = useState("");
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
   useEffect(() => {
-    setCriteria(shuffleArray(criteriaList)); // Shuffle criteria on response change
-    setRatings(Object.fromEntries(criteriaList.map(({ name }) => [name, 0]))); // Reset ratings
-    setFeedback(""); // Reset feedback
+    setCriteria(shuffleArray(criteriaList));
+    setRatings(Object.fromEntries(criteriaList.map(({ name }) => [name, 0])));
+    setFeedback("");
   }, [response]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsButtonDisabled(false);
+    }, 30000); // 30 seconds delay
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleRatingChange = (name, value) => {
     setRatings((prevRatings) => ({
@@ -45,7 +53,7 @@ function ResponseRating({ response, onRating }) {
     <div className="App">
       <div className="App-header">
         <div className="response-box">
-          <div><span className="fa fa-user-circle"></span> AnonymousUser</div>
+          <div><span className="fa fa-user-circle"></span> Anonymous Commenter</div>
           <p>{response}</p>
         </div>
         <hr />
@@ -73,8 +81,6 @@ function ResponseRating({ response, onRating }) {
           ))}
         </form>
         <br />
-
-        {/* Open-ended feedback question */}
         <p><b>If you could ask the advice-giver to add or change just one thing in this response, what would it be?</b></p>
         <textarea
           value={feedback}
@@ -83,10 +89,9 @@ function ResponseRating({ response, onRating }) {
           className="response-input"
           rows="3"
         ></textarea>
-
         <br /><br />
-        <button type="button" onClick={onRating} disabled={!allRated || !feedbackProvided}>
-          Next
+        <button type="button" onClick={onRating} disabled={isButtonDisabled || !allRated || !feedbackProvided}>
+          {isButtonDisabled ? 'Please wait...' : 'Next'}
         </button>
       </div>
     </div>
