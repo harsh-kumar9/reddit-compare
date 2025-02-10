@@ -34,7 +34,7 @@ function AIQuestion({ responses, onNext }) {
     <div className="compare-responses-container">
       <div className="App-header">
         {/* AI-Generated Response Question */}
-        <p>Which response(s) do you think is most likely to be generated with an AI chatbot? (Select all that apply)</p>
+        <p><b>Which response(s) do you think is most likely to be generated with an AI chatbot (such as ChatGPT)? (Select all that apply)</b></p>
         <div className="ai-question-container">
           {responses.map((response, index) => (
             <div key={index} className="response-box ai-option">
