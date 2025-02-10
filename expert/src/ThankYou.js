@@ -24,11 +24,11 @@ function ThankYou({ onNext }) {
   return (
     <div className="App">
       <div className="App-header">
-        <h1>Thank You</h1>
         <form onSubmit={handleSubmit}>
           <div className="professionalQuestion">
-            <p>
+            <p><b>
               Do you utilize AI Chatbots (such as ChatGPT, Gemini, Claude, etc.) to seek assistance in your daily life or occupation?
+              </b>
             </p>
             <label>
               <input
@@ -66,7 +66,7 @@ function ThankYou({ onNext }) {
               rows="3"
             ></textarea>
           </div>
-          <p>Please press next to complete the survey.</p>
+          <p><b>Please press 'Next' to complete the survey and recieve credit.</b></p>
           <button type="submit">Next</button>
         </form>
       </div>
