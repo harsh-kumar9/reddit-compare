@@ -18,7 +18,14 @@ function ScenarioText({ title, text, onNext }) {
                 <div className="response-box">
                     <div><span className="fa fa-user-circle"></span> Anonymous Poster</div>
                     <h3>{title}</h3>
-                    <p>{text}</p>
+                    <p>
+                        {text.split("\n").map((line, index) => (
+                            <React.Fragment key={index}>
+                                {line}
+                                <br />
+                            </React.Fragment>
+                        ))}
+                    </p>
                 </div>
                 <button onClick={onNext} disabled={isButtonDisabled}>
                     {isButtonDisabled ? 'Please wait...' : 'Next'}
