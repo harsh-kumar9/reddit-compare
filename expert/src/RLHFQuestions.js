@@ -65,10 +65,10 @@ function RankResponses({ responses, onNext }) {
         </div>
         <br />
         <hr />
-        <p>Drag and drop the responses to rank them, with 1 being the most helpful, and 4 being the least helpful.</p>
+        <p>Drag and drop the responses to rank them, with 1 being the most helpful, and 6 being the least helpful.</p>
         <div className="rankings-container">
           {rankings.map((responseIndex, displayIndex) => {
-            const placeNames = ["1st", "2nd", "3rd", "4th"];
+            const placeNames = ["1st", "2nd", "3rd", "4th", "5th", "6th"];
             return (
               <div
                 key={responseIndex}
@@ -81,7 +81,9 @@ function RankResponses({ responses, onNext }) {
               >
                 <span className="placement-label">{placeNames[displayIndex]}:</span>
                 <span className="response-text">
-                  {expandedIndex === responseIndex ? responses[responseIndex] : responses[responseIndex].split('. ')[0]}
+                  {expandedIndex === responseIndex 
+                    ? responses[responseIndex] 
+                    : responses[responseIndex].split(' ').slice(0, 5).join(' ') + (responses[responseIndex].split(' ').length > 5 ? '...' : '')}
                 </span>
                 <span className="drag-icon">↕</span> {/* Drag icon */}
               </div>
@@ -89,8 +91,6 @@ function RankResponses({ responses, onNext }) {
           })}
         </div>
         <br />
-
-
 
         <button
           type="button"

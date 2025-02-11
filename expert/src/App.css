@@ -34,7 +34,8 @@ body {
   width: 90%; /* Responsive width */
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Adds a subtle shadow */
   color: #333; /* Text color */
-  overflow: hidden; /* Prevent content overflow */
+  overflow-y: auto; /* Allows scrolling */
+  max-height: 80vh; /* Prevents overflowing off-screen */
 }
 
 
@@ -126,8 +127,8 @@ ul {
 }
 
 .response-box {
-  width: 100%; /* Ensures all boxes take up full width of parent */
-  max-width: 600px; /*l Constrain to the same max-width */
+  width: 100%;
+  max-width: 600px;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -136,6 +137,9 @@ ul {
   transition: background-color 0.3s ease;
   word-wrap: break-word;
   box-sizing: border-box;
+  max-height: 60vh; /* Ensures text doesn't overflow */
+  overflow-y: auto; /* Enables scrolling */
+  position: relative;
 }
 
 .vertical-divider {
@@ -379,4 +383,22 @@ ul {
   font-size: 1em;
   font-style: italic;
   flex: 1;
+}
+
+.response-box.expanded {
+  max-height: 100vh; /* Allow full height if needed */
+  overflow-y: auto; /* Enable scrolling */
+  position: relative; /* Ensure proper positioning */
+  padding-top: 10px; /* Add space at the top */
+}
+
+/* Increase spacing between Yes and No radio buttons */
+.professionalQuestion label {
+  display: block; /* Ensures each option is on its own line */
+  margin-bottom: 10px; /* Adds spacing between options */
+}
+
+.radio-spacing {
+  display: block;
+  margin-bottom: 10px; /* Adds space between Yes/No */
 }

@@ -15,31 +15,34 @@ import ThankYou from './ThankYou';
 import End from './End';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
-import inputData from './data/input.json';
+import inputData from './data/final_posts_cleaned.json';
+
+function shuffleArray(array) {
+  return array.sort(() => Math.random() - 0.5);
+}
 
 function App() {
-  const getRandomScenarios = (data, count) => {
+  const getRandomScenario = (data) => {
     const shuffled = [...data.posts].sort(() => 0.5 - Math.random());
-    return shuffled.slice(0, count).map(post => ({
-      text: post.body,
-      title: post.title,
-      responses: [
-        post.comments.best_comment,
-        post.comments.percentile_10_comment,
-        post.comments.gpt_comment,
-        post.comments.claude_comment
-      ]
-    }));
+    return {
+      text: shuffled[0].body,
+      title: shuffled[0].title,
+      responses: shuffleArray([
+        shuffled[0].comments.best_comment,
+        shuffled[0].comments.percentile_10_comment,
+        shuffled[0].comments.gpt_comment,
+        shuffled[0].comments.claude_comment,
+        shuffled[0].comments.llama_comment,
+        shuffled[0].comments.gemini_comment
+      ])
+    };
   };
 
   const [currentStage, setCurrentStage] = useState('captcha');
-  const [currentScenarioIndex, setCurrentScenarioIndex] = useState(0);
-  const [scenarios, setScenarios] = useState([]);
-  const [userInputs, setUserInputs] = useState([]);
+  const [scenario, setScenario] = useState(null);
 
   useEffect(() => {
-    const selectedScenarios = getRandomScenarios(inputData, 3);  // Get 3 random posts
-    setScenarios(selectedScenarios);
+    setScenario(getRandomScenario(inputData));
   }, []);
 
   const handleNextStage = () => {
@@ -57,7 +60,7 @@ function App() {
         setCurrentStage('scenarioText');
         break;
       case 'scenarioText':
-        setCurrentStage('responseRating1');
+        setCurrentStage('responseIntro');
         break;
       case 'responseIntro':
         setCurrentStage('responseRating1');
@@ -69,29 +72,28 @@ function App() {
         setCurrentStage('responseRating3');
         break;
       case 'responseRating3':
-        setCurrentStage('responseRating4');  // New stage for the 4th response
+        setCurrentStage('responseRating4');
         break;
       case 'responseRating4':
+        setCurrentStage('responseRating5');
+        break;
+      case 'responseRating5':
+        setCurrentStage('responseRating6');
+        break;
+      case 'responseRating6':
         setCurrentStage('compareResponses');
         break;
       case 'compareResponses':
-        setCurrentStage('RLHFQuestions'); // ✅ Move RLHFQuestions right after CompareResponses
+        setCurrentStage('RLHFQuestions');
         break;
       case 'RLHFQuestions':
-        setCurrentStage('AIQuestion'); // ✅ Now RLHF goes before EndOfScenario
+        setCurrentStage('AIQuestion');
         break;
       case 'AIQuestion':
-        setCurrentStage('endOfScenario'); 
+        setCurrentStage('endOfScenario');
         break;
       case 'endOfScenario':
-        if (currentScenarioIndex < scenarios.length - 1) {
-          console.log(`1 Transitioning from: ${currentStage}`);
-          setCurrentScenarioIndex(currentScenarioIndex + 1);
-          setCurrentStage('scenarioIntro'); // ✅ Go to next scenario
-        } else {
-          console.log(`2 Transitioning from: ${currentStage}`);
-          setCurrentStage('professionalExperience'); // ✅ Move to professionalExperience at the end
-        }
+        setCurrentStage('professionalExperience'); // Moves directly to demographics
         break;
       case 'professionalExperience':
         setCurrentStage('thankYou');
@@ -110,21 +112,21 @@ function App() {
       {currentStage === 'captcha' && <Captcha onNext={handleNextStage} />}
       {currentStage === 'instructions' && <Instructions onNext={handleNextStage} />}
       {currentStage === 'consent' && <ConsentForm onConsent={handleNextStage} />}
-      {currentStage === 'scenarioIntro' && <ScenarioIntro onNext={handleNextStage} scenarioNumber={currentScenarioIndex + 1} />}
-      {currentStage === 'scenarioText' && <ScenarioText title={scenarios[currentScenarioIndex].title} text={scenarios[currentScenarioIndex].text} onNext={handleNextStage} />}
+      {currentStage === 'scenarioIntro' && <ScenarioIntro onNext={handleNextStage} scenarioNumber={1} />}
+      {currentStage === 'scenarioText' && scenario && <ScenarioText title={scenario.title} text={scenario.text} onNext={handleNextStage} />}
       {currentStage === 'responseIntro' && <ResponseIntro onNext={handleNextStage} />}
-      {['responseRating1', 'responseRating2', 'responseRating3', 'responseRating4'].includes(currentStage) && scenarios.length > 0 && (
+      {['responseRating1', 'responseRating2', 'responseRating3', 'responseRating4', 'responseRating5', 'responseRating6'].includes(currentStage) && scenario && (
         <ResponseRating
-          response={scenarios[currentScenarioIndex].responses[parseInt(currentStage.slice(-1), 10) - 1]}
+          response={scenario.responses[parseInt(currentStage.slice(-1), 10) - 1]}
           onRating={handleNextStage}
         />
       )}
-      {currentStage === 'compareResponses' && <CompareResponses responses={scenarios[currentScenarioIndex].responses} onNext={handleNextStage} />}
-      {currentStage === 'RLHFQuestions' && <RLHFQuestions responses={scenarios[currentScenarioIndex].responses} onNext={handleNextStage} />}
-      {currentStage === 'AIQuestion' && <AIQuestion responses={scenarios[currentScenarioIndex].responses} onNext={handleNextStage} />}
+      {currentStage === 'compareResponses' && scenario && <CompareResponses responses={scenario.responses} onNext={handleNextStage} />}
+      {currentStage === 'RLHFQuestions' && scenario && <RLHFQuestions responses={scenario.responses} onNext={handleNextStage} />}
+      {currentStage === 'AIQuestion' && scenario && <AIQuestion responses={scenario.responses} onNext={handleNextStage} />}
       {currentStage === 'endOfScenario' && <EndOfScenario onNext={handleNextStage} />}
       {currentStage === 'professionalExperience' && <ProfessionalExperience onNext={handleNextStage} />}
-      {currentStage === 'thankYou' && <ThankYou onNext={handleNextStage}/>}
+      {currentStage === 'thankYou' && <ThankYou onNext={handleNextStage} />}
       {currentStage === 'end' && <End />}
     </div>
   );

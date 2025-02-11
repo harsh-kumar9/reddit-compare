@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import './App.css';
 
-function ThankYou({ onNext }) {
+function ThankYou() {
   const [formData, setFormData] = useState({
     AIUsage: '',
     toolDetails: '',
   });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -15,10 +17,29 @@ function ThankYou({ onNext }) {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form Data Submitted:', formData);
-    onNext();
+
+    if (!formData.AIUsage || !formData.toolDetails.trim()) {
+      alert("Please answer all questions before proceeding.");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      await axios.post(
+        "https://creative-gpt.azurewebsites.net/api/httptrigger2?code=SfnloefDXU04OK8Ao4QAvrwDRNIBeoDKWmco5VKt33xSAzFukmwSbw%3D%3D",
+        formData,
+        { headers: { "Content-Type": "application/json" } }
+      );
+
+      // Redirect to Prolific
+      window.location.href = 'https://app.prolific.com/submissions/complete?cc=C13Q7C8J';
+    } catch (error) {
+      alert("Submission failed. Please try again.");
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -26,48 +47,25 @@ function ThankYou({ onNext }) {
       <div className="App-header">
         <form onSubmit={handleSubmit}>
           <div className="professionalQuestion">
-            <p><b>
-              Do you utilize AI Chatbots (such as ChatGPT, Gemini, Claude, etc.) to seek assistance in your daily life or occupation?
-              </b>
-            </p>
-            <label>
-              <input
-                type="radio"
-                name="AIUsage"
-                value="Yes"
-                checked={formData.AIUsage === 'Yes'}
-                onChange={handleChange}
-              />
+            <p><b>Do you use AI Chatbots (ChatGPT, Gemini, Claude, etc.) in your daily life or work?</b></p>
+            <label className="radio-spacing">
+              <input type="radio" name="AIUsage" value="Yes" checked={formData.AIUsage === 'Yes'} onChange={handleChange} />
               Yes
             </label>
-            <br />
-            <label>
-              <input
-                type="radio"
-                name="AIUsage"
-                value="No"
-                checked={formData.AIUsage === 'No'}
-                onChange={handleChange}
-              />
+            <label className="radio-spacing">
+              <input type="radio" name="AIUsage" value="No" checked={formData.AIUsage === 'No'} onChange={handleChange} />
               No
             </label>
           </div>
 
           <div className="professionalQuestion">
-            <p>
-              If you answered 'Yes' to the previous question, please indicate which tool/website you use most often, as well as approximately how many times per week you utilize these tools. If you answered 'No', please reply "N/A".
-            </p>
-            <textarea
-              name="toolDetails"
-              value={formData.toolDetails}
-              onChange={handleChange}
-              placeholder="Type your response here..."
-              className="response-input"
-              rows="3"
-            ></textarea>
+            <p><b>If 'Yes', which AI tools do you use most and how often? If 'No', reply "N/A".</b></p>
+            <textarea name="toolDetails" value={formData.toolDetails} onChange={handleChange} className="response-input" rows="3"></textarea>
           </div>
-          <p><b>Please press 'Next' to complete the survey and recieve credit.</b></p>
-          <button type="submit">Next</button>
+
+          <button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? "Submitting..." : "Next"}
+          </button>
         </form>
       </div>
     </div>
