@@ -51,10 +51,17 @@ function ResponseRating({ response, onRating }) {
   return (
     <div className="App">
       <div className="App-header">
-        <div className="response-box">
-          <div><span className="fa fa-user-circle"></span> Anonymous Commenter</div>
-          <p>{response}</p>
-        </div>
+      <div className="response-box">
+        <div><span className="fa fa-user-circle"></span> Anonymous Commenter</div>
+        <p>
+          {response.split("\n").map((line, index) => (
+            <React.Fragment key={index}>
+              {line}
+              <br />
+            </React.Fragment>
+          ))}
+        </p>
+      </div>
         <hr />
         <p><b>Please rate the following aspects of the response on a scale from 1 (Strongly Disagree) to 7 (Strongly Agree).</b></p>
         <br />
