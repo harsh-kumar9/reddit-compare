@@ -38,6 +38,11 @@ function ResponseRating({ response, onRating }) {
     return () => clearTimeout(timer); // Clear timeout when unmounting or changing response
   }, [response]); // Add `response` as a dependency to reset the timer each time
 
+  // Ensure page scrolls to top when new response loads
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [response]);
+
   const handleRatingChange = (name, value) => {
     setRatings((prevRatings) => ({
       ...prevRatings,
@@ -51,17 +56,18 @@ function ResponseRating({ response, onRating }) {
   return (
     <div className="App">
       <div className="App-header">
-      <div className="response-box">
-        <div><span className="fa fa-user-circle"></span> Anonymous Commenter</div>
-        <p>
-          {response.split("\n").map((line, index) => (
-            <React.Fragment key={index}>
-              {line}
-              <br />
-            </React.Fragment>
-          ))}
-        </p>
-      </div>
+        <p><b>Please read the full comment. Scroll down to view the entire text.</b></p>
+        <div className="response-box">
+          <div><span className="fa fa-user-circle"></span> Anonymous Commenter</div>
+          <p>
+            {response.split("\n").map((line, index) => (
+              <React.Fragment key={index}>
+                {line}
+                <br />
+              </React.Fragment>
+            ))}
+          </p>
+        </div>
         <hr />
         <p><b>Please rate the following aspects of the response on a scale from 1 (Strongly Disagree) to 7 (Strongly Agree).</b></p>
         <br />

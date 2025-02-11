@@ -14,38 +14,42 @@ const Captcha = ({ onNext }) => {
         let captcha_text = "";  
         const c_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";  
         for (let i = 1; i < 5; i++) {  
-        captcha_text += c_chars.charAt(Math.random() * c_chars.length);  
+            captcha_text += c_chars.charAt(Math.floor(Math.random() * c_chars.length));  
         }  
-        setCaptchaMessage(captcha_text);  
+        setCaptchaMessage(captcha_text);
     };  
     
     const handleSubmit = () => {  
         if (inputCaptcha === "") {  
-        alert("Please input something.");  
+            alert("Please input something.");  
         } else if (inputCaptcha !== captchaMessage) {  
-        alert("Check doesn't match. Please try again");  
-        setInputCaptcha("");  
-        generateCaptchaCheck();  
+            alert("Check doesn't match. Please try again");  
+            setInputCaptcha("");  
+            generateCaptchaCheck();  
         } else {  
-        onNext();  
+            onNext();  
         }  
     };  
-    
+
+    // Draw the CAPTCHA text on canvas *after* captchaMessage is set
     useEffect(() => {  
-        if (canvasRef.current) {  
-        const canvas = canvasRef.current;  
-        const ctx = canvas.getContext("2d");  
-        if (ctx) {  
+        if (captchaMessage && canvasRef.current) {  
+            const canvas = canvasRef.current;  
+            const ctx = canvas.getContext("2d");  
             ctx.clearRect(0, 0, canvas.width, canvas.height);  
+            
             ctx.font = "30px Arial";
             ctx.fillStyle = "black";  
             ctx.fillText(captchaMessage, 10, 50);  
+            
+            // Add some obfuscation lines
             ctx.beginPath();  
             ctx.moveTo(0, 40);  
             ctx.lineTo(80, 40);  
             ctx.lineWidth = 2;
             ctx.strokeStyle = "black";  
             ctx.stroke();  
+
             ctx.beginPath();  
             ctx.moveTo(0, 40);  
             ctx.lineTo(80, 30);  
@@ -53,26 +57,25 @@ const Captcha = ({ onNext }) => {
             ctx.strokeStyle = "black";  
             ctx.stroke();  
         }  
-        }  
-    }, [captchaMessage]);  
+    }, [captchaMessage]);  // Runs only after captchaMessage updates
 
     return (
     <div className="App">
         <div className="App-header">
-        <div className="custom-captcha">  
-        <h2>Input the code that appears in the box below:</h2>  
-        <canvas ref={canvasRef} height="75" width="100" />  
-        <div>  
-            <input  
-            type="text"  
-            value={inputCaptcha}  
-            className="text-black"
-            onChange={(e) => setInputCaptcha(e.target.value)}  
-            />  
-        </div>  
-        <input type="submit" value="Submit" onClick={handleSubmit}
-        className="mt-3 text-2xl outline outline-offset-8 outline-2 rounded-md font-semibold p-8 hover:bg-orange-600"/>
-        </div>  
+            <div className="custom-captcha">  
+                <h2>Input the code that appears in the box below:</h2>  
+                <canvas ref={canvasRef} height="75" width="100" />  
+                <div>  
+                    <input  
+                        type="text"  
+                        value={inputCaptcha}  
+                        className="text-black"
+                        onChange={(e) => setInputCaptcha(e.target.value)}  
+                    />  
+                </div>  
+                <input type="submit" value="Submit" onClick={handleSubmit}
+                    className="mt-3 text-2xl outline outline-offset-8 outline-2 rounded-md font-semibold p-8 hover:bg-orange-600"/>
+            </div>  
         </div>
     </div>
     );
