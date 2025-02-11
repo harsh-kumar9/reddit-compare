@@ -15,7 +15,7 @@ import ThankYou from './ThankYou';
 import End from './End';
 import '@fortawesome/fontawesome-free/css/all.min.css';
 
-import inputData from './data/final_posts_cleaned.json';
+import inputData from './data/final_posts100_cleaned.json';
 
 function shuffleArray(array) {
   return array.sort(() => Math.random() - 0.5);
