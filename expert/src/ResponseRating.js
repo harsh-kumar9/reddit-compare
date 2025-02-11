@@ -29,15 +29,14 @@ function ResponseRating({ response, onRating }) {
     setCriteria(shuffleArray(criteriaList));
     setRatings(Object.fromEntries(criteriaList.map(({ name }) => [name, 0])));
     setFeedback("");
-  }, [response]);
+    setIsButtonDisabled(true);  // Ensure button is disabled when a new response is loaded
 
-  useEffect(() => {
     const timer = setTimeout(() => {
       setIsButtonDisabled(false);
     }, 30000); // 30 seconds delay
 
-    return () => clearTimeout(timer);
-  }, []);
+    return () => clearTimeout(timer); // Clear timeout when unmounting or changing response
+  }, [response]); // Add `response` as a dependency to reset the timer each time
 
   const handleRatingChange = (name, value) => {
     setRatings((prevRatings) => ({

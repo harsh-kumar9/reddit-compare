@@ -34,22 +34,29 @@ function AIQuestion({ responses, onNext }) {
     <div className="compare-responses-container">
       <div className="App-header">
         {/* AI-Generated Response Question */}
-        <p><b>Which response(s) do you think is most likely to be generated with an AI chatbot (such as ChatGPT)? (Select all that apply)</b></p>
+        <p><b>Which response(s) do you think is most likely to be generated with an AI chatbot (such as ChatGPT)? (Hover over each option to view the full text. Select all that apply.)</b></p>
         <div className="ai-question-container">
-          {responses.map((response, index) => (
-            <div key={index} className="response-box ai-option">
-              <input
-                type="checkbox"
-                id={`ai-response-${index}`}
-                value={index}
-                checked={selectedAIResponses.includes(index)}
-                onChange={() => handleAISelection(index)}
-                disabled={selectedAIResponses.includes("none")}
-                className="ai-checkbox"
-              />
-              <label htmlFor={`ai-response-${index}`} className="ai-response-text">{response.split('. ')[0]}...</label>
-            </div>
-          ))}
+          {responses.map((response, index) => {
+            // Truncate the response to the first 10 words
+            const truncatedResponse = response.split(' ').slice(0, 10).join(' ') + (response.split(' ').length > 10 ? '...' : '');
+
+            return (
+              <div key={index} className="response-box ai-option" title={response}>
+                <input
+                  type="checkbox"
+                  id={`ai-response-${index}`}
+                  value={index}
+                  checked={selectedAIResponses.includes(index)}
+                  onChange={() => handleAISelection(index)}
+                  disabled={selectedAIResponses.includes("none")}
+                  className="ai-checkbox"
+                />
+                <label htmlFor={`ai-response-${index}`} className="ai-response-text">
+                  {truncatedResponse}
+                </label>
+              </div>
+            );
+          })}
           {/* None of the Above Option */}
           <div className="response-box ai-option">
             <input
