@@ -33,7 +33,7 @@ function DemographicQuestions({ onNext }) {
         <form onSubmit={handleSubmit}>
           {/* Year of Birth */}
           <div className="question">
-            <p>Q1. What is your year of birth?</p>
+            <p>Q1. What is your date of birth?</p>
             <input
               type="date"
               name="yearOfBirth"
