@@ -23,25 +23,12 @@ function ResponseRating({ response, onRating }) {
     Object.fromEntries(criteria.map(({ name }) => [name, 0]))
   );
   const [feedback, setFeedback] = useState("");
-  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
 
   useEffect(() => {
     setCriteria(shuffleArray(criteriaList));
-    setRatings(Object.fromEntries(criteriaList.map(({ name }) => [name, 0])));
+    setRatings(Object.fromEntries(criteria.map(({ name }) => [name, 0])));
     setFeedback("");
-    setIsButtonDisabled(true);  // Ensure button is disabled when a new response is loaded
-
-    const timer = setTimeout(() => {
-      setIsButtonDisabled(false);
-    }, 30000); // 30 seconds delay
-
-    return () => clearTimeout(timer); // Clear timeout when unmounting or changing response
-  }, [response]); // Add `response` as a dependency to reset the timer each time
-
-  // Ensure page scrolls to top when new response loads
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [response]);
+  }, [response]); // Reset fields when a new response loads
 
   const handleRatingChange = (name, value) => {
     setRatings((prevRatings) => ({
@@ -52,6 +39,7 @@ function ResponseRating({ response, onRating }) {
 
   const allRated = Object.values(ratings).every((value) => value > 0);
   const feedbackProvided = feedback.trim().length > 0;
+  const canProceed = allRated && feedbackProvided; // ✅ Button is enabled as soon as conditions are met
 
   return (
     <div className="App">
@@ -102,8 +90,8 @@ function ResponseRating({ response, onRating }) {
           rows="3"
         ></textarea>
         <br /><br />
-        <button type="button" onClick={onRating} disabled={isButtonDisabled || !allRated || !feedbackProvided}>
-          {isButtonDisabled ? 'Please wait...' : 'Next'}
+        <button type="button" onClick={onRating} disabled={!canProceed}>
+          {canProceed ? 'Next' : 'Please complete all fields'}
         </button>
       </div>
     </div>

@@ -402,3 +402,95 @@ ul {
   display: block;
   margin-bottom: 10px; /* Adds space between Yes/No */
 }
+
+/* Slider Styling */
+.slider {
+  width: 100%;
+  margin: 10px 0;
+}
+
+/* Likert Scale Styling */
+.likert-container {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.likert-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.likert-label {
+  flex: 0 0 30%;
+  font-size: 1em;
+  text-align: left;
+}
+
+.likert-options {
+  display: flex;
+  flex: 1;
+  justify-content: space-around;
+  gap: 15px;
+}
+
+.likert-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.likert-option input[type="radio"] {
+  margin: 5px 0;
+  cursor: pointer;
+}
+.radio-group {
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.radio-group label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1em;
+  cursor: pointer;
+}
+
+.radio-group input[type="radio"] {
+  margin-top: 5px;
+  cursor: pointer;
+}
+
+
+.likert-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  margin-top: 15px; /* Increased spacing above the options */
+}
+
+.likert-options {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 600px;
+  gap: 25px; /* ✅ Increased spacing between options */
+}
+
+.likert-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1em;
+}
+
+.likert-option input[type="radio"] {
+  margin-bottom: 8px; /* ✅ Increased spacing between selection box and text */
+  cursor: pointer;
+}

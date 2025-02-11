@@ -6,7 +6,7 @@ function ScenarioText({ title, text, onNext }) {
     useEffect(() => {
         const timer = setTimeout(() => {
             setIsButtonDisabled(false);
-        }, 60000); // 60 seconds delay
+        }, 60); // 60 seconds delay
 
         return () => clearTimeout(timer);
     }, []);
