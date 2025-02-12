@@ -58,6 +58,7 @@ function RankResponses({ responses, onNext }) {
   };
 
   return (
+    <div className="App">
     <div className="compare-responses-container">
       <div className="App-header">
         <div className="responses-container">
@@ -100,6 +101,7 @@ function RankResponses({ responses, onNext }) {
           Next
         </button>
       </div>
+    </div>
     </div>
   );
 }

@@ -4,26 +4,28 @@ import './App.css';
 
 function ThankYou() {
   const [formData, setFormData] = useState({
-    AIUsage: '',
-    toolDetails: '',
+    AIUsage: 0, // Default value for AI usage
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
+  // Likert scale labels
+  const likertLabels = [
+    "No, never",
+    "Yes, once",
+    "Yes, occasionally",
+    "Yes, regularly"
+  ];
+
+  // Handle AI usage selection
+  const handleAIUsageChange = (value) => {
+    setFormData((prev) => ({
+      ...prev,
+      AIUsage: value,
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!formData.AIUsage || !formData.toolDetails.trim()) {
-      alert("Please answer all questions before proceeding.");
-      return;
-    }
 
     setIsSubmitting(true);
 
@@ -46,21 +48,26 @@ function ThankYou() {
     <div className="App">
       <div className="App-header">
         <form onSubmit={handleSubmit}>
+          {/* AI Chatbot Usage Frequency (Likert Scale) */}
           <div className="professionalQuestion">
-            <p><b>Do you use AI Chatbots (ChatGPT, Gemini, Claude, etc.) in your daily life or work?</b></p>
-            <label className="radio-spacing">
-              <input type="radio" name="AIUsage" value="Yes" checked={formData.AIUsage === 'Yes'} onChange={handleChange} />
-              Yes
-            </label>
-            <label className="radio-spacing">
-              <input type="radio" name="AIUsage" value="No" checked={formData.AIUsage === 'No'} onChange={handleChange} />
-              No
-            </label>
-          </div>
-
-          <div className="professionalQuestion">
-            <p><b>If 'Yes', which AI tools do you use most and how often? If 'No', reply "N/A".</b></p>
-            <textarea name="toolDetails" value={formData.toolDetails} onChange={handleChange} className="response-input" rows="3"></textarea>
+            <p><b>Have you ever used large language models (such as ChatGPT)?</b></p>
+            <div className="likert-container">
+              <span className="likert-label">Please select one.</span>
+              <div className="likert-options">
+                {likertLabels.map((label, index) => (
+                  <label key={index} className="likert-option">
+                    <input
+                      type="radio"
+                      name="AIUsage"
+                      value={index}
+                      checked={formData.AIUsage === index}
+                      onChange={() => handleAIUsageChange(index)}
+                    />
+                    {label}
+                  </label>
+                ))}
+              </div>
+            </div>
           </div>
 
           <button type="submit" disabled={isSubmitting}>

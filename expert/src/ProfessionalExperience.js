@@ -3,6 +3,7 @@ import './App.css';
 
 function DemographicQuestions({ onNext }) {
   const [formData, setFormData] = useState({
+    AIUsage: '', // Default value for AI usage question
     yearOfBirth: '',
     educationLevel: '',
     sex: '',
@@ -11,6 +12,13 @@ function DemographicQuestions({ onNext }) {
     jobTitle: '',
     otherJobTitle: '',
   });
+
+  const likertLabels = [
+    "  No, never",
+    "  Yes, once",
+    "  Yes, occasionally",
+    "  Yes, regularly"
+  ];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,6 +39,7 @@ function DemographicQuestions({ onNext }) {
       <div className="App-header">
         <h1>Demographic Information</h1>
         <form onSubmit={handleSubmit}>
+
           {/* Year of Birth */}
           <div className="question">
             <p>Q1. What is your date of birth?</p>
@@ -157,10 +166,30 @@ function DemographicQuestions({ onNext }) {
               )}
             </div>
           )}
-
+        {/* AI Usage Question (Likert Scale) */}
+        <div className="professionalQuestion">
+            <p>Q7. Have you ever used large language models (such as ChatGPT)?</p>
+            <div className="likert-container">
+              <div className="likert-options">
+                {likertLabels.map((label, index) => (
+                  <label key={index} className="likert-option">
+                    <input
+                      type="radio"
+                      name="AIUsage"
+                      value={index}
+                      checked={formData.AIUsage === String(index)}
+                      onChange={handleChange}
+                    />
+                    {label}
+                  </label>
+                ))}
+              </div>
+            </div>
+          </div>
           <button
             type="submit"
             disabled={
+              !formData.AIUsage ||
               !formData.yearOfBirth.trim() ||
               !formData.educationLevel.trim() ||
               !formData.sex.trim() ||
