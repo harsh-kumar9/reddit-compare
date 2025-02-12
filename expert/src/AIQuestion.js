@@ -4,22 +4,27 @@ import './App.css';
 function AIQuestion({ responses, onNext }) {
   const [selectedAIResponses, setSelectedAIResponses] = useState([]);
 
-  // Handle checkbox selection for AI-generated question
+  // Handle selection of AI-generated response options
   const handleAISelection = (responseIndex) => {
-    if (selectedAIResponses.includes(responseIndex)) {
-      setSelectedAIResponses(selectedAIResponses.filter((index) => index !== responseIndex));
-    } else {
-      setSelectedAIResponses([...selectedAIResponses, responseIndex]);
-    }
+    setSelectedAIResponses((prevSelected) => {
+      if (prevSelected.includes("none")) {
+        // If "None of the above" is selected and the user clicks another option, remove "none" and select the new option
+        return [responseIndex];
+      } else if (prevSelected.includes(responseIndex)) {
+        // If the option is already selected, remove it
+        return prevSelected.filter((index) => index !== responseIndex);
+      } else {
+        // Otherwise, add the new selection
+        return [...prevSelected, responseIndex];
+      }
+    });
   };
 
-  // Ensure "None of the above" clears all other selections
+  // Handle "None of the above" selection
   const handleNoneSelection = () => {
-    if (selectedAIResponses.includes("none")) {
-      setSelectedAIResponses([]);
-    } else {
-      setSelectedAIResponses(["none"]);
-    }
+    setSelectedAIResponses((prevSelected) =>
+      prevSelected.includes("none") ? [] : ["none"]
+    );
   };
 
   const handleNext = () => {
@@ -48,7 +53,6 @@ function AIQuestion({ responses, onNext }) {
                   value={index}
                   checked={selectedAIResponses.includes(index)}
                   onChange={() => handleAISelection(index)}
-                  disabled={selectedAIResponses.includes("none")}
                   className="ai-checkbox"
                 />
                 <label htmlFor={`ai-response-${index}`} className="ai-response-text">
