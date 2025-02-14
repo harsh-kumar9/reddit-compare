@@ -31,7 +31,7 @@ function ThankYou() {
 
     try {
       await axios.post(
-        "https://creative-gpt.azurewebsites.net/api/httptrigger2?code=SfnloefDXU04OK8Ao4QAvrwDRNIBeoDKWmco5VKt33xSAzFukmwSbw%3D%3D",
+        "https://us-central1-reddit-compare-d31d8.cloudfunctions.net/submitData", // 🔄 Replace with your function URL
         formData,
         { headers: { "Content-Type": "application/json" } }
       );
