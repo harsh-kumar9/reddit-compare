@@ -50,9 +50,8 @@ function ThankYou() {
         <form onSubmit={handleSubmit}>
           {/* AI Chatbot Usage Frequency (Likert Scale) */}
           <div className="professionalQuestion">
-            <p><b>Have you ever used large language models (such as ChatGPT)?</b></p>
+            <p><b>Thank you for your responses. Please press next to complete the survey.</b></p>
             <div className="likert-container">
-              <span className="likert-label">Please select one.</span>
               <div className="likert-options">
                 {likertLabels.map((label, index) => (
                   <label key={index} className="likert-option">
