@@ -31,7 +31,7 @@ function ThankYou() {
 
     try {
       await axios.post(
-        "https://us-central1-reddit-compare-d31d8.cloudfunctions.net/submitData", // 🔄 Replace with your function URL
+        "https://submitdata-6t7tms7fga-uc.a.run.app", // 🔄 Replace with your function URL
         formData,
         { headers: { "Content-Type": "application/json" } }
       );
