@@ -38,16 +38,13 @@ function DemographicQuestions({ onNext }) {
     const timeSpent = (Date.now() - pageLoadTime.current) / 1000;
     console.log(`Time spent on page: ${timeSpent} seconds`);
 
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      timeSpentOnPage: timeSpent,
-    }));
+    const updatedFormData = { ...formData, timeSpentOnPage: timeSpent };
     
     try {
-      await axios.post('http://localhost:3001/demographic_info', formData, {
+      await axios.post('http://localhost:3001/demographic_info', updatedFormData, {
         headers: { 'Content-Type': 'application/json' }
       });
-      console.log('Form Data Submitted:', formData);
+      console.log('Form Data Submitted:', updatedFormData);
       onNext();
     } catch (error) {
       console.error('Error submitting form:', error);

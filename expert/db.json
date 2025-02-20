@@ -35,6 +35,30 @@
       "assignmentId": "test",
       "hitId": "test",
       "workerId": "test5046"
+    },
+    {
+      "id": "d7b9",
+      "assignmentId": "test",
+      "hitId": "test",
+      "workerId": "test6518"
+    },
+    {
+      "id": "482a",
+      "assignmentId": "test",
+      "hitId": "test",
+      "workerId": "test7560"
+    },
+    {
+      "id": "fa47",
+      "assignmentId": "test",
+      "hitId": "test",
+      "workerId": "test6410"
+    },
+    {
+      "id": "71c3",
+      "assignmentId": "test",
+      "hitId": "test",
+      "workerId": "test5750"
     }
   ],
   "likert_responses": [
@@ -253,6 +277,150 @@
       },
       "feedback": "222",
       "timeSpentOnPage": 5.144
+    },
+    {
+      "id": "8125",
+      "response": "It wasn't your fault. Don't blame yourself for things that are out of your control.",
+      "ratings": {
+        "personalization": 7,
+        "warmth": 7,
+        "clarity": 7,
+        "effectiveness": 7
+      },
+      "feedback": "we",
+      "timeSpentOnPage": 6.09
+    },
+    {
+      "id": "10aa",
+      "response": "It's really tough when unexpected issues like your hair loss come up and derail your momentum. First, take a step back and acknowledge that it's okay to feel overwhelmed - it doesn't mean you've failed or that all your progress is lost. When life throws you curveballs, it's essential to reassess and adjust your goals temporarily. Consider taking a break from the gym if the stress of people noticing your hair loss is too much, and focus on smaller, manageable tasks like short walks or some light stretching at home. For studying, try breaking it down into even shorter sessions than before, so it feels less daunting. Remember, discipline is not about being perfect; it's about being consistent and kind to yourself, especially during difficult times. You might also want to look into ways to manage your hair loss, like talking to a doctor or finding a supportive community online - sometimes tackling the root cause (no pun intended) can help you regain control and confidence. Keep in mind that it's a process, and it's okay to not be okay right now.",
+      "ratings": {
+        "effectiveness": 7,
+        "warmth": 7,
+        "personalization": 7,
+        "clarity": 7
+      },
+      "feedback": "we",
+      "timeSpentOnPage": 5.26
+    },
+    {
+      "id": "e551",
+      "response": "When you get stressed, don’t look at the whole staircase; just look at the next step. Soon enough you’ll feel better. Then another challenge will come. And another. You get better at dealing with it after you go through it enough times. Good luck!",
+      "ratings": {
+        "personalization": 7,
+        "warmth": 7,
+        "clarity": 7,
+        "effectiveness": 7
+      },
+      "feedback": "we",
+      "timeSpentOnPage": 5.78
+    },
+    {
+      "id": "9fa4",
+      "response": "I'm really sorry to hear you're going through this. It sounds tough, but it's great that you're reaching out for advice. When unexpected challenges like this come up, it's important to focus on what you can control. First, consider seeing a doctor or dermatologist about your hair loss to get some professional advice. It might help ease your anxiety to know what's going on and what you can do about it. In terms of discipline, try to maintain the habits you were building, even if it's at a reduced level. Going to the gym and studying, even in smaller amounts, can help maintain a sense of normalcy and control. Also, remember to be kind to yourself. It's okay to have setbacks, and taking care of your mental health is just as important as physical health. Keep pushing forward, and don't hesitate to seek support from friends, family, or professionals if you need it. You've got this!",
+      "ratings": {
+        "clarity": 7,
+        "warmth": 7,
+        "effectiveness": 7,
+        "personalization": 7
+      },
+      "feedback": "we",
+      "timeSpentOnPage": 5.72
+    },
+    {
+      "id": "58b1",
+      "response": "Hair loss can definitely feel overwhelming, but don't let it derail the great progress you've been making with the gym and studying. First, consider seeing a doctor to understand what's causing the hair loss - it could be stress, nutrition, hormones, or other treatable factors. While you work on addressing the underlying cause, try to maintain your positive routines since they contribute to your overall wellbeing.\n\nWhen facing unexpected setbacks, it helps to focus on what you can control. Keep up with your gym routine - exercise is great for managing stress and anxiety. For the hair situation, you might want to try using a hair catcher in the shower and cleaning up right after brushing to reduce visible hair around you. This can help minimize anxiety-inducing reminders throughout the day.\n\nRemember that your worth isn't tied to your hair, and the habits you're building are making you stronger both physically and mentally. Take it one day at a time, and celebrate the small wins - whether that's completing a workout, having a good study session, or simply showing up for yourself despite feeling down. The ability to push through tough times is a skill that gets stronger with practice.",
+      "ratings": {
+        "clarity": 7,
+        "effectiveness": 7,
+        "warmth": 7,
+        "personalization": 7
+      },
+      "feedback": "we",
+      "timeSpentOnPage": 8.59
+    },
+    {
+      "id": "24f9",
+      "response": "Hey, that sounds really rough, and it's totally understandable that you're feeling down. Hair loss can be a huge hit to your confidence.\n\nFirst off, have you seen a doctor about the hair loss? It could be a medical issue that's treatable, and getting that checked out might ease some anxiety.\n\nAs for pushing through the slump, try to focus on what you *can* control. You were going to the gym and studying – those are great habits! Even if you can't do them at the same intensity right now, try to maintain them in some form. Maybe shorter workouts or just reviewing notes for a bit. The key is to keep the momentum going, even if it's slow.\n\nAlso, consider breaking down your goals into smaller, more manageable steps. Instead of \"study a bit,\" try \"read one chapter.\" Instead of \"go to the gym,\" try \"walk for 20 minutes.\" Small wins can build you back up.\n\nFinally, ignore the comments about your hair as much as possible. Easier said than done, I know, but remind yourself that their comments say more about them than about you. Focus on taking care of yourself, both physically and mentally. You got this!\n",
+      "ratings": {
+        "warmth": 7,
+        "personalization": 7,
+        "effectiveness": 7,
+        "clarity": 7
+      },
+      "feedback": "we",
+      "timeSpentOnPage": 5.431
+    },
+    {
+      "id": "e32e",
+      "response": "Okay, I get where you're coming from. It sounds like you're in a bit of a motivational rut, and forcing yourself into things just makes it worse. The whole \"discipline for discipline's sake\" thing can feel pretty pointless when you don't see the point.\n\nMaybe the problem isn't a lack of discipline, but a lack of direction. You're trying to apply discipline to goals that don't resonate, and that's a recipe for burnout. Instead of focusing on grand self-improvement projects, try experimenting with small, low-stakes things. Think of it as gathering data, not committing to a lifestyle.\n\nFor example, instead of \"learn piano,\" try \"spend 15 minutes exploring a free online piano lesson.\" No pressure to become a concert pianist, just a tiny experiment to see if anything sparks your interest. If it doesn't, no big deal, move on to something else. The key is to remove the pressure of long-term commitment and focus on the immediate experience.\n\nAs for college vs. trade school, maybe talk to people in both fields. Shadow someone for a day. See what their actual day-to-day looks like. Don't just think about the end result, but the process itself. Which path seems more tolerable, or even mildly interesting?\n\nAlso, it's okay not to have a burning passion right now. A lot of people don't. Focus on building a life that's sustainable and allows you to explore different options. Maybe that means finding a job that pays the bills and leaves you with enough free time to try new things without feeling overwhelmed.\n\nFinally, consider talking to a therapist or counselor. They can help you explore your values and identify what truly matters to you, without the pressure of having to \"fix\" yourself. Sometimes, just having someone to talk to can make a big difference. Don't beat yourself up for not being \"disciplined\" enough. Focus on finding something that makes you want to be.\n",
+      "ratings": {
+        "warmth": 7,
+        "clarity": 7,
+        "effectiveness": 7,
+        "personalization": 7
+      },
+      "feedback": "werwer",
+      "timeSpentOnPage": 5.12
+    },
+    {
+      "id": "0c79",
+      "response": "It sounds like you're in a tough spot, and it's understandable to feel stuck when nothing seems to spark genuine interest. One approach you might consider is focusing on small, low-pressure experiments rather than setting big goals. Instead of committing to a hobby or a path, try exploring different activities with a mindset of curiosity rather than obligation. For example, you could try a new activity for just 10 minutes a day or once a week, without any expectation of sticking with it long-term. This way, you might stumble upon something that naturally piques your interest without the pressure of turning it into a goal.\n\nAlso, consider reframing discipline as a tool for self-discovery rather than self-improvement. It's not just about achieving something but about learning more about what you enjoy or value. Sometimes, the act of doing can lead to unexpected insights about what matters to you. Lastly, it's okay to not have everything figured out right now. Life is a series of experiments, and it's perfectly fine to take your time finding what resonates with you.",
+      "ratings": {
+        "effectiveness": 7,
+        "warmth": 7,
+        "clarity": 7,
+        "personalization": 7
+      },
+      "feedback": "werwerwer",
+      "timeSpentOnPage": 3.527
+    },
+    {
+      "id": "8d1b",
+      "response": "It sounds like you're struggling to find meaning or purpose in setting goals, which is making it hard for you to develop discipline. One thing that might help is to focus on the process rather than the end result. Instead of thinking about what you want to achieve, think about what kind of person you want to be or how you want to show up in your daily life. For example, do you want to be someone who is reliable and responsible? Do you want to be able to tackle challenges head-on? \n\nYou mentioned that you're able to push through pain at work and respond to emails promptly because it shows respect, which suggests that you value being a respectful and responsible person. Maybe you can use those values as a starting point for developing discipline in other areas of your life. It's not about finding a specific goal that motivates you, but about cultivating habits and behaviors that align with your values.\n\nIt might also be helpful to start small and focus on building discipline in tiny ways, like creating a daily routine or setting aside a few minutes each day for self-reflection. These small wins can add up over time and help you build confidence in your ability to follow through on commitments. \n\nAs for finding motivation, it's possible that you're looking at it the wrong way. Instead of waiting for motivation to strike, try to focus on building curiosity. What are you interested in learning more about? What problems do you want to solve? Even if you don't feel passionate about something, you might be curious about it, and that can be enough to get you started.\n\nLastly, it's worth considering that discipline is not just about achieving specific goals, but also about developing a sense of self-awareness and self-regulation. By cultivating discipline, you're not just working towards external outcomes, but also building your internal capacity to navigate life's challenges. That in itself can be a powerful motivator, even if you don't have a specific goal in mind.",
+      "ratings": {
+        "effectiveness": 7,
+        "clarity": 7,
+        "warmth": 7,
+        "personalization": 7
+      },
+      "feedback": "werwer",
+      "timeSpentOnPage": 5.081
+    },
+    {
+      "id": "ef40",
+      "response": "I'm the excact same",
+      "ratings": {
+        "effectiveness": 7,
+        "personalization": 7,
+        "clarity": 7,
+        "warmth": 7
+      },
+      "feedback": "werwer",
+      "timeSpentOnPage": 4.685
+    },
+    {
+      "id": "145f",
+      "response": "Do you have any parents to provide structure and impetus to your life? Few young people ever \"reasoned\" themselves into better habits all by themselves.",
+      "ratings": {
+        "clarity": 7,
+        "warmth": 7,
+        "personalization": 7,
+        "effectiveness": 7
+      },
+      "feedback": "Werner",
+      "timeSpentOnPage": 4.82
+    },
+    {
+      "id": "4c9f",
+      "response": "Your post really resonates because it highlights a common catch-22: it's hard to build discipline without having meaningful goals, but it's hard to find meaningful goals without some initial spark of interest or motivation.\n\nHere's what I suggest: instead of trying to manufacture interest in random hobbies or forcing yourself to set arbitrary goals, start by examining what already drives your existing behaviors. You mentioned you consistently handle work responsibilities, maintain your health, and respond promptly to communications. These aren't random - they align with your values of reliability, independence, and respect for others.\n\nTry building on these existing foundations. Rather than asking \"what hobby should I force myself to do?\", ask \"what would help me become even more reliable/independent/respectful?\" This shifts the focus from trying to generate artificial interests to expanding on values you already demonstrate.\n\nFor the college situation - instead of trying to manufacture passion for a specific field, approach it through the lens of expanding your capacity for independence and reliability. What path would give you the most options and flexibility? What skills would make you a more capable person overall?\n\nThe goal isn't to suddenly become passionate about everything. It's about recognizing that discipline can serve your existing values, even if you don't feel motivated about specific activities. Start small - pick one area where being more disciplined would directly support something you already care about, even if the individual tasks themselves don't excite you.\n\nRemember that not everyone needs to be passionate about their work or have intense hobbies. There's nothing wrong with being laid-back. The key is building discipline in service of the few things you do genuinely value, rather than trying to force yourself to care about things that truly don't matter to you.",
+      "ratings": {
+        "effectiveness": 7,
+        "warmth": 7,
+        "clarity": 7,
+        "personalization": 7
+      },
+      "feedback": "werwerwer",
+      "timeSpentOnPage": 5.465
     }
   ],
   "compare_responses": [
@@ -300,6 +468,36 @@
       "leastHelpfulReason": "",
       "selectedAIResponses": [],
       "timeSpentOnPage": 1.476
+    },
+    {
+      "id": "868d",
+      "rankings": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "mostHelpfulReason": "",
+      "leastHelpfulReason": "",
+      "selectedAIResponses": [],
+      "timeSpentOnPage": 1.51
+    },
+    {
+      "id": "6fe6",
+      "rankings": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        0
+      ],
+      "mostHelpfulReason": "",
+      "leastHelpfulReason": "",
+      "selectedAIResponses": [],
+      "timeSpentOnPage": 1.842
     }
   ],
   "rlhf_responses": [
@@ -341,6 +539,32 @@
       ],
       "selectedAIResponses": [],
       "timeSpentOnPage": 0.47
+    },
+    {
+      "id": "cc7b",
+      "rankings": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "selectedAIResponses": [],
+      "timeSpentOnPage": 0.515
+    },
+    {
+      "id": "0213",
+      "rankings": [
+        1,
+        2,
+        3,
+        4,
+        0,
+        5
+      ],
+      "selectedAIResponses": [],
+      "timeSpentOnPage": 2.714
     }
   ],
   "ai_response": [
@@ -364,42 +588,45 @@
       "id": "bcb2",
       "selectedAIResponses": [],
       "timeSpentOnPage": 2.302
+    },
+    {
+      "id": "ccbd",
+      "selectedAIResponses": [
+        5
+      ],
+      "timeSpentOnPage": 1.784
+    },
+    {
+      "id": "7d74",
+      "selectedAIResponses": [
+        4
+      ],
+      "timeSpentOnPage": 1.34
     }
   ],
   "demographic_info": [
     {
-      "id": "1a18",
-      "AIUsage": "1",
-      "yearOfBirth": "2025-02-12",
-      "educationLevel": "Some college",
+      "id": "4d36",
+      "AIUsage": "0",
+      "yearOfBirth": "2025-02-04",
+      "educationLevel": "High school graduate",
       "sex": "Female",
-      "industry": "Social Services",
-      "professionalExperience": "No",
-      "jobTitle": "",
+      "industry": "Education",
+      "professionalExperience": "Yes",
+      "jobTitle": "Therapist",
       "otherJobTitle": ""
     },
     {
-      "id": "1d8a",
-      "AIUsage": "",
-      "yearOfBirth": "2025-01-10",
-      "educationLevel": "",
-      "sex": "",
-      "industry": "",
-      "professionalExperience": "",
+      "id": "cbdb",
+      "AIUsage": "0",
+      "yearOfBirth": "2025-02-06",
+      "educationLevel": "Some college",
+      "sex": "Female",
+      "industry": "Education",
+      "professionalExperience": "No",
       "jobTitle": "",
       "otherJobTitle": "",
-      "timeSpentOnPage": 0
-    },
-    {
-      "id": "ba3d",
-      "AIUsage": "0",
-      "yearOfBirth": "2025-02-04",
-      "educationLevel": "Some college",
-      "sex": "Other",
-      "industry": "Education",
-      "professionalExperience": "Yes",
-      "jobTitle": "Other",
-      "otherJobTitle": "arljgadfg"
+      "timeSpentOnPage": 8.573
     }
   ]
 }
