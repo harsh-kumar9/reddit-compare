@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
 import './App.css';
 
 function RankResponses({ responses, onNext }) {
@@ -7,6 +8,7 @@ function RankResponses({ responses, onNext }) {
   const [leastHelpfulReason, setLeastHelpfulReason] = useState('');
   const [expandedIndex, setExpandedIndex] = useState(null);
   const [draggedItem, setDraggedItem] = useState(null);
+  const [selectedAIResponses, setSelectedAIResponses] = useState([]);
 
   const toggleExpand = (index) => {
     setExpandedIndex(expandedIndex === index ? null : index);
@@ -15,6 +17,10 @@ function RankResponses({ responses, onNext }) {
   const handleDragStart = (index) => {
     setDraggedItem(index);
   };
+
+  // Time tracking
+  const pageLoadTime = useRef(Date.now());
+
 
   const handleDrop = (targetIndex) => {
     if (draggedItem === null) return;
@@ -30,19 +36,38 @@ function RankResponses({ responses, onNext }) {
     e.preventDefault();
   };
 
-  const handleNext = () => {
+
+  const handleNext = async () => {
+    console.log(`Page load time at submit: ${pageLoadTime}`);
+    const timeSpent = (Date.now() - pageLoadTime.current) / 1000;
+    console.log(`Time spent on page: ${timeSpent} seconds`);
+    const responseData = { rankings, mostHelpfulReason, leastHelpfulReason, selectedAIResponses,  timeSpentOnPage: timeSpent};
+    console.log("Submitting Rankings Data:", responseData);
+    
+    try {
+      await axios.post(
+        "http://localhost:3001/compare_responses",
+        responseData,
+        { headers: { "Content-Type": "application/json" } }
+      );
+      console.log("Rankings data submitted successfully!", responseData);
+    } catch (error) {
+      console.error("Error submitting rankings data:", error);
+    }
+
     if (typeof onNext === 'function') {
-      onNext({ rankings, mostHelpfulReason, leastHelpfulReason });
+      onNext(responseData);
     } else {
       console.error('onNext is not a function');
     }
   };
 
   return (
+    <div className="App">
     <div className="compare-responses-container">
       <div className="App-header">
         <div className="responses-container">
-          <div><b> Here are the responses to the same user post that you just rated. Please review them carefully and rank them from best to worst overall. In other words, which response is the most effective overall, which is the next best, and so on? (Press the response to expand and view the full text. Drag and drop the responses to rank them with 1st being the best)</b></div>
+          <div><b> Here are the responses to the same user post that you just rated. Please review them carefully and rank them from best to worst overall. In other words, which response is the most effective overall, which is the next best, and so on? (Press + to expand and view the full text. Drag and drop the responses to rank them with 1st being the best)</b></div>
         </div>
         <br />
         <hr />
@@ -71,7 +96,7 @@ function RankResponses({ responses, onNext }) {
             );
           })}
         </div>
-        <br></br>
+        <br />
 
         <button
           type="button"
@@ -81,6 +106,7 @@ function RankResponses({ responses, onNext }) {
           Next
         </button>
       </div>
+    </div>
     </div>
   );
 }

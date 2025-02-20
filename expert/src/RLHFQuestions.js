@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
+import axios from 'axios';
 import './App.css';
 
-function RankResponses({ responses, onNext }) {
+function RLHFQuestions({ responses, onNext }) {
   const [rankings, setRankings] = useState(responses.map((_, index) => index));
-  const [mostHelpfulReason, setMostHelpfulReason] = useState('');
-  const [leastHelpfulReason, setLeastHelpfulReason] = useState('');
   const [expandedIndex, setExpandedIndex] = useState(null);
   const [draggedItem, setDraggedItem] = useState(null);
-  const [selectedAIResponses, setSelectedAIResponses] = useState([]); // For AI-generated question
+  const [selectedAIResponses, setSelectedAIResponses] = useState([]);
 
   const toggleExpand = (index) => {
     setExpandedIndex(expandedIndex === index ? null : index);
@@ -16,6 +15,9 @@ function RankResponses({ responses, onNext }) {
   const handleDragStart = (index) => {
     setDraggedItem(index);
   };
+
+  // Time tracking
+  const pageLoadTime = useRef(Date.now());
 
   const handleDrop = (targetIndex) => {
     if (draggedItem === null) return;
@@ -31,7 +33,6 @@ function RankResponses({ responses, onNext }) {
     e.preventDefault();
   };
 
-  // Handle checkbox selection for AI-generated question
   const handleAISelection = (responseIndex) => {
     if (selectedAIResponses.includes(responseIndex)) {
       setSelectedAIResponses(selectedAIResponses.filter((index) => index !== responseIndex));
@@ -40,7 +41,6 @@ function RankResponses({ responses, onNext }) {
     }
   };
 
-  // Ensure "None of the above" clears all other selections
   const handleNoneSelection = () => {
     if (selectedAIResponses.includes("none")) {
       setSelectedAIResponses([]);
@@ -49,9 +49,26 @@ function RankResponses({ responses, onNext }) {
     }
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
+    console.log(`Page load time at submit: ${pageLoadTime}`);
+    const timeSpent = (Date.now() - pageLoadTime.current) / 1000;
+    console.log(`Time spent on page: ${timeSpent} seconds`);
+    const responseData = { rankings, selectedAIResponses, timeSpentOnPage: timeSpent };
+    console.log("Submitting Rankings Data:", responseData);
+    
+    try {
+      await axios.post(
+        "http://localhost:3001/rlhf_responses",
+        responseData,
+        { headers: { "Content-Type": "application/json" } }
+      );
+      console.log("Rankings data submitted successfully!");
+    } catch (error) {
+      console.error("Error submitting rankings data:", error);
+    }
+
     if (typeof onNext === 'function') {
-      onNext({ rankings, mostHelpfulReason, leastHelpfulReason, selectedAIResponses });
+      onNext(responseData);
     } else {
       console.error('onNext is not a function');
     }
@@ -106,4 +123,4 @@ function RankResponses({ responses, onNext }) {
   );
 }
 
-export default RankResponses;
+export default RLHFQuestions;

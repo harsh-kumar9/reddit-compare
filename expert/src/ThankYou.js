@@ -31,7 +31,7 @@ function ThankYou() {
 
     try {
       await axios.post(
-        "https://us-central1-reddit-compare-d31d8.cloudfunctions.net/submitData", // 🔄 Replace with your function URL
+        "https://submitdata-6t7tms7fga-uc.a.run.app", // 🔄 Replace with your function URL
         formData,
         { headers: { "Content-Type": "application/json" } }
       );
@@ -53,18 +53,6 @@ function ThankYou() {
             <p><b>Thank you for your responses. Please press next to complete the survey.</b></p>
             <div className="likert-container">
               <div className="likert-options">
-                {likertLabels.map((label, index) => (
-                  <label key={index} className="likert-option">
-                    <input
-                      type="radio"
-                      name="AIUsage"
-                      value={index}
-                      checked={formData.AIUsage === index}
-                      onChange={() => handleAIUsageChange(index)}
-                    />
-                    {label}
-                  </label>
-                ))}
               </div>
             </div>
           </div>

@@ -1,4 +1,8 @@
-import React, { useState, useEffect } from 'react';
+
+import React, { useState, useEffect, useRef } from 'react';
+import axios from 'axios';
+import { useSurvey } from './SurveyContext';
+
 
 // Function to shuffle an array (Fisher-Yates Shuffle)
 const shuffleArray = (array) => {
@@ -18,16 +22,22 @@ const criteriaList = [
 ];
 
 function ResponseRating({ response, onRating }) {
+  const { updateSurveyData } = useSurvey();
   const [criteria, setCriteria] = useState(() => shuffleArray(criteriaList));
   const [ratings, setRatings] = useState(
     Object.fromEntries(criteria.map(({ name }) => [name, 0]))
   );
   const [feedback, setFeedback] = useState("");
 
+  // Time tracking
+  const pageLoadTime = useRef(Date.now());
+
   useEffect(() => {
     setCriteria(shuffleArray(criteriaList));
     setRatings(Object.fromEntries(criteria.map(({ name }) => [name, 0])));
     setFeedback("");
+    pageLoadTime.current = Date.now(); // Correctly set the time on the ref object
+    console.log(`Page load time set to: ${pageLoadTime.current}`);
   }, [response]); // Reset fields when a new response loads
 
   const handleRatingChange = (name, value) => {
@@ -37,9 +47,29 @@ function ResponseRating({ response, onRating }) {
     }));
   };
 
+  const submitRatings = async () => {
+    console.log(`Page load time at submit: ${pageLoadTime}`);
+    const timeSpent = (Date.now() - pageLoadTime.current) / 1000;
+    console.log(`Time spent on page: ${timeSpent} seconds`);
+
+    const responseData = { response, ratings, feedback, timeSpentOnPage: timeSpent };
+    updateSurveyData(responseData);
+
+    try {
+      await axios.post(
+        "http://localhost:3001/likert_responses",
+        responseData,
+        { headers: { "Content-Type": "application/json" } } 
+      );
+      console.log("Ratings submitted successfully!", responseData);
+    } catch (error) {
+      console.error("Error submitting ratings:", error);
+    }
+  };
+
   const allRated = Object.values(ratings).every((value) => value > 0);
   const feedbackProvided = feedback.trim().length > 0;
-  const canProceed = allRated && feedbackProvided; // ✅ Button is enabled as soon as conditions are met
+  const canProceed = allRated && feedbackProvided;
 
   return (
     <div className="App">
@@ -48,17 +78,17 @@ function ResponseRating({ response, onRating }) {
         <div className="response-box">
           <div><span className="fa fa-user-circle"></span> Anonymous Commenter</div>
           <p>
-            {response.split("\n").map((line, index) => (
+            {response && typeof response === "string" ? response.split("\n").map((line, index) => (
               <React.Fragment key={index}>
                 {line}
                 <br />
               </React.Fragment>
-            ))}
+            )) : "No response available."}
           </p>
         </div>
         <hr />
         <p><b>Please rate the following aspects of the response on a scale from 1 (Strongly Disagree) to 7 (Strongly Agree).</b></p>
-        <br />
+        <br/>
         <form className="likert-container">
           {criteria.map(({ name, subtext }) => (
             <div key={name} className="likert-row">
@@ -90,7 +120,7 @@ function ResponseRating({ response, onRating }) {
           rows="3"
         ></textarea>
         <br /><br />
-        <button type="button" onClick={onRating} disabled={!canProceed}>
+        <button type="button" onClick={() => { submitRatings(); onRating(); }} disabled={!canProceed}>
           {canProceed ? 'Next' : 'Please complete all fields'}
         </button>
       </div>
