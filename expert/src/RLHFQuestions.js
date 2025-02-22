@@ -1,12 +1,17 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useContext} from 'react';
 import axios from 'axios';
 import './App.css';
+import { WorkerIDContext } from './WorkerIDContext'; // Import the WorkerID context
+
 
 function RLHFQuestions({ responses, onNext }) {
   const [rankings, setRankings] = useState(responses.map((_, index) => index));
   const [expandedIndex, setExpandedIndex] = useState(null);
   const [draggedItem, setDraggedItem] = useState(null);
   const [selectedAIResponses, setSelectedAIResponses] = useState([]);
+  const { workerID } = useContext(WorkerIDContext); // Access workerID from the context
+  const questionTitle = "RLHFQuestions";
+
 
   const toggleExpand = (index) => {
     setExpandedIndex(expandedIndex === index ? null : index);
@@ -33,32 +38,17 @@ function RLHFQuestions({ responses, onNext }) {
     e.preventDefault();
   };
 
-  const handleAISelection = (responseIndex) => {
-    if (selectedAIResponses.includes(responseIndex)) {
-      setSelectedAIResponses(selectedAIResponses.filter((index) => index !== responseIndex));
-    } else {
-      setSelectedAIResponses([...selectedAIResponses, responseIndex]);
-    }
-  };
-
-  const handleNoneSelection = () => {
-    if (selectedAIResponses.includes("none")) {
-      setSelectedAIResponses([]);
-    } else {
-      setSelectedAIResponses(["none"]);
-    }
-  };
 
   const handleNext = async () => {
     console.log(`Page load time at submit: ${pageLoadTime}`);
     const timeSpent = (Date.now() - pageLoadTime.current) / 1000;
     console.log(`Time spent on page: ${timeSpent} seconds`);
-    const responseData = { rankings, selectedAIResponses, timeSpentOnPage: timeSpent };
+    const responseData = {questionTitle, rankings, selectedAIResponses, timeSpentOnPage: timeSpent , workerId: workerID};
     console.log("Submitting Rankings Data:", responseData);
     
     try {
       await axios.post(
-        "http://localhost:3001/rlhf_responses",
+        "https://submitdata-6t7tms7fga-uc.a.run.app",
         responseData,
         { headers: { "Content-Type": "application/json" } }
       );

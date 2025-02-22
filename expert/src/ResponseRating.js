@@ -1,8 +1,7 @@
-
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import axios from 'axios';
 import { useSurvey } from './SurveyContext';
-
+import { WorkerIDContext } from './WorkerIDContext'; // Import the WorkerID context
 
 // Function to shuffle an array (Fisher-Yates Shuffle)
 const shuffleArray = (array) => {
@@ -23,11 +22,13 @@ const criteriaList = [
 
 function ResponseRating({ response, onRating }) {
   const { updateSurveyData } = useSurvey();
+  const { workerID } = useContext(WorkerIDContext); // Access workerID from the context
   const [criteria, setCriteria] = useState(() => shuffleArray(criteriaList));
   const [ratings, setRatings] = useState(
     Object.fromEntries(criteria.map(({ name }) => [name, 0]))
   );
   const [feedback, setFeedback] = useState("");
+  const questionTitle = "ResponseRating";
 
   // Time tracking
   const pageLoadTime = useRef(Date.now());
@@ -36,9 +37,15 @@ function ResponseRating({ response, onRating }) {
     setCriteria(shuffleArray(criteriaList));
     setRatings(Object.fromEntries(criteria.map(({ name }) => [name, 0])));
     setFeedback("");
-    pageLoadTime.current = Date.now(); // Correctly set the time on the ref object
+    pageLoadTime.current = Date.now();
     console.log(`Page load time set to: ${pageLoadTime.current}`);
-  }, [response]); // Reset fields when a new response loads
+
+    // Immediate check on component mount
+    console.log("Initial workerId in ResponseRating (on mount):", workerID);
+    if (!workerID) {
+      console.error("Error: workerID is not defined or empty at component mount!");
+    }
+  }, [response, workerID]);
 
   const handleRatingChange = (name, value) => {
     setRatings((prevRatings) => ({
@@ -52,12 +59,20 @@ function ResponseRating({ response, onRating }) {
     const timeSpent = (Date.now() - pageLoadTime.current) / 1000;
     console.log(`Time spent on page: ${timeSpent} seconds`);
 
-    const responseData = { response, ratings, feedback, timeSpentOnPage: timeSpent };
+    // Validate workerID before submission
+    if (!workerID) {
+      console.error("Error: workerID is missing in submitRatings!");
+      return;
+    }
+
+    console.log("Submitting workerID in ResponseRating:", workerID);
+
+    const responseData = { questionTitle, response, ratings, feedback, timeSpentOnPage: timeSpent, workerId: workerID };
     updateSurveyData(responseData);
 
     try {
       await axios.post(
-        "http://localhost:3001/likert_responses",
+        "https://submitdata-6t7tms7fga-uc.a.run.app",
         responseData,
         { headers: { "Content-Type": "application/json" } } 
       );

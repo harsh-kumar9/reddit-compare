@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { SurveyProvider, useSurvey } from './SurveyContext';
+import { WorkerIDProvider, WorkerIDContext } from './WorkerIDContext';
 import Captcha from './Captcha';
 import Instructions from './Instructions';
 import ConsentForm from './ConsentForm';
@@ -25,6 +26,7 @@ function AppContent() {
   const { updateSurveyData } = useSurvey();
   const [currentStage, setCurrentStage] = useState('captcha');
   const [scenario, setScenario] = useState(null);
+  const { workerID, setWorkerID } = useContext(WorkerIDContext);
 
   useEffect(() => {
     const getRandomScenario = (data) => {
@@ -44,25 +46,22 @@ function AppContent() {
     };
     setScenario(getRandomScenario(inputData));
 
+    const urlParams = new URLSearchParams(window.location.search);
+    const assignmentId = urlParams.get("assignmentId") || "test";
+    const hitId = urlParams.get("hitId") || "test";
+    const workerId = urlParams.get("workerId") || "test" + Math.floor(Math.random() * 10000);
+    setWorkerID(workerId);
 
+    const prolificData = { assignmentId, hitId, workerId };
 
-      // Extract workerId and hitId from URL parameters
-      const urlParams = new URLSearchParams(window.location.search);
-      const assignmentId = urlParams.get("assignmentId") || "test";
-      const hitId = urlParams.get("hitId") || "test";
-      const workerId = urlParams.get("workerId") || "test" + Math.floor(Math.random() * 10000);
-  
-      const prolificData = { assignmentId, hitId, workerId };
-  
-      // Send Prolific info via POST request
-      fetch('http://localhost:3001/prolific_info', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(prolificData),
-      }).catch((error) => console.error('Error sending prolific info:', error));
-  }, []);
+    fetch('https://submitdata-6t7tms7fga-uc.a.run.app', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(prolificData),
+    }).catch((error) => console.error('Error sending prolific info:', error));
+  }, [setWorkerID]);
 
   const handleNextStage = (data) => {
     if (data) {
@@ -95,6 +94,7 @@ function AppContent() {
         <ResponseRating
           response={scenario.responses[parseInt(currentStage.slice(-1), 10) - 1]}
           onRating={handleNextStage}
+          workerId={workerID}
         />
       )}
       {currentStage === 'compareResponses' && scenario && <CompareResponses responses={scenario.responses} onNext={handleNextStage} />}
@@ -111,7 +111,9 @@ function AppContent() {
 function App() {
   return (
     <SurveyProvider>
-      <AppContent />
+      <WorkerIDProvider>
+        <AppContent />
+      </WorkerIDProvider>
     </SurveyProvider>
   );
 }

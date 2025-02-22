@@ -1,9 +1,13 @@
-import React, { useState , useRef} from 'react';
+import React, { useState , useRef, useContext} from 'react';
 import axios from 'axios';
 import './App.css';
+import { WorkerIDContext } from './WorkerIDContext'; // Import the WorkerID context
 
 function DemographicQuestions({ onNext }) {
+  const { workerID } = useContext(WorkerIDContext); // Access workerID from the context
+  const questionTitle = "ProfExperience";
   const [formData, setFormData] = useState({
+    questionTitle,
     AIUsage: '',
     yearOfBirth: '',
     educationLevel: '',
@@ -41,7 +45,7 @@ function DemographicQuestions({ onNext }) {
     const updatedFormData = { ...formData, timeSpentOnPage: timeSpent };
     
     try {
-      await axios.post('http://localhost:3001/demographic_info', updatedFormData, {
+      await axios.post('https://submitdata-6t7tms7fga-uc.a.run.app', updatedFormData, {
         headers: { 'Content-Type': 'application/json' }
       });
       console.log('Form Data Submitted:', updatedFormData);
