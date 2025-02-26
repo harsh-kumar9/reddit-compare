@@ -469,10 +469,15 @@ ul {
 
 .likert-container {
   display: flex;
-  flex-direction: column;
+  gap: 15px;
   align-items: center;
-  width: 100%;
-  margin-top: 15px; /* Increased spacing above the options */
+}
+
+.likert-container-ai {
+  display: flex;
+  flex-direction: row; /* Ensures horizontal layout */
+  gap: 15px;
+  align-items: center;
 }
 
 .likert-options {
@@ -480,14 +485,18 @@ ul {
   justify-content: space-between;
   width: 100%;
   max-width: 600px;
-  gap: 25px; /* ✅ Increased spacing between options */
+  gap: 25px; /* Increased spacing between options */
+  flex-direction: row; /* Ensures text is beside the radio button */
+
 }
 
 .likert-option {
   display: flex;
-  flex-direction: column;
   align-items: center;
   font-size: 1em;
+  flex-direction: row; /* Ensures text is beside the radio button */
+  gap: 8px; /* Space between radio button and label */
+
 }
 
 .likert-option input[type="radio"] {

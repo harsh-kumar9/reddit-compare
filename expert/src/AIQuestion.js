@@ -1,43 +1,66 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useContext} from 'react';
 import './App.css';
+import axios from 'axios';
+import { WorkerIDContext } from './WorkerIDContext'; // Import the WorkerID context
+import { HitIDContext } from './HitIDContext'; // Import the HitID context
+
 
 function AIQuestion({ responses, onNext }) {
   const [selectedAIResponses, setSelectedAIResponses] = useState([]);
+  const { workerID } = useContext(WorkerIDContext); // Access workerID from the context
+  const { hitID } = useContext(HitIDContext); // Access hitID from the context
+  const questionTitle = "AIQuestion";
 
-  // Handle checkbox selection for AI-generated question
+  // Handle selection of AI-generated response options
   const handleAISelection = (responseIndex) => {
-    if (selectedAIResponses.includes(responseIndex)) {
-      setSelectedAIResponses(selectedAIResponses.filter((index) => index !== responseIndex));
-    } else {
-      setSelectedAIResponses([...selectedAIResponses, responseIndex]);
-    }
+    setSelectedAIResponses((prevSelected) => {
+      if (prevSelected.includes("none")) {
+        return [responseIndex];
+      } else if (prevSelected.includes(responseIndex)) {
+        return prevSelected.filter((index) => index !== responseIndex);
+      } else {
+        return [...prevSelected, responseIndex];
+      }
+    });
   };
 
-  // Ensure "None of the above" clears all other selections
+  // Handle "None of the above" selection
   const handleNoneSelection = () => {
-    if (selectedAIResponses.includes("none")) {
-      setSelectedAIResponses([]);
-    } else {
-      setSelectedAIResponses(["none"]);
+    setSelectedAIResponses((prevSelected) =>
+      prevSelected.includes("none") ? [] : ["none"]
+    );
+  };
+
+  // Time tracking
+  const pageLoadTime = useRef(Date.now());
+
+  const handleNext = async () => {
+    console.log(`Page load time at submit: ${pageLoadTime}`);
+    const timeSpent = (Date.now() - pageLoadTime.current) / 1000;
+    console.log(`Time spent on page: ${timeSpent} seconds`);
+    const data = { questionTitle, selectedAIResponses , timeSpentOnPage: timeSpent, workerId: workerID, hitId: hitID};
+    
+    try {
+      await axios.post('https://submitdata-6t7tms7fga-uc.a.run.app', data, {
+        headers: { 'Content-Type': 'application/json' }
+      });
+      console.log('AI response data submitted successfully!', data);
+
+      if (typeof onNext === 'function') {
+        onNext(data);
+      }
+    } catch (error) {
+      console.error('Error sending AI response data:', error);
     }
   };
 
-  const handleNext = () => {
-    if (typeof onNext === 'function') {
-      onNext({ selectedAIResponses });
-    } else {
-      console.error('onNext is not a function');
-    }
-  };
 
   return (
     <div className="compare-responses-container">
       <div className="App-header">
-        {/* AI-Generated Response Question */}
         <p><b>Which response(s) do you think is most likely to be generated with an AI chatbot (such as ChatGPT)? (Hover over each option to view the full text. Select all that apply.)</b></p>
         <div className="ai-question-container">
           {responses.map((response, index) => {
-            // Truncate the response to the first 10 words
             const truncatedResponse = response.split(' ').slice(0, 10).join(' ') + (response.split(' ').length > 10 ? '...' : '');
 
             return (
@@ -48,7 +71,6 @@ function AIQuestion({ responses, onNext }) {
                   value={index}
                   checked={selectedAIResponses.includes(index)}
                   onChange={() => handleAISelection(index)}
-                  disabled={selectedAIResponses.includes("none")}
                   className="ai-checkbox"
                 />
                 <label htmlFor={`ai-response-${index}`} className="ai-response-text">
@@ -57,7 +79,6 @@ function AIQuestion({ responses, onNext }) {
               </div>
             );
           })}
-          {/* None of the Above Option */}
           <div className="response-box ai-option">
             <input
               type="checkbox"
@@ -71,7 +92,6 @@ function AIQuestion({ responses, onNext }) {
           </div>
         </div>
         <br />
-
         <button
           type="button"
           onClick={handleNext}
