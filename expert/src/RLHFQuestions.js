@@ -2,6 +2,7 @@ import React, { useState, useRef, useContext} from 'react';
 import axios from 'axios';
 import './App.css';
 import { WorkerIDContext } from './WorkerIDContext'; // Import the WorkerID context
+import { HitIDContext } from './HitIDContext'; // Import the HitID context
 
 
 function RLHFQuestions({ responses, onNext }) {
@@ -10,6 +11,7 @@ function RLHFQuestions({ responses, onNext }) {
   const [draggedItem, setDraggedItem] = useState(null);
   const [selectedAIResponses, setSelectedAIResponses] = useState([]);
   const { workerID } = useContext(WorkerIDContext); // Access workerID from the context
+  const { hitID } = useContext(HitIDContext); // Access hitID from the context
   const questionTitle = "RLHFQuestions";
 
 
@@ -43,7 +45,7 @@ function RLHFQuestions({ responses, onNext }) {
     console.log(`Page load time at submit: ${pageLoadTime}`);
     const timeSpent = (Date.now() - pageLoadTime.current) / 1000;
     console.log(`Time spent on page: ${timeSpent} seconds`);
-    const responseData = {questionTitle, rankings, selectedAIResponses, timeSpentOnPage: timeSpent , workerId: workerID};
+    const responseData = {questionTitle, rankings, selectedAIResponses, timeSpentOnPage: timeSpent , workerId: workerID, hitId: hitID};
     console.log("Submitting Rankings Data:", responseData);
     
     try {

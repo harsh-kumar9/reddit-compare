@@ -2,9 +2,12 @@ import React, { useState , useRef, useContext} from 'react';
 import axios from 'axios';
 import './App.css';
 import { WorkerIDContext } from './WorkerIDContext'; // Import the WorkerID context
+import { HitIDContext } from './HitIDContext'; // Import the HitID context
+
 
 function DemographicQuestions({ onNext }) {
   const { workerID } = useContext(WorkerIDContext); // Access workerID from the context
+  const { hitID } = useContext(HitIDContext); // Access hitID from the context
   const questionTitle = "ProfExperience";
   const [formData, setFormData] = useState({
     questionTitle,
@@ -16,6 +19,8 @@ function DemographicQuestions({ onNext }) {
     professionalExperience: '',
     jobTitle: '',
     otherJobTitle: '',
+    workerId: workerID, 
+    hitId: hitID
   });
 
   const pageLoadTime = useRef(Date.now());

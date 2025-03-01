@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useContext } from 'react';
 import axios from 'axios';
 import { useSurvey } from './SurveyContext';
 import { WorkerIDContext } from './WorkerIDContext'; // Import the WorkerID context
+import { HitIDContext } from './HitIDContext'; // Import the HitID context
 
 // Function to shuffle an array (Fisher-Yates Shuffle)
 const shuffleArray = (array) => {
@@ -23,6 +24,7 @@ const criteriaList = [
 function ResponseRating({ response, onRating }) {
   const { updateSurveyData } = useSurvey();
   const { workerID } = useContext(WorkerIDContext); // Access workerID from the context
+  const { hitID } = useContext(HitIDContext); // Access hitID from the context
   const [criteria, setCriteria] = useState(() => shuffleArray(criteriaList));
   const [ratings, setRatings] = useState(
     Object.fromEntries(criteria.map(({ name }) => [name, 0]))
@@ -42,10 +44,11 @@ function ResponseRating({ response, onRating }) {
 
     // Immediate check on component mount
     console.log("Initial workerId in ResponseRating (on mount):", workerID);
-    if (!workerID) {
-      console.error("Error: workerID is not defined or empty at component mount!");
+    console.log("Initial hitId in ResponseRating (on mount):", hitID);
+    if (!workerID || !hitID) {
+      console.error("Error: workerID or hitID is not defined or empty at component mount!");
     }
-  }, [response, workerID]);
+  }, [response, workerID, hitID]);
 
   const handleRatingChange = (name, value) => {
     setRatings((prevRatings) => ({
@@ -59,22 +62,23 @@ function ResponseRating({ response, onRating }) {
     const timeSpent = (Date.now() - pageLoadTime.current) / 1000;
     console.log(`Time spent on page: ${timeSpent} seconds`);
 
-    // Validate workerID before submission
-    if (!workerID) {
-      console.error("Error: workerID is missing in submitRatings!");
+    // Validate workerID and hitID before submission
+    if (!workerID || !hitID) {
+      console.error("Error: workerID or hitID is missing in submitRatings!");
       return;
     }
 
     console.log("Submitting workerID in ResponseRating:", workerID);
+    console.log("Submitting hitID in ResponseRating:", hitID);
 
-    const responseData = { questionTitle, response, ratings, feedback, timeSpentOnPage: timeSpent, workerId: workerID };
+    const responseData = { questionTitle, response, ratings, feedback, timeSpentOnPage: timeSpent, workerId: workerID, hitId: hitID };
     updateSurveyData(responseData);
 
     try {
       await axios.post(
         "https://submitdata-6t7tms7fga-uc.a.run.app",
         responseData,
-        { headers: { "Content-Type": "application/json" } } 
+        { headers: { "Content-Type": "application/json" } }
       );
       console.log("Ratings submitted successfully!", responseData);
     } catch (error) {

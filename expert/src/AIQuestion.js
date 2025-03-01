@@ -2,10 +2,13 @@ import React, { useState, useRef, useContext} from 'react';
 import './App.css';
 import axios from 'axios';
 import { WorkerIDContext } from './WorkerIDContext'; // Import the WorkerID context
+import { HitIDContext } from './HitIDContext'; // Import the HitID context
+
 
 function AIQuestion({ responses, onNext }) {
   const [selectedAIResponses, setSelectedAIResponses] = useState([]);
   const { workerID } = useContext(WorkerIDContext); // Access workerID from the context
+  const { hitID } = useContext(HitIDContext); // Access hitID from the context
   const questionTitle = "AIQuestion";
 
   // Handle selection of AI-generated response options
@@ -35,7 +38,7 @@ function AIQuestion({ responses, onNext }) {
     console.log(`Page load time at submit: ${pageLoadTime}`);
     const timeSpent = (Date.now() - pageLoadTime.current) / 1000;
     console.log(`Time spent on page: ${timeSpent} seconds`);
-    const data = { questionTitle, selectedAIResponses , timeSpentOnPage: timeSpent};
+    const data = { questionTitle, selectedAIResponses , timeSpentOnPage: timeSpent, workerId: workerID, hitId: hitID};
     
     try {
       await axios.post('https://submitdata-6t7tms7fga-uc.a.run.app', data, {

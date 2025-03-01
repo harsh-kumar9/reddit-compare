@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef, useContext } from 'react';
 import axios from 'axios';
 import './App.css';
 import { WorkerIDContext } from './WorkerIDContext'; // Import the WorkerID context
+import { HitIDContext } from './HitIDContext'; // Import the HitID context
+
 
 function CompareResponses({ responses, onNext }) {
   const [rankings, setRankings] = useState(responses.map((_, index) => index));
@@ -9,6 +11,7 @@ function CompareResponses({ responses, onNext }) {
   const [leastHelpfulReason, setLeastHelpfulReason] = useState('');
   const [expandedIndex, setExpandedIndex] = useState(null);
   const { workerID } = useContext(WorkerIDContext); // Access workerID from the context
+  const { hitID } = useContext(HitIDContext); // Access hitID from the context
   const [draggedItem, setDraggedItem] = useState(null);
   const [selectedAIResponses, setSelectedAIResponses] = useState([]);
   const questionTitle = "CompareResponses"
@@ -51,6 +54,7 @@ function CompareResponses({ responses, onNext }) {
       selectedAIResponses,
       timeSpentOnPage: timeSpent,
       workerId: workerID,
+      hitId: hitID
     };
     console.log("Submitting Rankings Data:", responseData);
 
