@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { SurveyProvider, useSurvey } from './SurveyContext';
 import { WorkerIDProvider, WorkerIDContext } from './WorkerIDContext';
-import { HitIDProvider, HitIDContext } from './HitIDContext';
 import Captcha from './Captcha';
 import Instructions from './Instructions';
 import ConsentForm from './ConsentForm';
@@ -23,14 +22,11 @@ function shuffleArray(array) {
   return array.sort(() => Math.random() - 0.5);
 }
 
-//making it different
-//different difference jfhakdjshfksd
 function AppContent() {
   const { updateSurveyData } = useSurvey();
   const [currentStage, setCurrentStage] = useState('captcha');
   const [scenario, setScenario] = useState(null);
   const { workerID, setWorkerID } = useContext(WorkerIDContext);
-  const { hitID, setHitID } = useContext(HitIDContext);
 
   useEffect(() => {
     const getRandomScenario = (data) => {
@@ -50,13 +46,11 @@ function AppContent() {
     };
     setScenario(getRandomScenario(inputData));
 
-    //different difference jfhakdjshfksd
     const urlParams = new URLSearchParams(window.location.search);
     const assignmentId = urlParams.get("assignmentId") || "test";
-    const hitId = urlParams.get("hitId") || "test"+ Math.floor(Math.random() * 10000);;
+    const hitId = urlParams.get("hitId") || "test";
     const workerId = urlParams.get("workerId") || "test" + Math.floor(Math.random() * 10000);
     setWorkerID(workerId);
-    setHitID(hitId);
 
     const prolificData = { assignmentId, hitId, workerId };
 
@@ -67,14 +61,13 @@ function AppContent() {
       },
       body: JSON.stringify(prolificData),
     }).catch((error) => console.error('Error sending prolific info:', error));
-  }, [setWorkerID, setHitID]);
+  }, [setWorkerID]);
 
   const handleNextStage = (data) => {
     if (data) {
       updateSurveyData(data);
     }
     
-    //different difference jfhakdjshfksd
     const stages = [
       'captcha', 'instructions', 'consent', 'scenarioIntro', 'scenarioText',
       'responseIntro', 'responseRating1', 'responseRating2', 'responseRating3',
@@ -102,7 +95,6 @@ function AppContent() {
           response={scenario.responses[parseInt(currentStage.slice(-1), 10) - 1]}
           onRating={handleNextStage}
           workerId={workerID}
-          hitId={hitID}
         />
       )}
       {currentStage === 'compareResponses' && scenario && <CompareResponses responses={scenario.responses} onNext={handleNextStage} />}
@@ -120,9 +112,7 @@ function App() {
   return (
     <SurveyProvider>
       <WorkerIDProvider>
-      <HitIDProvider>
-          <AppContent />
-      </HitIDProvider>
+        <AppContent />
       </WorkerIDProvider>
     </SurveyProvider>
   );
