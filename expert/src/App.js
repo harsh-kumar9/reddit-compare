@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { SurveyProvider, useSurvey } from './SurveyContext';
 import { WorkerIDProvider, WorkerIDContext } from './WorkerIDContext';
 import { HitIDProvider, HitIDContext } from './HitIDContext';
+import { PostIDProvider } from './PostIDContext';  // <-- new import
 import Captcha from './Captcha';
 import Instructions from './Instructions';
 import ConsentForm from './ConsentForm';
@@ -35,17 +36,19 @@ function AppContent() {
   useEffect(() => {
     const getRandomScenario = (data) => {
       const shuffled = [...data.posts].sort(() => 0.5 - Math.random());
+      const post = shuffled[0];
+      const responses = shuffleArray([
+        { text: post.comments.best_comment, response_id: post.id, response_comment_type: 'best_comment' },
+        { text: post.comments.percentile_10_comment, response_id: post.id, response_comment_type: 'percentile_10_comment' },
+        { text: post.comments.gpt_comment, response_id: post.id, response_comment_type: 'gpt_comment' },
+        { text: post.comments.claude_comment, response_id: post.id, response_comment_type: 'claude_comment' },
+        { text: post.comments.llama_comment, response_id: post.id, response_comment_type: 'llama_comment' },
+        { text: post.comments.gemini_comment, response_id: post.id, response_comment_type: 'gemini_comment' },
+      ]);
       return {
-        text: shuffled[0].body,
-        title: shuffled[0].title,
-        responses: shuffleArray([
-          shuffled[0].comments.best_comment,
-          shuffled[0].comments.percentile_10_comment,
-          shuffled[0].comments.gpt_comment,
-          shuffled[0].comments.claude_comment,
-          shuffled[0].comments.llama_comment,
-          shuffled[0].comments.gemini_comment,
-        ]),
+        text: post.body,
+        title: post.title,
+        responses: responses,
       };
     };
     setScenario(getRandomScenario(inputData));
@@ -121,7 +124,9 @@ function App() {
     <SurveyProvider>
       <WorkerIDProvider>
       <HitIDProvider>
+        <PostIDProvider>
           <AppContent />
+        </PostIDProvider>
       </HitIDProvider>
       </WorkerIDProvider>
     </SurveyProvider>
