@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useSurvey } from './SurveyContext';
 import { WorkerIDContext } from './WorkerIDContext'; // Import the WorkerID context
 import { HitIDContext } from './HitIDContext'; // Import the HitID context
-import { PostIDContext } from './PostIDContext';  // <-- new import
 
 // Function to shuffle an array (Fisher-Yates Shuffle)
 const shuffleArray = (array) => {
@@ -26,7 +25,6 @@ function ResponseRating({ response, onRating }) {
   const { updateSurveyData } = useSurvey();
   const { workerID } = useContext(WorkerIDContext); // Access workerID from the context
   const { hitID } = useContext(HitIDContext); // Access hitID from the context
-  const { responseID, setResponseID, responseCommentType, setResponseCommentType } = useContext(PostIDContext);  // <-- new context usage
   const [criteria, setCriteria] = useState(() => shuffleArray(criteriaList));
   const [ratings, setRatings] = useState(
     Object.fromEntries(criteria.map(({ name }) => [name, 0]))
@@ -46,23 +44,11 @@ function ResponseRating({ response, onRating }) {
 
     // Immediate check on component mount
     console.log("Initial workerId in ResponseRating (on mount):", workerID);
-    console.log("Initial hitId in ResponseRating (on mount):", hitID);
-    if (!workerID || !hitID) {
-      console.error("Error: workerID or hitID is not defined or empty at component mount!");
+    if (!workerID) {
+      console.error("Error: workerID is not defined or empty at component mount!");
     }
+  }, [response, workerID, hitID]);
 
-    // Set context values based on the response prop
-    if (response) {
-      if (response.response_id) {
-        setResponseID(response.response_id);
-      }
-      if (response.response_comment_type) {
-        setResponseCommentType(response.response_comment_type);
-      }
-    }
-  }, [response, setResponseID, setResponseCommentType]);
-
-  
   const handleRatingChange = (name, value) => {
     setRatings((prevRatings) => ({
       ...prevRatings,
@@ -75,23 +61,22 @@ function ResponseRating({ response, onRating }) {
     const timeSpent = (Date.now() - pageLoadTime.current) / 1000;
     console.log(`Time spent on page: ${timeSpent} seconds`);
 
-    // Validate workerID and hitID before submission
-    if (!workerID || !hitID) {
-      console.error("Error: workerID or hitID is missing in submitRatings!");
+    // Validate workerID before submission
+    if (!workerID) {
+      console.error("Error: workerID is missing in submitRatings!");
       return;
     }
 
     console.log("Submitting workerID in ResponseRating:", workerID);
-    console.log("Submitting hitID in ResponseRating:", hitID);
 
-    const responseData = { questionTitle, response, ratings, feedback, timeSpentOnPage: timeSpent, workerId: workerID, hitId: hitID, response_id: responseID, response_comment_type: responseCommentType};
+    const responseData = { questionTitle, response, ratings, feedback, timeSpentOnPage: timeSpent, workerId: workerID, hitId: hitID };
     updateSurveyData(responseData);
 
     try {
       await axios.post(
         "https://submitdata-6t7tms7fga-uc.a.run.app",
         responseData,
-        { headers: { "Content-Type": "application/json" } }
+        { headers: { "Content-Type": "application/json" } } 
       );
       console.log("Ratings submitted successfully!", responseData);
     } catch (error) {
