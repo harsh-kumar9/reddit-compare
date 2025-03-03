@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { SurveyProvider, useSurvey } from './SurveyContext';
 import { WorkerIDProvider, WorkerIDContext } from './WorkerIDContext';
 import { HitIDProvider, HitIDContext } from './HitIDContext';
+import { PostIDProvider } from './PostIDContext';  // <-- new import
 import Captcha from './Captcha';
 import Instructions from './Instructions';
 import ConsentForm from './ConsentForm';
@@ -116,7 +117,9 @@ function App() {
     <SurveyProvider>
       <WorkerIDProvider>
       <HitIDProvider>
+        <PostIDProvider>
           <AppContent />
+        </PostIDProvider>
       </HitIDProvider>
       </WorkerIDProvider>
     </SurveyProvider>
