@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useSurvey } from './SurveyContext';
 import { WorkerIDContext } from './WorkerIDContext'; // Import the WorkerID context
 import { HitIDContext } from './HitIDContext'; // Import the HitID context
+import { PostIDContext } from './PostIDContext';  // <-- new import
 
 // Function to shuffle an array (Fisher-Yates Shuffle)
 const shuffleArray = (array) => {
@@ -11,7 +12,7 @@ const shuffleArray = (array) => {
     const j = Math.floor(Math.random() * (i + 1));
     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
   }
-  return shuffled;
+  return shuffled; 
 };
 
 const criteriaList = [
@@ -25,6 +26,7 @@ function ResponseRating({ response, onRating }) {
   const { updateSurveyData } = useSurvey();
   const { workerID } = useContext(WorkerIDContext); // Access workerID from the context
   const { hitID } = useContext(HitIDContext); // Access hitID from the context
+  const { responseID, setResponseID, responseCommentType, setResponseCommentType } = useContext(PostIDContext);  // <-- new context usage
   const [criteria, setCriteria] = useState(() => shuffleArray(criteriaList));
   const [ratings, setRatings] = useState(
     Object.fromEntries(criteria.map(({ name }) => [name, 0]))
@@ -48,8 +50,19 @@ function ResponseRating({ response, onRating }) {
     if (!workerID || !hitID) {
       console.error("Error: workerID or hitID is not defined or empty at component mount!");
     }
-  }, [response, workerID, hitID]);
 
+    // Set context values based on the response prop
+    if (response) {
+      if (response.response_id) {
+        setResponseID(response.response_id);
+      }
+      if (response.response_comment_type) {
+        setResponseCommentType(response.response_comment_type);
+      }
+    }
+  }, [response, setResponseID, setResponseCommentType]);
+
+  
   const handleRatingChange = (name, value) => {
     setRatings((prevRatings) => ({
       ...prevRatings,
@@ -71,7 +84,7 @@ function ResponseRating({ response, onRating }) {
     console.log("Submitting workerID in ResponseRating:", workerID);
     console.log("Submitting hitID in ResponseRating:", hitID);
 
-    const responseData = { questionTitle, response, ratings, feedback, timeSpentOnPage: timeSpent, workerId: workerID, hitId: hitID };
+    const responseData = { questionTitle, response, ratings, feedback, timeSpentOnPage: timeSpent, workerId: workerID, hitId: hitID, response_id: responseID, response_comment_type: responseCommentType};
     updateSurveyData(responseData);
 
     try {
@@ -97,7 +110,7 @@ function ResponseRating({ response, onRating }) {
         <div className="response-box">
           <div><span className="fa fa-user-circle"></span> Anonymous Commenter</div>
           <p>
-            {response && typeof response === "string" ? response.split("\n").map((line, index) => (
+            {response && response.text ? response.text.split("\n").map((line, index) => (
               <React.Fragment key={index}>
                 {line}
                 <br />
