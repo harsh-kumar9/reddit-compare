@@ -61,7 +61,7 @@ function AIQuestion({ responses, onNext }) {
         <p><b>Which response(s) do you think is most likely to be generated with an AI chatbot (such as ChatGPT)? (Hover over each option to view the full text. Select all that apply.)</b></p>
         <div className="ai-question-container">
           {responses.map((response, index) => {
-            const truncatedResponse = response.split(' ').slice(0, 10).join(' ') + (response.split(' ').length > 10 ? '...' : '');
+            const truncatedResponse = response.text.split(' ').slice(0, 10).join(' ') + (response.text.split(' ').length > 10 ? '...' : '');
 
             return (
               <div key={index} className="response-box ai-option" title={response}>

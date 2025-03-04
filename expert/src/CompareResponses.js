@@ -3,7 +3,7 @@ import axios from 'axios';
 import './App.css';
 import { WorkerIDContext } from './WorkerIDContext'; // Import the WorkerID context
 import { HitIDContext } from './HitIDContext'; // Import the HitID context
-
+import { PostIDContext } from './PostIDContext';  // <-- new import
 
 function CompareResponses({ responses, onNext }) {
   const [rankings, setRankings] = useState(responses.map((_, index) => index));
@@ -12,9 +12,23 @@ function CompareResponses({ responses, onNext }) {
   const [expandedIndex, setExpandedIndex] = useState(null);
   const { workerID } = useContext(WorkerIDContext); // Access workerID from the context
   const { hitID } = useContext(HitIDContext); // Access hitID from the context
+  const { responseID, setResponseID, responseCommentType, setResponseCommentType } = useContext(PostIDContext);  // <-- new context usage
   const [draggedItem, setDraggedItem] = useState(null);
   const [selectedAIResponses, setSelectedAIResponses] = useState([]);
-  const questionTitle = "CompareResponses"
+  const questionTitle = "CompareResponses";
+
+  useEffect(() => {
+    if (responses && responses.length > 0) {
+      // Treat responses as objects. If the first response has metadata, extract it.
+      const firstResponse = responses[0];
+      if (firstResponse.response_id) {
+        setResponseID(firstResponse.response_id);
+      }
+      if (firstResponse.response_comment_type) {
+        setResponseCommentType(firstResponse.response_comment_type);
+      }
+    }
+  }, [responses, setResponseID, setResponseCommentType]);
 
   const toggleExpand = (index) => {
     setExpandedIndex(expandedIndex === index ? null : index);
@@ -54,7 +68,9 @@ function CompareResponses({ responses, onNext }) {
       selectedAIResponses,
       timeSpentOnPage: timeSpent,
       workerId: workerID,
-      hitId: hitID
+      hitId: hitID, 
+      response_id: responseID,
+      response_comment_type: responseCommentType
     };
     console.log("Submitting Rankings Data:", responseData);
 
@@ -102,8 +118,8 @@ function CompareResponses({ responses, onNext }) {
                   <span className="placement-label">{placeNames[displayIndex]}:</span>
                   <span className="response-text">
                     {expandedIndex === responseIndex
-                      ? responses[responseIndex]
-                      : responses[responseIndex].split(' ').slice(0, 5).join(' ') + (responses[responseIndex].split(' ').length > 5 ? '...' : '')}
+                      ? responses[responseIndex].text
+                      : responses[responseIndex].text.split(' ').slice(0, 5).join(' ') + (responses[responseIndex].text.split(' ').length > 5 ? '...' : '')}
                   </span>
                   <span className="drag-icon">↕</span> {/* Drag icon */}
                 </div>

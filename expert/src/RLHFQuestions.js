@@ -92,8 +92,8 @@ function RLHFQuestions({ responses, onNext }) {
                 <span className="placement-label">{placeNames[displayIndex]}:</span>
                 <span className="response-text">
                   {expandedIndex === responseIndex 
-                    ? responses[responseIndex] 
-                    : responses[responseIndex].split(' ').slice(0, 5).join(' ') + (responses[responseIndex].split(' ').length > 5 ? '...' : '')}
+                    ? responses[responseIndex].text
+                    : responses[responseIndex].text.split(' ').slice(0, 5).join(' ') + (responses[responseIndex].text.split(' ').length > 5 ? '...' : '')}
                 </span>
                 <span className="drag-icon">↕</span> {/* Drag icon */}
               </div>
