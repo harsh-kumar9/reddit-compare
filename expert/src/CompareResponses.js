@@ -10,16 +10,15 @@ function CompareResponses({ responses, onNext }) {
   const [mostHelpfulReason, setMostHelpfulReason] = useState('');
   const [leastHelpfulReason, setLeastHelpfulReason] = useState('');
   const [expandedIndex, setExpandedIndex] = useState(null);
-  const { workerID } = useContext(WorkerIDContext); // Access workerID from the context
-  const { hitID } = useContext(HitIDContext); // Access hitID from the context
-  const { responseID, setResponseID, responseCommentType, setResponseCommentType } = useContext(PostIDContext);  // <-- new context usage
+  const { workerID } = useContext(WorkerIDContext);
+  const { hitID } = useContext(HitIDContext);
+  const { responseID, setResponseID, responseCommentType, setResponseCommentType } = useContext(PostIDContext);
   const [draggedItem, setDraggedItem] = useState(null);
   const [selectedAIResponses, setSelectedAIResponses] = useState([]);
   const questionTitle = "CompareResponses";
 
   useEffect(() => {
     if (responses && responses.length > 0) {
-      // Treat responses as objects. If the first response has metadata, extract it.
       const firstResponse = responses[0];
       if (firstResponse.response_id) {
         setResponseID(firstResponse.response_id);
@@ -60,18 +59,23 @@ function CompareResponses({ responses, onNext }) {
     const timeSpent = (Date.now() - pageLoadTime.current) / 1000;
     console.log(`Time spent on page: ${timeSpent} seconds`);
 
+    // Mapping rankings to comment types
+    const rankedCommentTypes = rankings.map((responseIndex) => responses[responseIndex]?.response_comment_type || "unknown");
+
     const responseData = {
       questionTitle,
       rankings,
+      rankedCommentTypes,  // <-- Added mapping of rankings to comment types
       mostHelpfulReason,
       leastHelpfulReason,
       selectedAIResponses,
       timeSpentOnPage: timeSpent,
       workerId: workerID,
-      hitId: hitID, 
+      hitId: hitID,
       response_id: responseID,
       response_comment_type: responseCommentType
     };
+
     console.log("Submitting Rankings Data:", responseData);
 
     try {
