@@ -1,15 +1,32 @@
-import React, { useState, useRef, useContext} from 'react';
+import React, { useState, useRef, useContext, useEffect } from 'react';
 import './App.css';
 import axios from 'axios';
 import { WorkerIDContext } from './WorkerIDContext'; // Import the WorkerID context
 import { HitIDContext } from './HitIDContext'; // Import the HitID context
-
+import { PostIDContext } from './PostIDContext'; // <-- new import
 
 function AIQuestion({ responses, onNext }) {
   const [selectedAIResponses, setSelectedAIResponses] = useState([]);
-  const { workerID } = useContext(WorkerIDContext); // Access workerID from the context
-  const { hitID } = useContext(HitIDContext); // Access hitID from the context
+  const { workerID } = useContext(WorkerIDContext);
+  const { hitID } = useContext(HitIDContext);
+  const { responseID, setResponseID, responseCommentType, setResponseCommentType } = useContext(PostIDContext);
   const questionTitle = "AIQuestion";
+
+  // Time tracking
+  const pageLoadTime = useRef(Date.now());
+
+  // Populate responseID and responseCommentType from the first response, if present
+  useEffect(() => {
+    if (responses && responses.length > 0) {
+      const firstResponse = responses[0];
+      if (firstResponse.response_id) {
+        setResponseID(firstResponse.response_id);
+      }
+      if (firstResponse.response_comment_type) {
+        setResponseCommentType(firstResponse.response_comment_type);
+      }
+    }
+  }, [responses, setResponseID, setResponseCommentType]);
 
   // Handle selection of AI-generated response options
   const handleAISelection = (responseIndex) => {
@@ -31,15 +48,27 @@ function AIQuestion({ responses, onNext }) {
     );
   };
 
-  // Time tracking
-  const pageLoadTime = useRef(Date.now());
-
   const handleNext = async () => {
     console.log(`Page load time at submit: ${pageLoadTime}`);
     const timeSpent = (Date.now() - pageLoadTime.current) / 1000;
     console.log(`Time spent on page: ${timeSpent} seconds`);
-    const data = { questionTitle, selectedAIResponses , timeSpentOnPage: timeSpent, workerId: workerID, hitId: hitID};
-    
+
+    // Mapping selected responses to comment types
+    const selectedCommentTypes = selectedAIResponses.map((responseIndex) => 
+      responses[responseIndex]?.response_comment_type || "unknown"
+    );
+
+    const data = {
+      questionTitle,
+      selectedAIResponses,
+      selectedCommentTypes,  // <-- Added mapping of selected responses to comment types
+      timeSpentOnPage: timeSpent,
+      workerId: workerID,
+      hitId: hitID,
+      response_id: responseID,
+      response_comment_type: responseCommentType
+    };
+
     try {
       await axios.post('https://submitdata-6t7tms7fga-uc.a.run.app', data, {
         headers: { 'Content-Type': 'application/json' }
@@ -54,17 +83,17 @@ function AIQuestion({ responses, onNext }) {
     }
   };
 
-
   return (
     <div className="compare-responses-container">
       <div className="App-header">
         <p><b>Which response(s) do you think is most likely to be generated with an AI chatbot (such as ChatGPT)? (Hover over each option to view the full text. Select all that apply.)</b></p>
         <div className="ai-question-container">
           {responses.map((response, index) => {
-            const truncatedResponse = response.split(' ').slice(0, 10).join(' ') + (response.split(' ').length > 10 ? '...' : '');
+            const truncatedResponse = response.text.split(' ').slice(0, 10).join(' ') + 
+              (response.text.split(' ').length > 10 ? '...' : '');
 
             return (
-              <div key={index} className="response-box ai-option" title={response}>
+              <div key={index} className="response-box ai-option" title={response.text}>
                 <input
                   type="checkbox"
                   id={`ai-response-${index}`}

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { SurveyProvider, useSurvey } from './SurveyContext';
 import { WorkerIDProvider, WorkerIDContext } from './WorkerIDContext';
 import { HitIDProvider, HitIDContext } from './HitIDContext';
+import { PostIDProvider } from './PostIDContext';  
 import Captcha from './Captcha';
 import Instructions from './Instructions';
 import ConsentForm from './ConsentForm';
@@ -17,7 +18,7 @@ import ProfessionalExperience from './ProfessionalExperience';
 import ThankYou from './ThankYou';
 import End from './End';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import inputData from './data/final_posts100_cleaned.json';
+import inputData from './data/final_posts100_cleaned_march25.json';
 
 function shuffleArray(array) {
   return array.sort(() => Math.random() - 0.5);
@@ -31,6 +32,7 @@ function AppContent() {
   const [scenario, setScenario] = useState(null);
   const { workerID, setWorkerID } = useContext(WorkerIDContext);
   const { hitID, setHitID } = useContext(HitIDContext);
+  
 
   useEffect(() => {
     const getRandomScenario = (data) => {
@@ -39,15 +41,16 @@ function AppContent() {
         text: shuffled[0].body,
         title: shuffled[0].title,
         responses: shuffleArray([
-          shuffled[0].comments.best_comment,
-          shuffled[0].comments.percentile_10_comment,
-          shuffled[0].comments.gpt_comment,
-          shuffled[0].comments.claude_comment,
-          shuffled[0].comments.llama_comment,
-          shuffled[0].comments.gemini_comment,
-        ]),
+          { text: shuffled[0].comments.best_comment, response_id: shuffled[0].id, response_comment_type: "best_comment" },
+          { text: shuffled[0].comments.percentile_10_comment, response_id: shuffled[0].id, response_comment_type: "percentile_10_comment" },
+          { text: shuffled[0].comments.gpt_comment, response_id: shuffled[0].id, response_comment_type: "gpt_comment" },
+          { text: shuffled[0].comments.claude_comment, response_id: shuffled[0].id, response_comment_type: "claude_comment" },
+          { text: shuffled[0].comments.llama_comment, response_id: shuffled[0].id, response_comment_type: "llama_comment" },
+          { text: shuffled[0].comments.gemini_comment, response_id: shuffled[0].id, response_comment_type: "gemini_comment" }
+        ])
       };
     };
+    
     setScenario(getRandomScenario(inputData));
 
     //different difference jfhakdjshfksd
@@ -121,7 +124,9 @@ function App() {
     <SurveyProvider>
       <WorkerIDProvider>
       <HitIDProvider>
-          <AppContent />
+        <PostIDProvider>
+            <AppContent />
+        </PostIDProvider>
       </HitIDProvider>
       </WorkerIDProvider>
     </SurveyProvider>

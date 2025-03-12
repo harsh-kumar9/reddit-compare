@@ -3,6 +3,8 @@ import axios from 'axios';
 import { useSurvey } from './SurveyContext';
 import { WorkerIDContext } from './WorkerIDContext'; // Import the WorkerID context
 import { HitIDContext } from './HitIDContext'; // Import the HitID context
+import { PostIDContext } from './PostIDContext';  // <-- new import
+
 
 // Function to shuffle an array (Fisher-Yates Shuffle)
 const shuffleArray = (array) => {
@@ -25,6 +27,7 @@ function ResponseRating({ response, onRating }) {
   const { updateSurveyData } = useSurvey();
   const { workerID } = useContext(WorkerIDContext); // Access workerID from the context
   const { hitID } = useContext(HitIDContext); // Access hitID from the context
+  const { responseID, setResponseID, responseCommentType, setResponseCommentType } = useContext(PostIDContext);  // <-- new context usage
   const [criteria, setCriteria] = useState(() => shuffleArray(criteriaList));
   const [ratings, setRatings] = useState(
     Object.fromEntries(criteria.map(({ name }) => [name, 0]))
@@ -42,13 +45,21 @@ function ResponseRating({ response, onRating }) {
     pageLoadTime.current = Date.now();
     console.log(`Page load time set to: ${pageLoadTime.current}`);
 
-    // Immediate check on component mount
+    if (response && typeof response === 'object') {
+      if (response.response_id) {
+        setResponseID(response.response_id);
+      }
+      if (response.response_comment_type) {
+        setResponseCommentType(response.response_comment_type);
+      }
+    }
+    
     console.log("Initial workerId in ResponseRating (on mount):", workerID);
     console.log("Initial hitId in ResponseRating (on mount):", hitID);
     if (!workerID || !hitID) {
       console.error("Error: workerID or hitID is not defined or empty at component mount!");
     }
-  }, [response, workerID, hitID]);
+  }, [response, setResponseID, setResponseCommentType]);
 
   const handleRatingChange = (name, value) => {
     setRatings((prevRatings) => ({
@@ -71,7 +82,7 @@ function ResponseRating({ response, onRating }) {
     console.log("Submitting workerID in ResponseRating:", workerID);
     console.log("Submitting hitID in ResponseRating:", hitID);
 
-    const responseData = { questionTitle, response, ratings, feedback, timeSpentOnPage: timeSpent, workerId: workerID, hitId: hitID };
+    const responseData = { questionTitle, response, ratings, feedback, timeSpentOnPage: timeSpent, workerId: workerID, hitId: hitID, response_id: responseID, response_comment_type: responseCommentType};
     updateSurveyData(responseData);
 
     try {
@@ -97,13 +108,16 @@ function ResponseRating({ response, onRating }) {
         <div className="response-box">
           <div><span className="fa fa-user-circle"></span> Anonymous Commenter</div>
           <p>
-            {response && typeof response === "string" ? response.split("\n").map((line, index) => (
-              <React.Fragment key={index}>
-                {line}
-                <br />
-              </React.Fragment>
-            )) : "No response available."}
+            {(response && typeof response === "object" ? response.text : response)
+              ?.split("\n")
+              .map((line, index) => (
+                <React.Fragment key={index}>
+                  {line}
+                  <br />
+                </React.Fragment>
+              )) || "No response available."}
           </p>
+
         </div>
         <hr />
         <p><b>Please rate the following aspects of the response on a scale from 1 (Strongly Disagree) to 7 (Strongly Agree).</b></p>
