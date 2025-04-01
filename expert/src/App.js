@@ -18,7 +18,7 @@ import ProfessionalExperience from './ProfessionalExperience';
 import ThankYou from './ThankYou';
 import End from './End';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import inputData from './data/final_posts100_cleaned_march25.json';
+import inputData from './data/final_posts100_o1_cleaned.json';
 
 function shuffleArray(array) {
   return array.sort(() => Math.random() - 0.5);
@@ -37,32 +37,31 @@ function AppContent() {
   useEffect(() => {
     const getRandomScenario = (data) => {
       const shuffled = [...data.posts].sort(() => 0.5 - Math.random());
+      const selected = shuffled[0];
       return {
-        text: shuffled[0].body,
-        title: shuffled[0].title,
+        text: selected.body,
+        title: selected.title,
         responses: shuffleArray([
-          { text: shuffled[0].comments.best_comment, response_id: shuffled[0].id, response_comment_type: "best_comment" },
-          { text: shuffled[0].comments.percentile_10_comment, response_id: shuffled[0].id, response_comment_type: "percentile_10_comment" },
-          { text: shuffled[0].comments.gpt_comment, response_id: shuffled[0].id, response_comment_type: "gpt_comment" },
-          { text: shuffled[0].comments.claude_comment, response_id: shuffled[0].id, response_comment_type: "claude_comment" },
-          { text: shuffled[0].comments.llama_comment, response_id: shuffled[0].id, response_comment_type: "llama_comment" },
-          { text: shuffled[0].comments.gemini_comment, response_id: shuffled[0].id, response_comment_type: "gemini_comment" }
+          { text: selected.comments.best_comment, response_id: selected.id, response_comment_type: "comment_best_human" },
+          { text: selected.comments.percentile_10_comment, response_id: selected.id, response_comment_type: "comment_10th_human" },
+          { text: selected.comments.gpt_comment, response_id: selected.id, response_comment_type: "comment_gpt4" },
+          { text: selected.comments.o1_comment, response_id: selected.id, response_comment_type: "comment_o1" }
         ])
       };
     };
     
+  
     setScenario(getRandomScenario(inputData));
-
-    //different difference jfhakdjshfksd
+  
     const urlParams = new URLSearchParams(window.location.search);
     const assignmentId = urlParams.get("assignmentId") || "test";
-    const hitId = urlParams.get("hitId") || "test"+ Math.floor(Math.random() * 10000);;
+    const hitId = urlParams.get("hitId") || "test" + Math.floor(Math.random() * 10000);
     const workerId = urlParams.get("workerId") || "test" + Math.floor(Math.random() * 10000);
     setWorkerID(workerId);
     setHitID(hitId);
-
+  
     const prolificData = { assignmentId, hitId, workerId };
-
+  
     fetch('https://submitdata-6t7tms7fga-uc.a.run.app', {
       method: 'POST',
       headers: {
@@ -71,20 +70,19 @@ function AppContent() {
       body: JSON.stringify(prolificData),
     }).catch((error) => console.error('Error sending prolific info:', error));
   }, [setWorkerID, setHitID]);
-
+  
+  
   const handleNextStage = (data) => {
     if (data) {
       updateSurveyData(data);
     }
     
-    //different difference jfhakdjshfksd
-    const stages = [
+  const stages = [
       'captcha', 'instructions', 'consent', 'scenarioIntro', 'scenarioText',
       'responseIntro', 'responseRating1', 'responseRating2', 'responseRating3',
-      'responseRating4', 'responseRating5', 'responseRating6',
-      'compareResponses', 'RLHFQuestions', 'AIQuestion', 'endOfScenario',
+      'responseRating4', 'compareResponses', 'RLHFQuestions', 'AIQuestion', 'endOfScenario',
       'professionalExperience', 'thankYou', 'end'
-    ];
+  ];
 
     const nextStageIndex = stages.indexOf(currentStage) + 1;
     if (nextStageIndex < stages.length) {
@@ -100,7 +98,7 @@ function AppContent() {
       {currentStage === 'scenarioIntro' && <ScenarioIntro onNext={handleNextStage} scenarioNumber={1} />}
       {currentStage === 'scenarioText' && scenario && <ScenarioText title={scenario.title} text={scenario.text} onNext={handleNextStage} />}
       {currentStage === 'responseIntro' && <ResponseIntro onNext={handleNextStage} />}
-      {['responseRating1', 'responseRating2', 'responseRating3', 'responseRating4', 'responseRating5', 'responseRating6'].includes(currentStage) && scenario && (
+      {['responseRating1', 'responseRating2', 'responseRating3', 'responseRating4'].includes(currentStage) && scenario && (
         <ResponseRating
           response={scenario.responses[parseInt(currentStage.slice(-1), 10) - 1]}
           onRating={handleNextStage}

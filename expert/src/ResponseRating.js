@@ -1,10 +1,9 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import axios from 'axios';
 import { useSurvey } from './SurveyContext';
-import { WorkerIDContext } from './WorkerIDContext'; // Import the WorkerID context
-import { HitIDContext } from './HitIDContext'; // Import the HitID context
-import { PostIDContext } from './PostIDContext';  // <-- new import
-
+import { WorkerIDContext } from './WorkerIDContext';
+import { HitIDContext } from './HitIDContext';
+import { PostIDContext } from './PostIDContext';
 
 // Function to shuffle an array (Fisher-Yates Shuffle)
 const shuffleArray = (array) => {
@@ -25,17 +24,15 @@ const criteriaList = [
 
 function ResponseRating({ response, onRating }) {
   const { updateSurveyData } = useSurvey();
-  const { workerID } = useContext(WorkerIDContext); // Access workerID from the context
-  const { hitID } = useContext(HitIDContext); // Access hitID from the context
-  const { responseID, setResponseID, responseCommentType, setResponseCommentType } = useContext(PostIDContext);  // <-- new context usage
+  const { workerID } = useContext(WorkerIDContext);
+  const { hitID } = useContext(HitIDContext);
+  const { responseID, setResponseID, responseCommentType, setResponseCommentType } = useContext(PostIDContext);
   const [criteria, setCriteria] = useState(() => shuffleArray(criteriaList));
   const [ratings, setRatings] = useState(
     Object.fromEntries(criteria.map(({ name }) => [name, 0]))
   );
   const [feedback, setFeedback] = useState("");
   const questionTitle = "ResponseRating";
-
-  // Time tracking
   const pageLoadTime = useRef(Date.now());
 
   useEffect(() => {
@@ -43,7 +40,6 @@ function ResponseRating({ response, onRating }) {
     setRatings(Object.fromEntries(criteria.map(({ name }) => [name, 0])));
     setFeedback("");
     pageLoadTime.current = Date.now();
-    console.log(`Page load time set to: ${pageLoadTime.current}`);
 
     if (response && typeof response === 'object') {
       if (response.response_id) {
@@ -52,12 +48,6 @@ function ResponseRating({ response, onRating }) {
       if (response.response_comment_type) {
         setResponseCommentType(response.response_comment_type);
       }
-    }
-    
-    console.log("Initial workerId in ResponseRating (on mount):", workerID);
-    console.log("Initial hitId in ResponseRating (on mount):", hitID);
-    if (!workerID || !hitID) {
-      console.error("Error: workerID or hitID is not defined or empty at component mount!");
     }
   }, [response, setResponseID, setResponseCommentType]);
 
@@ -69,20 +59,38 @@ function ResponseRating({ response, onRating }) {
   };
 
   const submitRatings = async () => {
-    console.log(`Page load time at submit: ${pageLoadTime}`);
     const timeSpent = (Date.now() - pageLoadTime.current) / 1000;
-    console.log(`Time spent on page: ${timeSpent} seconds`);
 
-    // Validate workerID and hitID before submission
     if (!workerID || !hitID) {
       console.error("Error: workerID or hitID is missing in submitRatings!");
       return;
     }
 
-    console.log("Submitting workerID in ResponseRating:", workerID);
-    console.log("Submitting hitID in ResponseRating:", hitID);
+    // Correct the comment type label
+    const commentTypeMap = {
+      comment_10th_human: "comment_90th_human",
+      comment_gpt4: "comment_gpt4o",
+    };
+    const correctedCommentType = commentTypeMap[responseCommentType] || responseCommentType;
 
-    const responseData = { questionTitle, response, ratings, feedback, timeSpentOnPage: timeSpent, workerId: workerID, hitId: hitID, response_id: responseID, response_comment_type: responseCommentType};
+    // Patch the response object to reflect the corrected type
+    const patchedResponse = {
+      ...response,
+      response_comment_type: correctedCommentType
+    };
+
+    const responseData = {
+      questionTitle,
+      response: patchedResponse,
+      ratings,
+      feedback,
+      timeSpentOnPage: timeSpent,
+      workerId: workerID,
+      hitId: hitID,
+      response_id: responseID,
+      response_comment_type: correctedCommentType
+    };
+
     updateSurveyData(responseData);
 
     try {
@@ -117,7 +125,6 @@ function ResponseRating({ response, onRating }) {
                 </React.Fragment>
               )) || "No response available."}
           </p>
-
         </div>
         <hr />
         <p><b>Please rate the following aspects of the response on a scale from 1 (Strongly Disagree) to 7 (Strongly Agree).</b></p>
