@@ -17,7 +17,7 @@ const shuffleArray = (array) => {
 
 const criteriaList = [
   { name: "clarity", subtext: "The response is clear and thoroughly addresses the problem." },
-  { name: "warmth", subtext: "The response is supportive of the recipient." },
+  { name: "warmth", subtext: "The response is supportive and respectful of the recipient." },
   { name: "effectiveness", subtext: "The response is likely to be effective." },
   { name: "personalization", subtext: "The response is tailored to the recipient’s unique situation or needs." },
 ];
