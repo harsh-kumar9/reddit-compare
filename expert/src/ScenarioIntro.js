@@ -6,8 +6,6 @@ function ScenarioIntro({ scenarioNumber, onNext}) {
       <div className="App-header">
         <h1>We will now begin the scenario.</h1>
         <p>Please take a moment to carefully read the following post from someone seeking advice.</p>
-        <p>By clicking the button below, you will be shown the narrative of the story.
-        </p>
         <button onClick={onNext}>Begin</button>
       </div>
     </div>

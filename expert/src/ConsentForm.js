@@ -8,7 +8,7 @@ function ConsentForm({ onConsent }) {
         <h1>Consent Form</h1>
         <p>
           <p><b>Study Duration and Compensation</b></p> 
-          <p>We estimate this study will take approximately 15 minutes to complete. If you are a participant on Mechanical Turk or Prolific, you will be compensated as per the details outlined on those platforms. Compensation will be provided after successful completion and verification of your participation.</p>
+          <p>We estimate this study will take approximately 10 minutes to complete. If you are a participant on Mechanical Turk or Prolific, you will be compensated as per the details outlined on those platforms. Compensation will be provided after successful completion and verification of your participation.</p>
           <p><b>Privacy and Confidentiality</b></p>
           <p>No personally identifiable information will be collected. Your responses will be stored securely and used only for research purposes in de-identified, aggregated formats. These results may be included in research publications and presentations.</p>   
           <p><b>Voluntary Participation and Withdrawal</b></p> 
