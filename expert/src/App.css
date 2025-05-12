@@ -503,3 +503,70 @@ ul {
   margin-bottom: 8px; /* ✅ Increased spacing between selection box and text */
   cursor: pointer;
 }
+.slider-wrapper {
+  position: relative;
+  width: 100%;
+  padding: 0 0 40px 0; /* no horizontal padding */
+  margin-bottom: 20px;
+  box-sizing: border-box;
+}
+
+.slider-input {
+  width: 100%;
+  margin-top: 10px;
+  appearance: none;
+  height: 6px;
+  border-radius: 5px;
+  background: #ccc;
+  outline: none;
+}
+
+.slider-input::-webkit-slider-thumb {
+  appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid #888;
+  cursor: pointer;
+  margin-top: -6px;
+}
+
+.slider-input::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: white;
+  border: 2px solid #888;
+  cursor: pointer;
+}
+
+.age-tooltip {
+  position: absolute;
+  transform: translateX(-50%);
+  top: -25px;
+  background-color: #444;
+  color: white;
+  padding: 3px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.slider-labels {
+  position: absolute;
+  width: 100%;
+  top: 30px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: #555;
+  pointer-events: none;
+  padding: 0 8px;
+}
+
+.slider-labels span {
+  flex: 1;
+  text-align: center;
+}
+

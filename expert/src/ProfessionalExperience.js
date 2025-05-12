@@ -12,16 +12,17 @@ function DemographicQuestions({ onNext }) {
   const [formData, setFormData] = useState({
     questionTitle,
     AIUsage: '',
-    yearOfBirth: '',
+    age: 18, // ← renamed from yearOfBirth
     educationLevel: '',
     sex: '',
     industry: '',
     professionalExperience: '',
     jobTitle: '',
     otherJobTitle: '',
-    workerId: workerID, 
+    workerId: workerID,
     hitId: hitID
   });
+  
 
   const pageLoadTime = useRef(Date.now());
 
@@ -36,9 +37,10 @@ function DemographicQuestions({ onNext }) {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
       ...prevFormData,
-      [name]: value,
+      [name]: name === "age" ? parseInt(value) : value,
     }));
   };
+  
   
 
   const handleSubmit = async (e) => {
@@ -65,16 +67,46 @@ function DemographicQuestions({ onNext }) {
       <div className="App-header">
         <h1>Demographic Information</h1>
         <form onSubmit={handleSubmit}>
-          <div className="question">
-            <p>Q1. What is your date of birth?</p>
-            <input
-              type="date"
-              name="yearOfBirth"
-              value={formData.yearOfBirth}
-              onChange={handleChange}
-              className="response-input"
-            />
+        <div className="question">
+          <p>Q1. What is your age?</p>
+          <div className="slider-wrapper">
+          <div
+              className="age-tooltip"
+              style={{
+                left: `calc(${((formData.age - 18) / (65 - 18)) * 100}% - 12px)`
+              }}
+            >
+              {formData.age}
           </div>
+
+            <input
+              type="range"
+              name="age"
+              min="18"
+              max="65"
+              value={formData.age}
+              onChange={handleChange}
+              className="slider-input"
+            />
+
+            <div className="slider-labels">
+              {[18, 23, 27, 32, 37, 42, 46, 51, 56, 60, 65].map(age => (
+                <span
+                  key={age}
+                  style={{
+                    left: `calc(${((age - 18) / (100 - 18)) * 100}% + ${age === 18 ? '1px' : age === 65 ? '-1px' : '0px'})`
+                  }}
+                >
+                  {age}
+                </span>
+              ))}
+            </div>
+
+
+          </div>
+        </div>
+
+
           
           <div className="question">
             <p>Q2. What is the highest level of school you have completed or the highest degree you have received?</p>
