@@ -570,3 +570,24 @@ ul {
   text-align: center;
 }
 
+.expandable-box {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.expand-toggle {
+  background-color: #f0f0f0;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.scenario-content {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-left: 4px solid #ccc;
+  border-radius: 5px;
+}

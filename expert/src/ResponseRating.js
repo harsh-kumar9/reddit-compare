@@ -22,7 +22,7 @@ const criteriaList = [
   { name: "personalization", subtext: "The response is tailored to the recipient’s unique situation or needs." },
 ];
 
-function ResponseRating({ response, onRating }) {
+function ResponseRating({ response, onRating, scenarioTitle, scenarioText}) {
   const { updateSurveyData } = useSurvey();
   const { workerID } = useContext(WorkerIDContext);
   const { hitID } = useContext(HitIDContext);
@@ -34,6 +34,10 @@ function ResponseRating({ response, onRating }) {
   const [feedback, setFeedback] = useState("");
   const questionTitle = "ResponseRating";
   const pageLoadTime = useRef(Date.now());
+  const [showScenario, setShowScenario] = useState(false);
+  console.log("Scenario Title:", scenarioTitle);
+  console.log("Scenario Text:", scenarioText);
+
 
   useEffect(() => {
     setCriteria(shuffleArray(criteriaList));
@@ -113,6 +117,27 @@ function ResponseRating({ response, onRating }) {
     <div className="App">
       <div className="App-header">
         <p><b>Please read the full comment. Scroll down to view the entire text.</b></p>
+        <div className="expandable-box">
+          <button onClick={() => setShowScenario(!showScenario)} className="expand-toggle">
+            {showScenario ? "Hide Original Scenario" : "Show Original Scenario"}
+          </button>
+          {showScenario && (
+            <div className="response-box">
+              <div><span className="fa fa-user-circle"></span> Anonymous Poster</div>
+              <h3>{scenarioTitle}</h3>
+              <p>
+                {scenarioText.split("\n").map((line, index) => (
+                  <React.Fragment key={index}>
+                    {line}
+                    <br />
+                  </React.Fragment>
+                ))}
+              </p>
+            </div>
+          )}
+        </div>
+
+
         <div className="response-box">
           <div><span className="fa fa-user-circle"></span> Anonymous Commenter</div>
           <p>

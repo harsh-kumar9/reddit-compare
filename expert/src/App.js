@@ -100,11 +100,13 @@ function AppContent() {
       {currentStage === 'responseIntro' && <ResponseIntro onNext={handleNextStage} />}
       {['responseRating1', 'responseRating2', 'responseRating3', 'responseRating4'].includes(currentStage) && scenario && (
         <ResponseRating
-          response={scenario.responses[parseInt(currentStage.slice(-1), 10) - 1]}
-          onRating={handleNextStage}
-          workerId={workerID}
-          hitId={hitID}
-        />
+        response={scenario.responses[parseInt(currentStage.slice(-1), 10) - 1]}
+        scenarioTitle={scenario.title}
+        scenarioText={scenario.text}
+        onRating={handleNextStage}
+        workerId={workerID}
+        hitId={hitID}
+        />      
       )}
       {currentStage === 'compareResponses' && scenario && <CompareResponses responses={scenario.responses} onNext={handleNextStage} />}
       {currentStage === 'RLHFQuestions' && scenario && <RLHFQuestions responses={scenario.responses} onNext={handleNextStage} />}
