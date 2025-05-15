@@ -5,16 +5,6 @@ import { WorkerIDContext } from './WorkerIDContext';
 import { HitIDContext } from './HitIDContext';
 import { PostIDContext } from './PostIDContext';
 
-// Function to shuffle an array (Fisher-Yates Shuffle)
-const shuffleArray = (array) => {
-  const shuffled = [...array];
-  for (let i = shuffled.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-  }
-  return shuffled;
-};
-
 const criteriaList = [
   { name: "clarity", subtext: "The response is clear and thoroughly addresses the problem." },
   { name: "warmth", subtext: "The response is supportive and respectful of the recipient." },
@@ -22,40 +12,55 @@ const criteriaList = [
   { name: "personalization", subtext: "The response is tailored to the recipient’s unique situation or needs." },
 ];
 
-function ResponseRating({ response, onRating }) {
+function stableShuffle(array, seed) {
+  const arr = [...array];
+  let m = arr.length, t, i;
+  let seedInt = Array.from(seed).reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  while (m) {
+    i = Math.floor(Math.abs(Math.sin(seedInt++)) * m--);
+    t = arr[m];
+    arr[m] = arr[i];
+    arr[i] = t;
+  }
+  return arr;
+}
+
+function ResponseRating({ response, onRating, scenarioTitle, scenarioText, criteriaOrder }) {
   const { updateSurveyData } = useSurvey();
   const { workerID } = useContext(WorkerIDContext);
   const { hitID } = useContext(HitIDContext);
   const { responseID, setResponseID, responseCommentType, setResponseCommentType } = useContext(PostIDContext);
-  const [criteria, setCriteria] = useState(() => shuffleArray(criteriaList));
-  const [ratings, setRatings] = useState(
-    Object.fromEntries(criteria.map(({ name }) => [name, 0]))
-  );
+
+  const [criteria, setCriteria] = useState([]);
+  const [ratings, setRatings] = useState({});
   const [feedback, setFeedback] = useState("");
   const questionTitle = "ResponseRating";
   const pageLoadTime = useRef(Date.now());
+  const [showScenario, setShowScenario] = useState(false);
 
   useEffect(() => {
-    setCriteria(shuffleArray(criteriaList));
-    setRatings(Object.fromEntries(criteria.map(({ name }) => [name, 0])));
+    if (criteriaOrder?.length) {
+      setCriteria(criteriaOrder);
+    }
+  }, [criteriaOrder]);
+
+  // Reset ratings + feedback every time a new response is loaded
+  useEffect(() => {
+    if (criteriaOrder?.length) {
+      const resetRatings = Object.fromEntries(criteriaOrder.map(({ name }) => [name, 0]));
+      setRatings(resetRatings);
+    }
     setFeedback("");
     pageLoadTime.current = Date.now();
 
     if (response && typeof response === 'object') {
-      if (response.response_id) {
-        setResponseID(response.response_id);
-      }
-      if (response.response_comment_type) {
-        setResponseCommentType(response.response_comment_type);
-      }
+      if (response.response_id) setResponseID(response.response_id);
+      if (response.response_comment_type) setResponseCommentType(response.response_comment_type);
     }
-  }, [response, setResponseID, setResponseCommentType]);
+  }, [response, criteriaOrder, setResponseID, setResponseCommentType]);
 
   const handleRatingChange = (name, value) => {
-    setRatings((prevRatings) => ({
-      ...prevRatings,
-      [name]: value,
-    }));
+    setRatings((prev) => ({ ...prev, [name]: value }));
   };
 
   const submitRatings = async () => {
@@ -66,17 +71,15 @@ function ResponseRating({ response, onRating }) {
       return;
     }
 
-    // Correct the comment type label
     const commentTypeMap = {
       comment_10th_human: "comment_90th_human",
       comment_gpt4: "comment_gpt4o",
     };
     const correctedCommentType = commentTypeMap[responseCommentType] || responseCommentType;
 
-    // Patch the response object to reflect the corrected type
     const patchedResponse = {
       ...response,
-      response_comment_type: correctedCommentType
+      response_comment_type: correctedCommentType,
     };
 
     const responseData = {
@@ -88,17 +91,15 @@ function ResponseRating({ response, onRating }) {
       workerId: workerID,
       hitId: hitID,
       response_id: responseID,
-      response_comment_type: correctedCommentType
+      response_comment_type: correctedCommentType,
     };
 
     updateSurveyData(responseData);
 
     try {
-      await axios.post(
-        "https://submitdata-6t7tms7fga-uc.a.run.app",
-        responseData,
-        { headers: { "Content-Type": "application/json" } }
-      );
+      await axios.post("https://submitdata-6t7tms7fga-uc.a.run.app", responseData, {
+        headers: { "Content-Type": "application/json" },
+      });
       console.log("Ratings submitted successfully!", responseData);
     } catch (error) {
       console.error("Error submitting ratings:", error);
@@ -113,6 +114,26 @@ function ResponseRating({ response, onRating }) {
     <div className="App">
       <div className="App-header">
         <p><b>Please read the full comment. Scroll down to view the entire text.</b></p>
+        <div className="expandable-box">
+          <button onClick={() => setShowScenario(!showScenario)} className="expand-toggle">
+            {showScenario ? "Hide Original Scenario" : "Show Original Scenario"}
+          </button>
+          {showScenario && (
+            <div className="response-box">
+              <div><span className="fa fa-user-circle"></span> Anonymous Poster</div>
+              <h3>{scenarioTitle}</h3>
+              <p>
+                {scenarioText.split("\n").map((line, index) => (
+                  <React.Fragment key={index}>
+                    {line}
+                    <br />
+                  </React.Fragment>
+                ))}
+              </p>
+            </div>
+          )}
+        </div>
+
         <div className="response-box">
           <div><span className="fa fa-user-circle"></span> Anonymous Commenter</div>
           <p>

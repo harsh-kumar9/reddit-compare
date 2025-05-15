@@ -11,6 +11,11 @@ function AIQuestion({ responses, onNext }) {
   const { hitID } = useContext(HitIDContext);
   const { responseID, setResponseID, responseCommentType, setResponseCommentType } = useContext(PostIDContext);
   const questionTitle = "AIQuestion";
+  const [expandedIndex, setExpandedIndex] = useState(null);
+  const toggleExpand = (index) => {
+    setExpandedIndex(prev => (prev === index ? null : index));
+  };
+  
 
   // Time tracking
   const pageLoadTime = useRef(Date.now());
@@ -86,27 +91,41 @@ function AIQuestion({ responses, onNext }) {
   return (
     <div className="compare-responses-container">
       <div className="App-header">
-        <p><b>Which response(s) do you think is most likely to be generated with an AI chatbot (such as ChatGPT)? (Hover over each option to view the full text. Select all that apply.)</b></p>
+        <p><b>Which response(s) do you think is most likely to be generated with an AI chatbot (such as ChatGPT)? (Press + to expand and view the full text. Select all that apply.)</b></p>
         <div className="ai-question-container">
           {responses.map((response, index) => {
             const truncatedResponse = response.text.split(' ').slice(0, 10).join(' ') + 
               (response.text.split(' ').length > 10 ? '...' : '');
 
-            return (
-              <div key={index} className="response-box ai-option" title={response.text}>
-                <input
-                  type="checkbox"
-                  id={`ai-response-${index}`}
-                  value={index}
-                  checked={selectedAIResponses.includes(index)}
-                  onChange={() => handleAISelection(index)}
-                  className="ai-checkbox"
-                />
-                <label htmlFor={`ai-response-${index}`} className="ai-response-text">
-                  {truncatedResponse}
-                </label>
-              </div>
-            );
+              return (
+                <div
+                  key={index}
+                  className={`response-box ai-option ${expandedIndex === index ? 'expanded' : ''}`}
+                  onClick={() => toggleExpand(index)}
+                >
+                  <input
+                    type="checkbox"
+                    id={`ai-response-${index}`}
+                    value={index}
+                    checked={selectedAIResponses.includes(index)}
+                    onChange={(e) => {
+                      e.stopPropagation(); // Prevents expansion toggle on checkbox click
+                      handleAISelection(index);
+                    }}
+                    className="ai-checkbox"
+                    onClick={(e) => e.stopPropagation()}
+                  />
+                  <label htmlFor={`ai-response-${index}`} className="ai-response-text">
+                    {expandedIndex === index
+                      ? response.text
+                      : response.text.split(' ').slice(0, 10).join(' ') + (response.text.split(' ').length > 10 ? '...' : '')}
+                  </label>
+                  <span className="drag-icon">{expandedIndex === index ? '−' : '+'}</span>
+
+                  
+                </div>
+              );
+              
           })}
           <div className="response-box ai-option">
             <input
@@ -116,6 +135,7 @@ function AIQuestion({ responses, onNext }) {
               checked={selectedAIResponses.includes("none")}
               onChange={handleNoneSelection}
               className="ai-checkbox"
+              onClick={(e) => e.stopPropagation()}
             />
             <label htmlFor="ai-none" className="ai-response-text">None of the above</label>
           </div>

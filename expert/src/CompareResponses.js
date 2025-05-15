@@ -101,7 +101,7 @@ function CompareResponses({ responses, onNext }) {
       <div className="compare-responses-container">
         <div className="App-header">
           <div className="responses-container">
-            <div><b> Here are the responses to the same user post that you just rated. Please review them carefully and rank them from best to worst overall. In other words, which response is the most effective overall, which is the next best, and so on? (Press + to expand and view the full text. Drag and drop the responses to rank them with 1st being the best)</b></div>
+            <div><b> Here are the responses to the same user post that you just rated. Please review them carefully and rank them from best to worst overall. In other words, which response is the most effective overall, which is the next best, and so on? (Click each box to expand and view the full text. Drag and drop the responses to rank them with 1st being the best)</b></div>
           </div>
           <br />
           <hr />
