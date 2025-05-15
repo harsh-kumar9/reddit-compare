@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/reddit-compare/static/css/main.132e049e.css",
-    "main.js": "/reddit-compare/static/js/main.70349e8f.js",
+    "main.css": "/reddit-compare/static/css/main.94cfdb36.css",
+    "main.js": "/reddit-compare/static/js/main.2f7d7b01.js",
     "static/js/453.20288aac.chunk.js": "/reddit-compare/static/js/453.20288aac.chunk.js",
     "static/media/fa-solid-900.ttf": "/reddit-compare/static/media/fa-solid-900.2582b0e4bcf85eceead0.ttf",
     "static/media/fa-brands-400.ttf": "/reddit-compare/static/media/fa-brands-400.1815e00441357e01619e.ttf",
@@ -12,12 +12,12 @@
     "static/media/fa-v4compatibility.ttf": "/reddit-compare/static/media/fa-v4compatibility.da94ef451f4969af06e6.ttf",
     "static/media/fa-v4compatibility.woff2": "/reddit-compare/static/media/fa-v4compatibility.ea8f94e1d22e0d35ccd4.woff2",
     "index.html": "/reddit-compare/index.html",
-    "main.132e049e.css.map": "/reddit-compare/static/css/main.132e049e.css.map",
-    "main.70349e8f.js.map": "/reddit-compare/static/js/main.70349e8f.js.map",
+    "main.94cfdb36.css.map": "/reddit-compare/static/css/main.94cfdb36.css.map",
+    "main.2f7d7b01.js.map": "/reddit-compare/static/js/main.2f7d7b01.js.map",
     "453.20288aac.chunk.js.map": "/reddit-compare/static/js/453.20288aac.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.132e049e.css",
-    "static/js/main.70349e8f.js"
+    "static/css/main.94cfdb36.css",
+    "static/js/main.2f7d7b01.js"
   ]
 }
