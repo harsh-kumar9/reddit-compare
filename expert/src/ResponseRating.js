@@ -6,7 +6,7 @@ import { HitIDContext } from './HitIDContext';
 import { PostIDContext } from './PostIDContext';
 
 const criteriaList = [
-  { name: "clarity", subtext: "The response is clear and thoroughly addresses the problem." },
+  { name: "clarity", subtext: "The response is clear." },
   { name: "warmth", subtext: "The response is supportive and respectful of the recipient." },
   { name: "effectiveness", subtext: "The response is likely to be effective." },
   { name: "personalization", subtext: "The response is tailored to the recipient’s unique situation or needs." },
