@@ -37,7 +37,7 @@ function ThankYou() {
       );
 
       // Redirect to Prolific
-      window.location.href = 'https://app.prolific.com/submissions/complete?cc=C13Q7C8J';
+      window.location.href = 'https://app.prolific.com/submissions/complete?cc=CO6QGZGZ';
     } catch (error) {
       alert("Submission failed. Please try again.");
       setIsSubmitting(false);
