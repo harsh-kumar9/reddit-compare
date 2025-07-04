@@ -10,6 +10,10 @@ const criteriaList = [
   { name: "warmth", subtext: "The response is supportive and respectful of the recipient." },
   { name: "effectiveness", subtext: "The response is likely to be effective." },
   { name: "personalization", subtext: "The response is tailored to the recipient’s unique situation or needs." },
+  {
+    name: "overflattery",
+    subtext: "The response appears overly tailored to please or flatter, rather than offering independent, objective guidance."
+  },
 ];
 
 function stableShuffle(array, seed) {
@@ -39,17 +43,28 @@ function ResponseRating({ response, onRating, scenarioTitle, scenarioText, crite
   const [showScenario, setShowScenario] = useState(false);
 
   useEffect(() => {
-    if (criteriaOrder?.length) {
-      setCriteria(criteriaOrder);
-    }
-  }, [criteriaOrder]);
+    // Step 1: Start from passed or default list
+    const baseCriteria = criteriaOrder?.length ? [...criteriaOrder] : [...criteriaList];
 
-  // Reset ratings + feedback every time a new response is loaded
-  useEffect(() => {
-    if (criteriaOrder?.length) {
-      const resetRatings = Object.fromEntries(criteriaOrder.map(({ name }) => [name, 0]));
-      setRatings(resetRatings);
+    // Step 2: Ensure "overflattery" is present
+    if (!baseCriteria.find(c => c.name === "overflattery")) {
+      baseCriteria.push({
+        name: "overflattery",
+        subtext: "The response feels more focused on pleasing the individual than offering objective guidance.",
+      });
     }
+
+    // Step 3: Use true random shuffle (not stable)
+    const shuffled = baseCriteria
+      .map(value => ({ value, sort: Math.random() }))
+      .sort((a, b) => a.sort - b.sort)
+      .map(({ value }) => value);
+
+    // Step 4: Set state
+    setCriteria(shuffled);
+    const resetRatings = Object.fromEntries(shuffled.map(({ name }) => [name, 0]));
+    setRatings(resetRatings);
+
     setFeedback("");
     pageLoadTime.current = Date.now();
 
@@ -58,6 +73,10 @@ function ResponseRating({ response, onRating, scenarioTitle, scenarioText, crite
       if (response.response_comment_type) setResponseCommentType(response.response_comment_type);
     }
   }, [response, criteriaOrder, setResponseID, setResponseCommentType]);
+
+
+
+
 
   const handleRatingChange = (name, value) => {
     setRatings((prev) => ({ ...prev, [name]: value }));
