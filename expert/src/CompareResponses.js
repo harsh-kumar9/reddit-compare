@@ -84,10 +84,18 @@ function CompareResponses({ responses, onNext }) {
         responseData,
         { headers: { "Content-Type": "application/json" } }
       );
-      console.log("Rankings data submitted successfully!", responseData);
+      
+      // 2nd DB call (example: backup endpoint or audit log)
+      await axios.post(
+        "https://submitdata-backup-6t7tms7fga-uc.a.run.app",
+        responseData,
+        { headers: { "Content-Type": "application/json" } }
+      );
+    console.log("Both DB calls submitted successfully!", responseData);
     } catch (error) {
       console.error("Error submitting rankings data:", error);
     }
+
 
     if (typeof onNext === 'function') {
       onNext(responseData);
