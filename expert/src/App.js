@@ -27,7 +27,8 @@ function shuffleArray(array) {
 function AppContent() {
   const { updateSurveyData } = useSurvey();
   const [currentStage, setCurrentStage] = useState('captcha');
-  const [scenario, setScenario] = useState(null);
+  const [scenarios, setScenarios] = useState([]); // updated to hold multiple scenarios
+  const [scenarioIndex, setScenarioIndex] = useState(0); // index to track which scenario we're on
   const { workerID, setWorkerID } = useContext(WorkerIDContext);
   const { hitID, setHitID } = useContext(HitIDContext);
   const [shuffledCriteria, setShuffledCriteria] = useState([]);
@@ -68,30 +69,36 @@ function AppContent() {
       body: JSON.stringify(prolificData),
     }).catch((error) => console.error('Error sending prolific info:', error));
 
-    const getRandomScenario = (data) => {
+    // generate 2 distinct random scenarios
+    const getTwoRandomScenarios = (data) => {
       const shuffled = [...data.posts].sort(() => 0.5 - Math.random());
-      const selected = shuffled[0];
-      return {
-        text: selected.body,
-        title: selected.title,
+      const first = shuffled[0];
+      const second = shuffled.find(p => p.id !== first.id);
+      
+      const formatScenario = (post) => ({
+        text: post.body,
+        title: post.title,
         responses: shuffleArray([
-          { text: selected.comments.best_comment, response_id: selected.id, response_comment_type: "comment_best_human" },
-          { text: selected.comments.percentile_10_comment, response_id: selected.id, response_comment_type: "comment_10th_human" },
-          { text: selected.comments.comment_o3, response_id: selected.id, response_comment_type: "comment_o3" },
-          { text: selected.comments.comment_gpt4dot1, response_id: selected.id, response_comment_type: "comment_gpt4dot1" }
+          { text: post.comments.best_comment, response_id: post.id, response_comment_type: "comment_best_human" },
+          { text: post.comments.percentile_10_comment, response_id: post.id, response_comment_type: "comment_10th_human" },
+          { text: post.comments.comment_o3, response_id: post.id, response_comment_type: "comment_o3" },
+          { text: post.comments.comment_gpt4dot1, response_id: post.id, response_comment_type: "comment_gpt4dot1" }
         ])
-      };
+      });
+
+      return [formatScenario(first), formatScenario(second)];
     };
 
-    setScenario(getRandomScenario(inputData));
+    setScenarios(getTwoRandomScenarios(inputData)); // set both scenarios
 
-    // Set consistent per-user shuffle order
+    // shuffle criteria for user
     if (workerId) {
       const shuffled = stableShuffle(criteriaList, workerId);
       setShuffledCriteria(shuffled);
     }
-  }, [setWorkerID, setHitID]);
+  }, [setWorkerID, setHitID]); // you may add criteriaList to fix lint
 
+  // ✅ Added handleNextStage function to replace the broken inline logic
   const handleNextStage = (data) => {
     if (data) {
       updateSurveyData(data);
@@ -105,8 +112,17 @@ function AppContent() {
     ];
 
     const nextStageIndex = stages.indexOf(currentStage) + 1;
+
     if (nextStageIndex < stages.length) {
-      setCurrentStage(stages[nextStageIndex]);
+      const nextStage = stages[nextStageIndex];
+
+      // ✅ Switch to 2nd scenario after finishing first
+      if (currentStage === 'endOfScenario' && scenarioIndex === 0) {
+        setScenarioIndex(1);
+        setCurrentStage('scenarioIntro');
+      } else {
+        setCurrentStage(nextStage);
+      }
     }
   };
 
@@ -115,23 +131,36 @@ function AppContent() {
       {currentStage === 'captcha' && <Captcha onNext={handleNextStage} />}
       {currentStage === 'instructions' && <Instructions onNext={handleNextStage} />}
       {currentStage === 'consent' && <ConsentForm onConsent={handleNextStage} />}
-      {currentStage === 'scenarioIntro' && <ScenarioIntro onNext={handleNextStage} scenarioNumber={1} />}
-      {currentStage === 'scenarioText' && scenario && <ScenarioText title={scenario.title} text={scenario.text} onNext={handleNextStage} />}
+      {currentStage === 'scenarioIntro' && <ScenarioIntro onNext={handleNextStage} scenarioNumber={scenarioIndex + 1} />} {/* Updated to show scenario number */}
+      {currentStage === 'scenarioText' && scenarios.length > 0 && (
+        <ScenarioText
+          title={scenarios[scenarioIndex].title}
+          text={scenarios[scenarioIndex].text}
+          onNext={handleNextStage}
+        />
+      )}
       {currentStage === 'responseIntro' && <ResponseIntro onNext={handleNextStage} />}
-      {['responseRating1', 'responseRating2', 'responseRating3', 'responseRating4'].includes(currentStage) && scenario && (
+      {/* ✅ Updated condition: replaced `scenario` with `scenarios.length > 0` */}
+      {['responseRating1', 'responseRating2', 'responseRating3', 'responseRating4'].includes(currentStage) && scenarios.length > 0 && (
         <ResponseRating
-          response={scenario.responses[parseInt(currentStage.slice(-1), 10) - 1]}
-          scenarioTitle={scenario.title}
-          scenarioText={scenario.text}
+          response={scenarios[scenarioIndex].responses[parseInt(currentStage.slice(-1), 10) - 1]}
+          scenarioTitle={scenarios[scenarioIndex].title}
+          scenarioText={scenarios[scenarioIndex].text}
           onRating={handleNextStage}
           workerId={workerID}
           hitId={hitID}
           criteriaOrder={shuffledCriteria}
         />
       )}
-      {currentStage === 'compareResponses' && scenario && <CompareResponses responses={scenario.responses} onNext={handleNextStage} />}
-      {currentStage === 'RLHFQuestions' && scenario && <RLHFQuestions responses={scenario.responses} onNext={handleNextStage} />}
-      {currentStage === 'AIQuestion' && scenario && <AIQuestion responses={scenario.responses} onNext={handleNextStage} />}
+      {currentStage === 'compareResponses' && scenarios[scenarioIndex] && (
+        <CompareResponses responses={scenarios[scenarioIndex].responses} onNext={handleNextStage} />
+      )}
+      {currentStage === 'RLHFQuestions' && scenarios[scenarioIndex] && (
+        <RLHFQuestions responses={scenarios[scenarioIndex].responses} onNext={handleNextStage} />
+      )}
+      {currentStage === 'AIQuestion' && scenarios[scenarioIndex] && (
+        <AIQuestion responses={scenarios[scenarioIndex].responses} onNext={handleNextStage} />
+      )}
       {currentStage === 'endOfScenario' && <EndOfScenario onNext={handleNextStage} />}
       {currentStage === 'professionalExperience' && <ProfessionalExperience onNext={handleNextStage} />}
       {currentStage === 'thankYou' && <ThankYou onNext={handleNextStage} />}
