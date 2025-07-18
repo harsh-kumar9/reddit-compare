@@ -107,9 +107,11 @@ function AppContent() {
     const stages = [
       'captcha', 'instructions', 'consent', 'scenarioIntro', 'scenarioText',
       'responseIntro', 'responseRating1', 'responseRating2', 'responseRating3',
-      'responseRating4', 'compareResponses', 'RLHFQuestions', 'AIQuestion', 'endOfScenario',
+      'responseRating4', 'compareResponses', 'RLHFQuestions', 'endOfScenario',
+      'AIQuestion', 
       'professionalExperience', 'thankYou', 'end'
     ];
+
 
     const nextStageIndex = stages.indexOf(currentStage) + 1;
 
@@ -158,10 +160,13 @@ function AppContent() {
       {currentStage === 'RLHFQuestions' && scenarios[scenarioIndex] && (
         <RLHFQuestions responses={scenarios[scenarioIndex].responses} onNext={handleNextStage} />
       )}
-      {currentStage === 'AIQuestion' && scenarios[scenarioIndex] && (
-        <AIQuestion responses={scenarios[scenarioIndex].responses} onNext={handleNextStage} />
-      )}
       {currentStage === 'endOfScenario' && <EndOfScenario onNext={handleNextStage} />}
+      {currentStage === 'AIQuestion' && scenarios.length === 2 && (
+        <AIQuestion
+          responses={[...scenarios[0].responses, ...scenarios[1].responses]}
+          onNext={handleNextStage}
+        />
+      )}
       {currentStage === 'professionalExperience' && <ProfessionalExperience onNext={handleNextStage} />}
       {currentStage === 'thankYou' && <ThankYou onNext={handleNextStage} />}
       {currentStage === 'end' && <End />}
