@@ -18,7 +18,7 @@ import ProfessionalExperience from './ProfessionalExperience';
 import ThankYou from './ThankYou';
 import End from './End';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import inputData from './data/final_posts100_filtered_converted.json';
+import inputData from './data/final_posts50_complete.json';
 
 function shuffleArray(array) {
   return array.sort(() => Math.random() - 0.5);
