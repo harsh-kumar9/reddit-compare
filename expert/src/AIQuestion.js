@@ -91,7 +91,7 @@ function AIQuestion({ responses, onNext }) {
   return (
     <div className="compare-responses-container">
       <div className="App-header">
-        <p><b>Which response(s) do you think is most likely to be generated with an AI chatbot (such as ChatGPT)? (Press + to expand and view the full text. Select all that apply.)</b></p>
+        <p><b>Which response(s) do you think is most likely to be generated with an AI chatbot (such as ChatGPT, Gemini, or Claude)? (Press + to expand and view the full text. Select all that apply.)</b></p>
         <div className="ai-question-container">
           {responses.map((response, index) => {
             const truncatedResponse = response.text.split(' ').slice(0, 10).join(' ') + 

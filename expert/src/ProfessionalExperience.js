@@ -214,7 +214,7 @@ function DemographicQuestions({ onNext }) {
           )}
           
           <div className="question">
-            <p>Q7. Have you ever used large language models?</p>
+            <p>Q7. Have you ever used large language models such as ChatGPT, Gemini, or Claude?</p>
             <div className="likert-container-ai">
               {likertLabels.map((label, index) => (
                 <label key={index} className="likert-option">

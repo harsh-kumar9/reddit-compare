@@ -109,11 +109,11 @@ function CompareResponses({ responses, onNext }) {
       <div className="compare-responses-container">
         <div className="App-header">
           <div className="responses-container">
-            <div><b> Here are the responses to the same user post that you just rated. Please review them carefully and rank them from best to worst overall. In other words, which response is the most effective overall, which is the next best, and so on? (Click each box to expand and view the full text. Drag and drop the responses to rank them with 1st being the best)</b></div>
+            <div> Here are the responses to the same user post that you just rated. <b>Please review them carefully and rank them from best to worst overall</b>. In other words, which response is the <b>most effective overall</b>, which is the next best, and so on? (Click each box to expand and view the full text. <b>Drag and drop the responses to rank them with 1st being the best)</b></div>
           </div>
           <br />
           <hr />
-          <p>Drag and drop the responses to rank them, with 1 being the most helpful, and 6 being the least helpful.</p>
+          <p>Drag and drop the responses to rank them, with 1 being the most helpful, and 4 being the least helpful.</p>
           <div className="rankings-container">
             {rankings.map((responseIndex, displayIndex) => {
               const placeNames = ["1st", "2nd", "3rd", "4th", "5th", "6th"];
