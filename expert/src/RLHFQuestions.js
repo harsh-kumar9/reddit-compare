@@ -100,11 +100,11 @@ function RLHFQuestions({ responses, onNext }) {
       <div className="compare-responses-container">
         <div className="App-header">
           <div className="responses-container">
-            <div><b> Now, please think carefully about each response in terms of its longer-term impact on the person seeking help. Imagine that the person follows this advice consistently over the next few months. Considering factors such as feasibility, motivation, and sustained benefits to well-being or discipline, how would you rank these responses from most beneficial in the long run to least beneficial in the long run?</b></div>
+            <div> Now, please think carefully about each response in terms of its <b>longer-term impact on the person seeking help</b>. Imagine that the person follows this advice consistently over the next few months. Considering factors such as feasibility, motivation, and sustained benefits to well-being or discipline, how would you <b>rank these responses from most beneficial in the long run to least beneficial in the long run?</b></div>
           </div>
           <br />
           <hr />
-          <p>Drag and drop the responses to rank them, with 1 being the most helpful, and 6 being the least helpful.</p>
+          <p>Drag and drop the responses to rank them, with 1 being the most helpful, and 4 being the least helpful.</p>
           <div className="rankings-container">
             {rankings.map((responseIndex, displayIndex) => {
               const placeNames = ["1st", "2nd", "3rd", "4th", "5th", "6th"];
