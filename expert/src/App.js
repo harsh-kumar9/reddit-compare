@@ -32,6 +32,7 @@ function AppContent() {
   const { workerID, setWorkerID } = useContext(WorkerIDContext);
   const { hitID, setHitID } = useContext(HitIDContext);
   const [shuffledCriteria, setShuffledCriteria] = useState([]);
+  
 
   const criteriaList = [
     { name: "clarity", subtext: "The response is clear and thoroughly addresses the problem." },
