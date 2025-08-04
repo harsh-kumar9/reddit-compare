@@ -19,6 +19,7 @@ function DemographicQuestions({ onNext }) {
     professionalExperience: '',
     jobTitle: '',
     otherJobTitle: '',
+    scenariosReviewed: '', 
     workerId: workerID,
     hitId: hitID
   });
@@ -231,6 +232,33 @@ function DemographicQuestions({ onNext }) {
             </div>
 
           </div>
+
+          <div className="question">
+            <p>Q8. How many scenarios did you review today? <span style={{fontSize: "90%"}}>(Type a single digit, e.g., 1, 2, 3...)</span></p>
+            <input
+              type="text"
+              name="scenariosReviewed"
+              value={formData.scenariosReviewed || ""}
+              onChange={e => {
+                // Only allow a single digit 1-9
+                const val = e.target.value.replace(/[^1-9]/g, '').slice(0, 1);
+                setFormData(prev => ({...prev, scenariosReviewed: val}));
+              }}
+              className="response-input full-width-input"
+              maxLength={1}
+              inputMode="numeric"
+              pattern="[1-9]"
+              required
+              style={{width: "90%", height: "1em"}}
+            />
+          </div>
+
+          <br></br>
+
+
+          
+
+        
           
           <button type="submit">Next</button>
         </form>
