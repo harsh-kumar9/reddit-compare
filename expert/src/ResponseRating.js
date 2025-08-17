@@ -99,7 +99,7 @@ function ResponseRating({ response, onRating, scenarioTitle, scenarioText, crite
     }
 
     const commentTypeMap = {
-      comment_10th_human: "comment_90th_human",
+      comment_10th_human: "comment_10th_human",
       comment_gpt4: "comment_gpt4o",
     };
     const correctedCommentType = commentTypeMap[responseCommentType] || responseCommentType;
