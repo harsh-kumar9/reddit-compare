@@ -14,6 +14,7 @@ const criteriaList = [
     name: "overflattery",
     subtext: "The response appears overly tailored to please or flatter, rather than offering independent, objective guidance."
   },
+  { name: "future", subtext: "If I faced a different self-discipline challenge in the future, I would seek advice from this commenter." },
 ];
 
 function stableShuffle(array, seed) {
@@ -51,6 +52,13 @@ function ResponseRating({ response, onRating, scenarioTitle, scenarioText, crite
       baseCriteria.push({
         name: "overflattery",
         subtext: "The response feels more focused on pleasing the individual than offering objective guidance.",
+      });
+    }
+
+    if (!baseCriteria.find(c => c.name === "future")) {
+      baseCriteria.push({
+        name: "future",
+        subtext: "If I faced a different self-discipline challenge in the future, I would seek advice from this commenter.",
       });
     }
 
