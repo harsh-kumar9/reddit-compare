@@ -18,7 +18,7 @@ import ProfessionalExperience from './ProfessionalExperience';
 import ThankYou from './ThankYou';
 import End from './End';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import inputData from './data/final50_aug16.json';
+import inputData from './data/final_50_4and5_warm.json';
 
 function shuffleArray(array) {
   return array.sort(() => Math.random() - 0.5);
@@ -83,7 +83,7 @@ function AppContent() {
           { text: post.comments.best_comment, response_id: post.id, response_comment_type: "comment_best_human" },
           { text: post.comments.percentile_10_comment, response_id: post.id, response_comment_type: "comment_10th_human" },
           { text: post.comments.comment_gpt4o, response_id: post.id, response_comment_type: "comment_4o" },
-          { text: post.comments.comment_gpt5_verbositylow_efforthigh, response_id: post.id, response_comment_type: "comment_gpt5" }
+          { text: post.comments.comment_gpt5, response_id: post.id, response_comment_type: "comment_gpt5" }
         ])
       });
 
