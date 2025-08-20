@@ -63,10 +63,7 @@ function ResponseRating({ response, onRating, scenarioTitle, scenarioText, crite
     }
 
     // Step 3: Use true random shuffle (not stable)
-    const shuffled = baseCriteria
-      .map(value => ({ value, sort: Math.random() }))
-      .sort((a, b) => a.sort - b.sort)
-      .map(({ value }) => value);
+    const shuffled = baseCriteria;
 
     // Step 4: Set state
     setCriteria(shuffled);
