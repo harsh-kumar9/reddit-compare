@@ -14,6 +14,7 @@ function RLHFQuestions({ responses, onNext }) {
   const { hitID } = useContext(HitIDContext);
   const { responseID, setResponseID, responseCommentType, setResponseCommentType } = useContext(PostIDContext);
   const questionTitle = "RLHFQuestions";
+  const [hasInteracted, setHasInteracted] = useState(false);
 
   // Time tracking
   const pageLoadTime = useRef(Date.now());
@@ -33,6 +34,7 @@ function RLHFQuestions({ responses, onNext }) {
 
   const toggleExpand = (index) => {
     setExpandedIndex(expandedIndex === index ? null : index);
+    setHasInteracted(true); // mark as interacted, never reset to false
   };
 
   const handleDragStart = (index) => {
@@ -131,13 +133,14 @@ function RLHFQuestions({ responses, onNext }) {
           </div>
           <br />
 
-          <button
-            type="button"
-            onClick={handleNext}
-            style={{ marginTop: '20px', width: '100%' }}
-          >
-            Next
-          </button>
+        <button
+          type="button"
+          onClick={handleNext}
+          style={{ marginTop: '20px', width: '100%' }}
+          disabled={!hasInteracted}
+        >
+          Next
+        </button>
         </div>
       </div>
     </div>

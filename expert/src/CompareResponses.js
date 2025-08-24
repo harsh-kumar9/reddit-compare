@@ -16,6 +16,8 @@ function CompareResponses({ responses, onNext }) {
   const [draggedItem, setDraggedItem] = useState(null);
   const [selectedAIResponses, setSelectedAIResponses] = useState([]);
   const questionTitle = "CompareResponses";
+  const [hasInteracted, setHasInteracted] = useState(false);
+
 
   useEffect(() => {
     if (responses && responses.length > 0) {
@@ -31,6 +33,7 @@ function CompareResponses({ responses, onNext }) {
 
   const toggleExpand = (index) => {
     setExpandedIndex(expandedIndex === index ? null : index);
+    setHasInteracted(true); // mark as interacted, never reset to false
   };
 
   const handleDragStart = (index) => {
@@ -140,13 +143,15 @@ function CompareResponses({ responses, onNext }) {
           </div>
           <br />
 
-          <button
-            type="button"
-            onClick={handleNext}
-            style={{ marginTop: '20px', width: '100%' }}
-          >
-            Next
-          </button>
+        <button
+          type="button"
+          onClick={handleNext}
+          style={{ marginTop: '20px', width: '100%' }}
+          disabled={!hasInteracted}
+        >
+          Next
+        </button>
+
         </div>
       </div>
     </div>
