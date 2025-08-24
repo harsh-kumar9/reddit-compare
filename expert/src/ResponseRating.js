@@ -43,6 +43,25 @@ function ResponseRating({ response, onRating, scenarioTitle, scenarioText, crite
   const pageLoadTime = useRef(Date.now());
   const [showScenario, setShowScenario] = useState(false);
 
+  const headerRef = useRef(null);
+  const topAnchorRef = useRef(null);
+
+  useEffect(() => {
+    setShowScenario(false); // collapse scenario on new response
+    // other setup logic...
+  }, [response, criteriaOrder, setResponseID, setResponseCommentType]);
+
+
+  useEffect(() => {
+    setTimeout(() => {
+      if (topAnchorRef.current) {
+        topAnchorRef.current.scrollIntoView({ behavior: "auto", block: "start" });
+      }
+    }, 0);
+  }, [criteria]);
+
+
+
   useEffect(() => {
     // Step 1: Start from passed or default list
     const baseCriteria = criteriaOrder?.length ? [...criteriaOrder] : [...criteriaList];
@@ -134,9 +153,11 @@ function ResponseRating({ response, onRating, scenarioTitle, scenarioText, crite
   const feedbackProvided = feedback.trim().length > 0;
   const canProceed = allRated && feedbackProvided;
 
+
   return (
     <div className="App">
-      <div className="App-header">
+      <div className="App-header" ref={headerRef}>
+        <div ref={topAnchorRef} tabIndex={-1} style={{height: 0}} />
         <p><b>Please read the full comment. Scroll down to view the entire text.</b></p>
         <div className="expandable-box">
           <button onClick={() => setShowScenario(!showScenario)} className="expand-toggle">
