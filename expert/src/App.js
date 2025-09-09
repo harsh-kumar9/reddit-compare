@@ -18,7 +18,7 @@ import ProfessionalExperience from './ProfessionalExperience';
 import ThankYou from './ThankYou';
 import End from './End';
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import inputData from './data/study2.json';
+import inputData from './data/study2_new.json';
 
 function shuffleArray(array) {
   return array.sort(() => Math.random() - 0.5);
@@ -80,10 +80,10 @@ function AppContent() {
         text: post.body,
         title: post.title,
         responses: shuffleArray([
-          { text: post.comments.best_comment, response_id: post.id, response_comment_type: "comment_best_human" },
-          { text: post.comments.comment_4o, response_id: post.id, response_comment_type: "comment_4o" },
-          { text: post.comments.interv1, response_id: post.id, response_comment_type: "comment_interv1" },
-          { text: post.comments.interv2, response_id: post.id, response_comment_type: "comment_interv2" }
+          { text: post.comments.interv1_best_human, response_id: post.id, response_comment_type: "interv1_best_human" },
+          { text: post.comments.interv2_best_human, response_id: post.id, response_comment_type: "interv2_best_human" },
+          { text: post.comments.interv1_gpt4o, response_id: post.id, response_comment_type: "interv1_gpt4o" },
+          { text: post.comments.interv2_gpt4o, response_id: post.id, response_comment_type: "interv2_gpt4o" }
         ])
       });
 
