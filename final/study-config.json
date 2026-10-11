@@ -1,0 +1,7 @@
+{
+  "live": true,
+  "apiUrl": "https://us-central1-reddit-compare-d31d8.cloudfunctions.net/finalAdviceStudy",
+  "studyVersion": "persona_repair_final_20261010_v1",
+  "estimatedMinutes": 25,
+  "contactEmail": "harsh@cs.toronto.edu"
+}
